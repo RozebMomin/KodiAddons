@@ -14,9 +14,9 @@
         <platform>all</platform>
     </extension>
     <extension point="xbmc.addon.repository" name="Rozeb's XBMC Addon Repository">
-        <info compressed="false">https://github.com/RozebMomin/KodiAddons/master/addons.xml</info>
-        <checksum>https://github.com/RozebMomin/KodiAddons/master/addons.xml.md5</checksum>
-        <datadir zip="true">https://github.com/RozebMomin/KodiAddons</datadir>
+        <info compressed="false">http://www.askmaulana.com/kodi/addons.xml</info>
+        <checksum>http://www.askmaulana.com/kodi/addons.xml.md5</checksum>
+        <datadir zip="true">http://www.askmaulana.com/kodi/</datadir>
     </extension>
 </addon>
 
@@ -33,9 +33,9 @@
         <platform>all</platform>
     </extension>
     <extension point="xbmc.addon.repository" name="Rozeb's XBMC Addon Repository">
-        <info compressed="false">https://github.com/RozebMomin/KodiAddons/master/addons.xml</info>
-        <checksum>https://github.com/RozebMomin/KodiAddons/master/addons.xml.md5</checksum>
-        <datadir zip="true">https://github.com/RozebMomin/KodiAddons</datadir>
+        <info compressed="false">http://www.askmaulana.com/kodi/addons.xml</info>
+        <checksum>http://www.askmaulana.com/kodi/addons.xml.md5</checksum>
+        <datadir zip="true">http://www.askmaulana.com/kodi/</datadir>
     </extension>
 </addon>
 
@@ -52,9 +52,9 @@
         <platform>all</platform>
     </extension>
     <extension point="xbmc.addon.repository" name="Rozeb's XBMC Addon Repository">
-        <info compressed="false">https://github.com/RozebMomin/KodiAddons/master/addons.xml</info>
-        <checksum>https://github.com/RozebMomin/KodiAddons/master/addons.xml.md5</checksum>
-        <datadir zip="true">https://github.com/RozebMomin/KodiAddons</datadir>
+        <info compressed="false">http://www.askmaulana.com/kodi/addons.xml</info>
+        <checksum>http://www.askmaulana.com/kodi/addons.xml.md5</checksum>
+        <datadir zip="true">http://www.askmaulana.com/kodi/</datadir>
     </extension>
 </addon>
 
