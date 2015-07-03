@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.KarbalaTV.en"
-       name="Karbala TV"
-       version="1.0.1" 
-       provider-name="Rozeb Momin">
+<addon id="plugin.video.KarbalaTV.en" name="Karbala TV" version="1.0.1" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
   </requires>
@@ -13,7 +10,7 @@
     <summary lang="en">Live stream from Karbala</summary>
     <description lang="en">Live stream from Karbala</description>
     <platform>all</platform>
- <language>en</language>
- <email>webmaster@askmaulana.com</email>
+    <language>en</language>
+    <email>webmaster@askmaulana.com</email>
   </extension>
 </addon>
