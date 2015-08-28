@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.8.14" provider-name="eracknaphobia">
+  <requires>
+   <import addon="xbmc.python" version="2.1.0"/>   
+   <import addon="script.module.simplejson" version="3.3.0"/>    
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+  </extension>  
+  <extension point="xbmc.addon.metadata">    
+    <platform>all</platform>
+    <summary lang="en">Karbala TV Livestream</summary>
+    <description lang="en">Live streaming video from the Holy City of Karbala.</description>
+    <disclaimer lang="en"></disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+    <forum>...</forum>
+    <website></website>
+    <email></email>
+    <source></source>
+  </extension>
+</addon>

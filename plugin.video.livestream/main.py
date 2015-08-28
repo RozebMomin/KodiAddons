@@ -14,12 +14,13 @@ ROOTDIR = xbmcaddon.Addon(id='plugin.video.livestream').getAddonInfo('path')
 ICON = ROOTDIR+"/icon.png"
 FANART = ROOTDIR+"/fanart.jpg"
 IPHONE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12F70 Safari/600.1.4'
-SEARCH_HITS = '25'
+SEARCH_HITS = '2'
     
 def CATEGORIES():                    
-    addDir('Live & Upcoming','/livestream',100,ICON,FANART)
-    addDir('Search Live','/search',102,ICON,FANART)
-    addDir('Search Archive','/search',103,ICON,FANART)
+    #addDir('Live & Upcoming','/livestream',100,ICON,FANART)
+    #addDir('Search Live','/search',102,ICON,FANART)
+    #addDir('Search Archive','/search',103,ICON,FANART)
+    addDir('Fox 5 News Live','/search',104,ICON,FANART)
      
 
 def LIST_STREAMS():
@@ -90,6 +91,7 @@ def utc_to_local(utc_dt):
     assert utc_dt.resolution >= timedelta(microseconds=1)
     return local_dt.replace(microsecond=utc_dt.microsecond)
 
+
 def SEARCH():
     '''
     POST http://7kjecl120u-2.algolia.io/1/indexes/*/queries HTTP/1.1
@@ -139,6 +141,86 @@ def SEARCH():
 
     return json_source
 
+def CUSTOM_SEARCH():
+    '''
+    POST http://7kjecl120u-2.algolia.io/1/indexes/*/queries HTTP/1.1
+    Host: 7kjecl120u-2.algolia.io
+    Connection: keep-alive
+    Content-Length: 378
+    X-Algolia-Application-Id: 7KJECL120U
+    Origin: http://livestream.com
+    X-Algolia-API-Key: 98f12273997c31eab6cfbfbe64f99d92
+    User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36
+    Content-type: application/json
+    Accept: */*
+    Referer: http://livestream.com/watch
+    Accept-Encoding: gzip, deflate
+    Accept-Language: en-US,en;q=0.8
+
+    {"requests":[{"indexName":"events","params":"query=summ&hitsPerPage=3"},{"indexName":"accounts","params":"query=summ&hitsPerPage=3"},{"indexName":"videos","params":"query=summ&hitsPerPage=3"},{"indexName":"images","params":"query=summ&hitsPerPage=3"},{"indexName":"statuses","params":"query=summ&hitsPerPage=3"}],"apiKey":"98f12273997c31eab6cfbfbe64f99d92","appID":"7KJECL120U"}
+    '''
+    search_txt = ''
+    dialog = xbmcgui.Dialog()
+    search_txt = 'WAGA'
+
+    json_source = ''
+
+    if search_txt != '':
+
+        url = 'http://7kjecl120u-2.algolia.io/1/indexes/*/queries'
+        req = urllib2.Request(url)
+        req.addheaders = [ ("Accept", "*/*"),
+                            ("Accept-Language", "en-US,en;q=0.8"),
+                            ("Accept-Encoding", "gzip, deflate"),
+                            ("X-Algolia-Application-Id", "7KJECL120U"),
+                            ("X-Algolia-API-Key", "98f12273997c31eab6cfbfbe64f99d92"),
+                            ("Content-type", "application/json"),
+                            ("Connection", "keep-alive"),
+                            ("Referer", "http://livestream.com/watch"),
+                            ("User-Agent",'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36')]                
+        
+        
+        json_search = '{"requests":[{"indexName":"events","params":"query='+search_txt+'&hitsPerPage='+SEARCH_HITS+'"},{"indexName":"accounts","params":"query='+search_txt+'&hitsPerPage='+SEARCH_HITS+'"},{"indexName":"videos","params":"query='+search_txt+'&hitsPerPage='+SEARCH_HITS+'"},{"indexName":"images","params":"query='+search_txt+'&hitsPerPage='+SEARCH_HITS+'"},{"indexName":"statuses","params":"query='+search_txt+'&hitsPerPage='+SEARCH_HITS+'"}],"apiKey":"98f12273997c31eab6cfbfbe64f99d92","appID":"7KJECL120U"}'
+
+        response = urllib2.urlopen(req,json_search)
+        json_source = json.load(response)
+        #print json_source
+        response.close()
+
+
+    return json_source
+
+
+def SEARCH_WAGA():
+    json_source = CUSTOM_SEARCH()
+    if json_source != '':
+        for hits in json_source['results']: 
+            for event in hits['hits']:
+                try:
+                    print event
+                    event_id = str(event['id'])
+                    owner_id = str(event['owner_account_id'])
+                    name = event['full_name'].encode('utf-8')
+                    name = event['owner_account_full_name'].encode('utf-8') + ' - ' + name
+                    #icon = event['logo']['thumbnail']['url']
+                    icon = event['logo']['large']['url']
+                    
+                    start_time = str(event['start_time'])                        
+                    duration = 0
+                    try:
+                        duration = int(item['duration'])
+                    except:        
+                        pass
+
+                    print start_time         
+                    aired = start_time[0:4]+'-'+start_time[5:7]+'-'+start_time[8:10]
+                    print aired
+
+                    info = {'plot':'','tvshowtitle':'Livestream','title':name,'originaltitle':name,'duration':duration,'aired':aired}
+
+                    addDir(name,'/live_now',101,icon,FANART,event_id,owner_id)
+                except:
+                    pass
 
 def SEARCH_LIVE():
     json_source = SEARCH()
@@ -380,6 +462,8 @@ elif mode==102:
         SEARCH_LIVE()
 elif mode==103:
         SEARCH_ARCHIVE()
+elif mode==104:
+        SEARCH_WAGA()
 
 if mode == 100:
     xbmcplugin.endOfDirectory(addon_handle, cacheToDisc=False)
