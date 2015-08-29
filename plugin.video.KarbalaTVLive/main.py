@@ -309,6 +309,10 @@ def GET_LIVE_STREAM(owner_id,event_id,icon):
             m3u8_url = json_source['streamInfo']['m3u8_url']
         except:
             pass
+            addon = xbmcaddon.Addon()
+            addonname = addon.getAddonInfo('name')
+            xbmcgui.Dialog().ok(addonname, 'Sorry Karbala TV is not streaming LIVE currently.', 'Please try again later')
+            #addDir('Sorry, Karbala TV is not Streaming Live currently.','/live_now',101,icon,FANART)
         #url = 'http://livestream.com/api/accounts/'+owner_id+'/events/'+event_id+'/feed.json?&filter=video'                
         #req = urllib2.Request(url)       
         #req.add_header('User-Agent', IPHONE_UA)
