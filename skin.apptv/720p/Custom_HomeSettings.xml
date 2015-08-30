@@ -221,6 +221,20 @@
 						<label2>$INFO[Skin.String(CustomMovies.5.Icon)] </label2>
 						<onclick>Skin.SetFile(CustomMovies.5.Icon,.jpg|.png)</onclick>
 					</control>
+					<control type="button" id="115"><!-- Movie favourite 6 -->
+						<include>settings-submenu-common</include>
+						<textwidth>480</textwidth>
+						<label>$LOCALIZE[1036] 6</label>
+						<label2>$INFO[Skin.String(CustomMovies.6.Label)]</label2>
+						<onclick>RunScript(script.favourites,changetitle=true&amp;property=CustomMovies.6)</onclick>
+					</control>
+					<control type="button" id="116"><!-- Movie favourite 6 icon location -->
+						<include>settings-submenu-common</include>
+						<textwidth>480</textwidth>
+						<label>- $LOCALIZE[21371]</label>
+						<label2>$INFO[Skin.String(CustomMovies.6.Icon)] </label2>
+						<onclick>Skin.SetFile(CustomMovies.6.Icon,.jpg|.png)</onclick>
+					</control>
 				</control>
 			</control>
 

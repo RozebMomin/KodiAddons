@@ -343,7 +343,8 @@ def GET_LIVE_STREAM(owner_id,event_id,icon):
                 if cookie != '':
                     temp_url = temp_url + '&Cookie='+cookie
 
-                addLink(name +' ('+desc+')',temp_url, name +' ('+desc+')', icon)
+                xbmcgui.Dialog().notification('CHOOSE RESOLUTION', 'Please choose the resolution that you would like to watch.', xbmcgui.NOTIFICATION_WARNING)
+                addLink('Fox 5 - ' + '('+desc+')',temp_url, name +' ('+desc+')', icon)
             else:
                 desc = ''
                 start = temp_url.find('RESOLUTION=')
