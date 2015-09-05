@@ -21,7 +21,7 @@ addon = Addon(addonID, sys.argv)
 local = xbmcaddon.Addon(id=addonID)
 icon = local.getAddonInfo('icon')
 
-YOUTUBE_CHANNEL_ID = "UC7AqvicrJ22LPClccTPFoHw"
+YOUTUBE_CHANNEL_ID = "fountaindigitl"
 
 # Entry point
 def run():
@@ -44,7 +44,7 @@ def main_list(params):
 
     plugintools.add_item( 
         #action="", 
-        title="Gujarati Natak [ Full ]",
+        title="View All Videos",
         url="plugin://plugin.video.youtube/user/"+YOUTUBE_CHANNEL_ID+"/",
         thumbnail=icon,
         folder=True )

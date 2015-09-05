@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.AasthaTV" name="Aastha TV" version="1.0.1" provider-name="Rozeb Momin">
+  <requires>
+   <import addon="xbmc.python" version="2.1.0"/>
+   <import addon="script.module.requests" version="2.7.0"/>
+   <import addon="script.module.beautifulsoup" version="3.2.1"/>
+   <import addon="script.module.beautifulsoup4" version="4.3.2"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Aastha TV Live</summary>
+    <description lang="en">Aastha TV Live</description>
+    <platform>all</platform>
+    <language>en</language>
+    <email>...</email>
+  </extension>
+</addon>
