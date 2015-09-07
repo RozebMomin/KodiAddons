@@ -317,6 +317,10 @@ def GET_LIVE_STREAM(owner_id,event_id,icon):
             m3u8_url = json_source['streamInfo']['m3u8_url']
         except:
             pass
+            pass
+            addon = xbmcaddon.Addon()
+            addonname = addon.getAddonInfo('name')
+            xbmcgui.Dialog().ok(addonname, 'Sorry Fox 5 News is not streaming LIVE currently.', 'Please try again later')
 
     try:
         print "M3U8!!!" + m3u8_url
