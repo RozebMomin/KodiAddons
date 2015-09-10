@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-<addon id="plugin.video.AajTak" name="Aaj Tak News" version="1.0.3" provider-name="Rozeb Momin">
+<addon id="plugin.video.AajTak" name="Aaj Tak News" version="1.0.4" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
    <import addon="script.module.requests" version="2.7.0"/>
