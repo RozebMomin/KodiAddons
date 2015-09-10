@@ -137,7 +137,7 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.8.14" provider-name="eracknaphobia">
+<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.9.10" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
    <import addon="script.module.simplejson" version="3.3.0"/>
