@@ -21,6 +21,7 @@ TtoWrite = re.search('(delivery.*)', TtoWrite).group()
 TtoWrite = TtoWrite.replace("delivery = ", "")
 TtoWrite = TtoWrite.replace(";", "")
 TtoWrite = TtoWrite.replace("\"", "")
+TtoWrite = TtoWrite.replace("manifest.f4m", "playlist.m3u8")
 
 videoSource = TtoWrite
 
