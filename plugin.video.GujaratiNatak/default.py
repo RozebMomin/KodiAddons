@@ -1,52 +1,58 @@
-# -*- coding: utf-8 -*-
-#------------------------------------------------------------
-# http://www.youtube.com/user/GujaratiNatak
-#------------------------------------------------------------
-# License: GPL (http://www.gnu.org/licenses/gpl-3.0.html)
-# Based on code from youtube addon
-#------------------------------------------------------------
-
+import urllib,urllib2,re,xbmcplugin,xbmcgui
 import os
-import sys
-import plugintools
-import xbmc,xbmcaddon,util
-import xbmcgui
-from addon.common.addon import Addon
-import subprocess
-from subprocess import call
-import json
+import requests
+from bs4 import BeautifulSoup
+import re
 
-addonID = 'plugin.video.GujaratiNatak'
-addon = Addon(addonID, sys.argv)
-local = xbmcaddon.Addon(id=addonID)
-icon = local.getAddonInfo('icon')
+#YouTube Gujarati Natak Playlist
+url = "https://www.youtube.com/playlist?list=PL7ueRli5dEU8jUZzyucuYQOllebth1x07"
+r = requests.get(url)
+data = r.text
 
-YOUTUBE_CHANNEL_ID = "fountaindigitl"
+soup = BeautifulSoup(data)
 
-# Entry point
-def run():
-    plugintools.log("GujaratiNatak.run")
-    
-    # Get params
-    params = plugintools.get_params()
-    
-    if params.get("action") is None:
-        main_list(params)
-    else:
-        action = params.get("action")
-        exec action+"(params)"
-    
-    plugintools.close_item_list()
+#Define Empty Variables
+dataTitles = []
+dataLinks = []
+dataThumbnails = []
+i=0
 
-# Main menu
-def main_list(params):
-    plugintools.log("GujaratiNatak.main_list "+repr(params))
+#Define BeautifulSoup Queries
+videoTitle = soup.find_all("a", {"class","pl-video-title-link"})
+videoLink = soup.find_all("a", {"class","pl-video-title-link"}, href=True)
+videoThumbnail = soup.find_all("span", {"class","yt-thumb-clip"})
 
-    plugintools.add_item( 
-        #action="", 
-        title="View All Videos",
-        url="plugin://plugin.video.youtube/user/"+YOUTUBE_CHANNEL_ID+"/",
-        thumbnail=icon,
-        folder=True )
+def CATEGORIES():
+      addDir("ONE","",1,"")
+      addDir( "TWO","",1,"")
+      addDir( "THREE","",1,"")
+      addDir("FOUR","",1,"")
 
-run()
+def addDir(name,url,mode,iconimage):
+    u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"name="+urllib.quote_plus(name)
+    liz=xbmcgui.ListItem(unicode(name), iconImage="DefaultFolder.png",thumbnailImage=iconimage)
+    liz.setInfo( type="Video", infoLabels={ "Title": name })
+    ok=xbmcplugin.addDirectory(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
+    return ok
+
+def INDEX(url):
+        req = urllib2.Request(url)
+        req.add_header('User-Agent', ' Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+        response = urllib2.urlopen(req)
+        link=response.read()
+        response.close()
+        match=re.compile('').findall(link)
+        for thumbnail,url,name in match:
+                addDir(name,url,2,'')
+
+if mode==None or url==None or len(url)<1:
+        print ""
+        CATEGORIES()
+ 
+elif mode==1:
+        print ""+url
+        INDEX(url)
+ 
+elif mode==2:
+        print ""+url
+        VIDEOLINKS(url,name)
