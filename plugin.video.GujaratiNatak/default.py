@@ -35,34 +35,31 @@ videoThumbnail = soup.find_all('span', 'yt-thumb-clip')
 
 #Fill Empty Queries
 for row in videoTitle:
-	Title = row.get_text()
-	Title = Title.strip()
-	dataTitles.append(Title)
-	print Title
+        Title = row.get_text()
+        Title = Title.strip()
+        Title = Title.encode('utf-8')
+        dataTitles.append(Title)
 
 for link in videoLink:
-	properLink = str()
-	properLink = link['href']
-	properLink = properLink.replace("/watch?v=", "")
-	properLink = properLink.split("&")[0]
-	dataLinks.append(properLink)
+        properLink = str()
+        properLink = link['href']
+        properLink = properLink.replace("/watch?v=", "")
+        properLink = properLink.split("&")[0]
+        dataLinks.append(properLink)
 
 for image in dataLinks:
-	videoImage = "http://i.ytimg.com/vi/" + image + "/default.jpg"
-	dataThumbnails.append(videoImage)
+        videoImage = "http://i.ytimg.com/vi/" + image + "/default.jpg"
+        dataThumbnails.append(videoImage)
 
 #Get Length of Directory
 maxResults = len(dataLinks)
-print "-----------" + str(maxResults)
+for i in range(0, maxResults):
+        url = "plugin://plugin.video.youtube/play/?video_id=" + str(dataLinks[i])
+        li = xbmcgui.ListItem(' '+str(dataTitles[i])+' ', iconImage='http://i.ytimg.com/vi/'+str(dataLinks[i])+'/default.jpg')
+        li.setProperty('IsPlayable', 'true')
+        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
+        i+=1
 
-url = "plugin://plugin.video.youtube/play/?video_id=-fppIc3tjUg"
-li = xbmcgui.ListItem('My First Video!', iconImage='http://i.ytimg.com/vi/-fppIc3tjUg/default.jpg')
-li.setProperty('IsPlayable', 'true')
-xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
-
-url = "plugin://plugin.video.youtube/play/?video_id=kqANd2aw8Mc"
-li = xbmcgui.ListItem('My Second Video!', iconImage='DefaultVideo.png')
-li.setProperty('IsPlayable', 'true')
-xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
+# print "-----------" + str(maxResults)
 
 xbmcplugin.endOfDirectory(addon_handle)
