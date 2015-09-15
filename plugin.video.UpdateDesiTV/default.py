@@ -1,12 +1,12 @@
-import xbmcaddon, util
-import subprocess
-from subprocess import call
-import json
-import os
-import requests
-from bs4 import BeautifulSoup
-import re
-
-addon = xbmcaddon.Addon('plugin.video.UpdateDesiTV')
-
-xbmc.executebuiltin(UpdateAddonRepos, True)
+import xbmc
+import xbmcaddon
+ 
+__addon__ = xbmcaddon.Addon()
+__addonname__ = __addon__.getAddonInfo('name')
+__icon__ = __addon__.getAddonInfo('icon')
+ 
+line1 = "Checking for updates..."
+time = 5000 #in miliseconds
+ 
+xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%(__addonname__,line1, time, __icon__))
+xbmc.executebuiltin("UpdateAddonRepos", True)
