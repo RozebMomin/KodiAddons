@@ -11,4 +11,4 @@ time = 15000 #in miliseconds
  
 xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%(__addonname__,line1, time, __icon__))
 xbmc.executebuiltin("UpdateAddonRepos", True)
-xbmc.executebuiltin(ActivateWindow(10000))
+xbmc.executebuiltin("ActivateWindow(10000)")
