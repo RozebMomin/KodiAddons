@@ -98,7 +98,7 @@
 
 <addon
   id="plugin.video.DesiTVLive"
-  version="1.8.8.6"
+  version="1.8.8.7"
   name="DesiTVLive"
   provider-name="RozebMomin">
   <requires>
