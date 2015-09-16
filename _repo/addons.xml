@@ -98,12 +98,13 @@
 
 <addon
   id="plugin.video.DesiTVLive"
-  version="1.8.8.8"
+  version="1.8.8.9"
   name="DesiTVLive"
   provider-name="RozebMomin">
   <requires>
-   <import addon="xbmc.python" version="2.1.0"/>
+   <import addon="xbmc.python" version="2.14.0"/>
    <import addon="script.common.plugin.cache" version="0.9.1"/>
+   <import addon="script.module.requests"/>
   </requires>
   <extension
     point="xbmc.python.pluginsource"
