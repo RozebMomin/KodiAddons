@@ -690,9 +690,9 @@
 				</item>
 				<item><!-- Updater -->
 					<thumb>special://skin/extras/homeicons/UpdateIcon.png</thumb>
-					<label>Updater</label>
+					<label>Update</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>ActivateWindow(Settings,,return)</onclick>
+					<onclick>RunAddon(plugin.video.UpdateDesiTV)</onclick>
 				</item>
 				<item><!-- Quit -->
 					<visible>!Skin.HasSetting(home-shutdown)</visible>
