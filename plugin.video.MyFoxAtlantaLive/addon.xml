@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.MyFoxAtlantaLive" name="MyFoxAtlantaLive" version="2015.9.17" provider-name="eracknaphobia">
+<addon id="plugin.video.MyFoxAtlantaLive" name="MyFoxAtlantaLive" version="2015.9.18" provider-name="eracknaphobia">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>   
    <import addon="script.module.simplejson" version="3.3.0"/>    
@@ -10,7 +10,7 @@
   <extension point="xbmc.addon.metadata">    
     <platform>all</platform>
     <summary lang="en">Live News from My Fox Atlanta</summary>
-    <description lang="en">Compelling and Complete</description>
+    <description lang="en">Credible, Compelling, Complete.</description>
     <disclaimer lang="en"></disclaimer>
     <language>en</language>
     <platform>all</platform>
