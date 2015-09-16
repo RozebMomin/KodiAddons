@@ -1,9 +1,10 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 import re
 import math
 import urllib
 import base64
+import unpack95High
 from string import join
 import traceback, sys
 
@@ -180,7 +181,34 @@ class JsUnpackerV2:
         bb=chr(cc + 29) if cc> 35 else str(self.__itoa(cc,36))
         return aa+bb
           
+
+class JsUnpacker95High:
+
+    def unpackAll(self, data):
+        try:
+            in_data=data
+            sPattern = '(eval\\(function\\(p,a,c,k,e,d.*)'
+            enc_data=re.compile(sPattern).findall(in_data)
+            if len(enc_data)==0:
+                sPattern = '(eval\\(function\\(p,a,c,k,e,r.*)'
+                enc_data=re.compile(sPattern).findall(in_data)
+                
+
+            for enc_val in enc_data:
+                unpack_val=unpack95High.unpack(enc_val)
+                in_data=in_data.replace(enc_val,unpack_val)
+                in_data=in_data.replace('\\\'','\'')
+            return in_data
+        except: 
+            traceback.print_exc(file=sys.stdout)
+            return data
         
+        
+    def containsPacked(self, data):
+        return 'p,a,c,k,e,d' in data or 'p,a,c,k,e,r' in data
+    
+    
+
 class JsUnIonCube:
     def ionX(self, x, arrayX):
         r = []
@@ -224,7 +252,6 @@ class JsUnIonCube:
         return 'eval(unescape("d="";' in data
 
 class JsUnwiser:
-
     def unwiseAll(self, data):
         try:
             in_data=data
@@ -234,7 +261,7 @@ class JsUnwiser:
                 unpack_val=self.unwise(wise_val)
                 #print '\nunpack_val',unpack_val
                 in_data=in_data.replace(wise_val,unpack_val)
-            return in_data
+            return re.sub("eval\(function\(w,i,s,e\).*?join\(''\);}", "", in_data, count=1, flags=re.DOTALL)
         except: 
             traceback.print_exc(file=sys.stdout)
             return data
@@ -297,11 +324,85 @@ class JsUnwiser:
             return self.unwise(ret)
         else:
             return ret
+        
+class JsUnwiser2:
+    def unwiseAll(self, data):
+        try:
+            in_data=data
+            sPattern = 'eval\\(function\\(f,u,c,k\\).*?}\\((.*?)\\)'
+            wise_data=re.compile(sPattern).findall(in_data)
+            for wise_val in wise_data:
+                unpack_val=self.unwise(wise_val)
+                #print '\nunpack_val',unpack_val
+                in_data=in_data.replace(wise_val,unpack_val)
+            return re.sub("eval\(function\(f,u,c,k\).*?join\(''\);}", "", in_data, count=1, flags=re.DOTALL)
+        except: 
+            traceback.print_exc(file=sys.stdout)
+            return data
+        
+    def containsWise(self, data):
+        return 'f,u,c,k' in data
+        
+    def unwise(self, sJavascript):
+        #print 'sJavascript',sJavascript
+        page_value=""
+        try:        
+            ss="f,u,c,k=("+sJavascript+')' 
+            exec (ss)
+            page_value=self.__unpack(f,u,c,k)
+        except: traceback.print_exc(file=sys.stdout)
+        return page_value
+        
+    def __unpack( self,w, i, s, e):
+        lIll = 0;
+        ll1I = 0;
+        Il1l = 0;
+        ll1l = [];
+        l1lI = [];
+        while True:
+            if (lIll < 5):
+                l1lI.append(w[lIll])
+            elif (lIll < len(w)):
+                ll1l.append(w[lIll]);
+            lIll+=1;
+            if (ll1I < 5):
+                l1lI.append(i[ll1I])
+            elif (ll1I < len(i)):
+                ll1l.append(i[ll1I])
+            ll1I+=1;
+            if (Il1l < 5):
+                l1lI.append(s[Il1l])
+            elif (Il1l < len(s)):
+                ll1l.append(s[Il1l]);
+            Il1l+=1;
+            if (len(w) + len(i) + len(s) + len(e) == len(ll1l) + len(l1lI) + len(e)):
+                break;
+            
+        lI1l = ''.join(ll1l)#.join('');
+        I1lI = ''.join(l1lI)#.join('');
+        ll1I = 0;
+        l1ll = [];
+        for lIll in range(0,len(ll1l),2):
+            #print 'array i',lIll,len(ll1l)
+            ll11 = -1;
+            if ( ord(I1lI[ll1I]) % 2):
+                ll11 = 1;
+            #print 'val is ', lI1l[lIll: lIll+2]
+            l1ll.append(chr(    int(lI1l[lIll: lIll+2], 36) - ll11));
+            ll1I+=1;
+            if (ll1I >= len(l1lI)):
+                ll1I = 0;
+        ret=''.join(l1ll)
+        if 'eval(function(f,u,c,k)' in ret:
+            ret=re.compile('eval\(function\(f,u,c,k\).*}\((.*?)\)').findall(ret)[0] 
+            return self.unwise(ret)
+        else:
+            return ret
 
 class JsUnFunc:
     def unFuncALL(self,data):
         in_data = data
-
+        dec_data = ''
         sPattern = r"var\s*tmp\s*=\s*s.split\(\"([^\"]+)\"\)"
         kPattern = r"unescape\(tmp\[1\]\s*\+\s*\"([^\"]+)\"\)"
         dataPattern = r"document.write\(\w+\(\'\'\)\s*\+\s*\'([^\']+)"
@@ -320,8 +421,9 @@ class JsUnFunc:
         encData = tmp[0]
         
         for i,d in enumerate(encData):
-            data += chr((int(k[i % len(k)]) ^ ord(d)) + mod)
-
+            dec_data += chr((int(k[i % len(k)]) ^ ord(d)) + mod)
+            
+        data = re.sub("eval\(unescape\('function.*?unescape\(''\)\);'\)\);", dec_data, in_data, count=1, flags=re.DOTALL)
         return data
     
     def cointainUnFunc(self,data):
@@ -343,3 +445,20 @@ class JsUnPP:
         return data
     def containUnPP(self,data):
         return 'parseInt(t.substr' in data
+    
+class JsUnPush:
+    def UnPush(self,data):
+        in_data = data
+        varPattern = '(var\s*\w+\s*=\s*new.*?\.push\(\'\'\);)'
+        var_data = re.compile(varPattern).findall(in_data)
+        
+        charPattern = '\(\'([%0-9a-fA-F])\'\)'
+        
+        chars = re.compile(charPattern).findall(var_data[0])
+        res = urllib.unquote(''.join(chars))
+        out_data=in_data.replace(var_data[0],res)
+        return out_data
+        
+    def containUnPush(self,data):
+        return '.push(\'%\')' in data
+
