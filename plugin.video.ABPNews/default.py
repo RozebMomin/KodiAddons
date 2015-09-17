@@ -9,7 +9,7 @@ import re
 
 addon = xbmcaddon.Addon('plugin.video.ABPNews')
 
-r = requests.get("https://hellotv.in/livetv/play?classid=1890&parentId=0&name=MOST%20VISITED")
+r = requests.get("https://hellotv.in/livetv/play?classid=1890&parentId=0&name=MOST%20VISITED", verify=False)
 
 soup = BeautifulSoup(r.content)
 
