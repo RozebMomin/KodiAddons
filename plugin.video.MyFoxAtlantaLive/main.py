@@ -20,7 +20,7 @@ def CATEGORIES():
     #addDir('Live & Upcoming','/livestream',100,ICON,FANART)
     #addDir('Search Live','/search',102,ICON,FANART)
     #addDir('Search Archive','/search',103,ICON,FANART)
-    addDir('Fox 5 News Live','/search',104,ICON,FANART)
+    addDir('Fox 5 News Live','/search',101,ICON,FANART)
      
 
 def LIST_STREAMS():
@@ -299,6 +299,11 @@ def GET_JSON_FILE(url):
 
 def GET_LIVE_STREAM(owner_id,event_id,icon):    
     try:
+        url2 = "http://livestream.com/WAGA/live.json"
+        response2 = urllib.urlopen(url2)
+        data2 = json.loads(response2.read())
+        owner_id = "4241684"
+        event_id = str(data2["event_id"])
         url = 'http://livestream.com/api/accounts/'+owner_id+'/events/'+event_id+'/feed.json?&filter=video'                
         req = urllib2.Request(url)       
         req.add_header('User-Agent', IPHONE_UA)
