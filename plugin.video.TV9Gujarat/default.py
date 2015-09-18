@@ -28,6 +28,6 @@ addon = xbmcaddon.Addon('plugin.video.TV9Gujarat')
 
 # URLStream = videoSource
 
-URLStream = "plugin://plugin.video.youtube/?action=play_video&videoid=_pAricXiIys"
+URLStream = "http://edge-ind.inapcdn.in:1935/berry/inewsup.stream_aac/playlist.m3u8"
 
 util.playMedia(addon.getAddonInfo('name'), addon.getAddonInfo('icon'), URLStream)
