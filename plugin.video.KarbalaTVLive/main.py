@@ -20,7 +20,7 @@ def CATEGORIES():
     #addDir('Live & Upcoming','/livestream',100,ICON,FANART)
     #addDir('Search Live','/search',102,ICON,FANART)
     #addDir('Search Archive','/search',103,ICON,FANART)
-    addDir('Watch Live','/search',104,ICON,FANART)
+    addDir('Watch Live','/search',101,ICON,FANART)
      
 
 def LIST_STREAMS():
@@ -299,6 +299,12 @@ def GET_JSON_FILE(url):
 
 def GET_LIVE_STREAM(owner_id,event_id,icon):    
     try:
+        url2 = "http://livestream.com/karbala-tv/events/3998452.json"
+        response2 = urllib.urlopen(url2)
+        data2 = json.loads(response2.read())
+        owner_id = "11436227"
+        event_id = str(data2["event_id"])
+        #Finished Modifying Code
     	url = 'http://api.new.livestream.com/accounts/'+owner_id+'/events/'+event_id+'/viewing_info'
         req = urllib2.Request(url)       
         req.add_header('User-Agent', IPHONE_UA)

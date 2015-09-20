@@ -140,7 +140,7 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.9.10" provider-name="Rozeb Momin">
+<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.9.19" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
    <import addon="script.module.simplejson" version="3.3.0"/>
@@ -152,7 +152,7 @@
     <platform>all</platform>
     <summary lang="en">Karbala TV Livestream</summary>
     <description lang="en">Live streaming video from the Holy City of Karbala.</description>
-    <disclaimer lang="en"></disclaimer>
+    <disclaimer lang="en">Stream may not work if Karbala Channel is not streaming!</disclaimer>
     <language>en</language>
     <platform>all</platform>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
