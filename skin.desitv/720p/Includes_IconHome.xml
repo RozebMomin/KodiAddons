@@ -688,6 +688,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>ActivateWindow(Settings,,return)</onclick>
 				</item>
+				<item><!-- Network Tools -->
+					<thumb>special://skin/extras/homeicons/NetworkManager.png</thumb>
+					<label>Network Tools</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(service.openelec.settings)</onclick>
+				</item>
 				<item><!-- Updater -->
 					<thumb>special://skin/extras/homeicons/UpdateIcon.png</thumb>
 					<label>Update</label>
