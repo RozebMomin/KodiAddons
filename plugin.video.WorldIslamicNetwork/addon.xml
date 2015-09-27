@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.WorldIslamicNetwork"
+       name="World Islamic Network"
+       version="1.0.1"
+       provider-name="Rozeb Momin">
+  <requires>
+   <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">World Islamic Network Live Stream</summary>
+    <description lang="en">Live streaming from World Islamic Network station</description>
+    <platform>all</platform>
+ <language>en</language>
+ <email>...</email>
+  </extension>
+</addon>
