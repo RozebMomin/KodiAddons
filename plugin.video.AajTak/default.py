@@ -26,6 +26,6 @@ addon = xbmcaddon.Addon('plugin.video.AajTak')
 # videoSource = TtoWrite
 
 # URLStream = videoSource
-URLStream = "plugin://plugin.video.youtube/?action=play_video&videoid=a0cQgi_y8fE"
+URLStream = "plugin://plugin.video.youtube/?action=play_video&videoid=5ZOQNkXGrBI"
 
 util.playMedia(addon.getAddonInfo('name'), addon.getAddonInfo('icon'), URLStream)
