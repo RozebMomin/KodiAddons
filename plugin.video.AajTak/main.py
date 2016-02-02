@@ -318,7 +318,7 @@ def GET_LIVE_STREAM(owner_id,event_id,icon):
             pass
             addon = xbmcaddon.Addon()
             addonname = addon.getAddonInfo('name')
-            xbmcgui.Dialog().ok(addonname, 'Sorry Karbala TV is not streaming LIVE currently.', 'Please try again later')
+            xbmcgui.Dialog().ok(addonname, 'Sorry Aaj Tak is not streaming LIVE currently.', 'Please try again later')
             #addDir('Sorry, Karbala TV is not Streaming Live currently.','/live_now',101,icon,FANART)
         #url = 'http://livestream.com/api/accounts/'+owner_id+'/events/'+event_id+'/feed.json?&filter=video'                
         #req = urllib2.Request(url)       
@@ -365,7 +365,7 @@ def GET_LIVE_STREAM(owner_id,event_id,icon):
                     temp_url = temp_url + '&Cookie='+cookie
 
                 xbmcgui.Dialog().notification('CHOOSE RESOLUTION', 'Please choose the resolution that you would like to watch.', xbmcgui.NOTIFICATION_WARNING)
-                addLink('Karbala TV - ' +' ('+desc+')',temp_url, name +' ('+desc+')', icon)
+                addLink('Aaj Tak - ' +' ('+desc+')',temp_url, name +' ('+desc+')', icon)
             else:
                 desc = ''
                 start = temp_url.find('RESOLUTION=')
