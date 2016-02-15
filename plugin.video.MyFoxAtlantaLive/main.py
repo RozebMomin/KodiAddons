@@ -20,7 +20,7 @@ def CATEGORIES():
     #addDir('Live & Upcoming','/livestream',100,ICON,FANART)
     #addDir('Search Live','/search',102,ICON,FANART)
     #addDir('Search Archive','/search',103,ICON,FANART)
-    addDir('Fox 5 News Live','/search',104,ICON,FANART)
+    addDir('Fox 5 News Live','/search',101,ICON,FANART)
      
 
 def LIST_STREAMS():
