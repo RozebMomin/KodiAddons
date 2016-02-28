@@ -9,7 +9,8 @@ import re
 
 addon = xbmcaddon.Addon('plugin.video.AasthaTV')
 
-r = requests.get("http://hellotv.in/livetv/play?classid=2038")
+r = requests.get("http://vuroll.com/play/livetv/Aastha-TV_2038")
+# http://vuroll.com/play/livetv/Aastha-TV_2038
 
 soup = BeautifulSoup(r.content)
 
