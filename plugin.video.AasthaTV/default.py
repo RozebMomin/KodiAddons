@@ -14,8 +14,8 @@ r = requests.get("http://vuroll.com/play/livetv/Aastha-TV_2038")
 
 soup = BeautifulSoup(r.content)
 
-need = soup.find_all("script", {'charset':'utf-8'})
-TtoWrite = str(need[1])
+need = soup.findAll('script')
+TtoWrite = str(need[9])
 
 TtoWrite = TtoWrite.replace("	", "")
 TtoWrite = re.search('(delivery.*)', TtoWrite).group()
