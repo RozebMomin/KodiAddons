@@ -11,6 +11,7 @@ import os
 
 addon = xbmcaddon.Addon('plugin.video.VelayatTV')
 
-URLStream = "http://96.92.96.41:1935/live/mp4:myStream/playlist.m3u8"
+URLStream = "http://216.75.232.210:1935/live/mp4:myStream/playlist.m3u8"
+# http://216.75.232.210:1935/live/mp4:myStream/playlist.m3u8
 
 util.playMedia(addon.getAddonInfo('name'), addon.getAddonInfo('icon'), URLStream)
