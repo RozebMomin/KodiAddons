@@ -362,7 +362,7 @@
 
 <addon id="plugin.video.WorldIslamicNetwork"
        name="World Islamic Network"
-       version="1.0.3"
+       version="1.0.5"
        provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
