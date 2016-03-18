@@ -1,0 +1,19 @@
+[B][COLOR green]V 2.0.4 (Tuesday March 15, 2016)[/COLOR][/B]
+
+-- [COLOR yellow][B]fixes[/COLOR][/B] Every category should work. (MOST LIKELY TEMPORARY FIX, need to remove favorites and re-add)
+
+[B][COLOR green]V 2.0.3 (Monday February 14, 2015)[/COLOR][/B]
+
+-- [COLOR yellow][B]fixes[/COLOR][/B] Fixed images for Live tv, and added favorite option for Live TV channels.  Also added Live TV channels selection under settings.
+
+[B][COLOR green]V 2.0.2 (Monday December 21, 2015)[/COLOR][/B]
+
+-- [COLOR yellow][B]Live tv fix[/COLOR][/B] fixed live tv with another site change, back to version 2.0 code for live tv.
+
+[B][COLOR green]V 2.0.1 (Monday December 21, 2015)[/COLOR][/B]
+
+-- [COLOR yellow][B]Another Site Fixes[/COLOR][/B] fixed live tv with another site change.
+
+[B][COLOR green]V 2.0 (Sunday December 20, 2015)[/COLOR][/B]
+
+-- [COLOR yellow][B]New Site Fixes[/COLOR][/B] changed every category to accomodate new site layout.
