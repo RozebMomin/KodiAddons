@@ -11,7 +11,7 @@ import requests
 import random
 import json
 
-addon_id = 'plugin.video.ditto-rain'
+addon_id = 'plugin.video.DesiTVLive'
 addon = Addon(addon_id, sys.argv)
 Addon = xbmcaddon.Addon(addon_id)
 debug = Addon.getSetting('debug')
@@ -53,7 +53,7 @@ s = requests.Session()
 
 def addon_log(string):
     if debug == 'true':
-        xbmc.log("[plugin.video.ditto2-rain-%s]: %s" %(addon_version, string))
+        xbmc.log("[plugin.video.DesiTVLive-%s]: %s" %(addon_version, string))
 
 def make_request(url):
     try:		
