@@ -1,3 +1,12 @@
+[B]Version 2.8.8[/B]
+- Fixed TVLogy
+
+[B]Version 2.8.7[/B]
+- Fixed iDoWatch
+
+[B]Version 2.8.6[/B]
+- Fixed iDoWatch
+
 [B]Version 2.8.5[/B]
 - Fixed SSL issue for other devices
 
