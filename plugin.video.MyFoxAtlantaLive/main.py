@@ -6,7 +6,7 @@ import os
 
 addon = xbmcaddon.Addon('plugin.video.MyFoxAtlantaLive')
 
-xbmc.executebuiltin('PlayMedia(&quot;plugin://plugin.video.livestream/?url=%2Flive_now&amp;mode=104&amp;name=%5BCOLOR%3DFF00B7EB%2F%5DWAGA+-+24%2F7%5B%2FCOLOR%5D&amp;icon=http%3A%2F%2Fimg.new.livestream.com%2Fevents%2F000000000020d96b%2F2a6d78c7-8245-4c81-a1eb-4d55f1f36b9d_0.jpg&amp;event_id=2152811&amp;owner_id=4241684&amp;video_id=LIVE&quot;)')
+xbmc.executebuiltin('PlayMedia(plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=%5BCOLOR%3DFF00B7EB%2F%5DWAGA+-+24%2F7%5B%2FCOLOR%5D&event_id=2152811&owner_id=4241684&video_id=LIVE)')
 
 # import sys
 # import xbmc, xbmcplugin, xbmcgui, xbmcaddon
