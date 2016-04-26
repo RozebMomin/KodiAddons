@@ -3,7 +3,7 @@ import pyDes
 import urllib
 import re
 from regexUtils import parseTextToGroups
-from javascriptUtils import JsFunctions, JsUnpacker, JsUnpacker95High, JsUnwiser, JsUnIonCube, JsUnFunc, JsUnPP, JsUnPush
+from javascriptUtils import JsFunctions, JsUnpacker, JsUnpackerV2, JsUnpacker95High, JsUnwiser, JsUnIonCube, JsUnFunc, JsUnPP, JsUnPush
 
 def encryptDES_ECB(data, key):
     data = data.encode()
@@ -16,17 +16,13 @@ def gAesDec(data, key):
     import mycrypt
     return mycrypt.decrypt(key,data)
 
-def aesDec(data, key):
-    from base64 import b64decode
-    try:
-        from Crypto.Cipher import AES
-    except ImportError:
-        import pyaes as AES
-    iv = 16 * '\x00'
-    cipher = AES.new(b64decode(key), AES.MODE_CBC, IV=iv)
-    padded_plaintext = cipher.decrypt(b64decode(data))
-    padding_len = ord(padded_plaintext[-1])
-    return padded_plaintext[:-padding_len]
+def cjsAesDec(data, key):
+    try: import simplejson as json
+    except ImportError: import json
+    import mycrypt
+    enc_data = json.loads(data.decode('base-64'))
+    ciphertext = 'Salted__' + enc_data['s'].decode('hex') + enc_data['ct'].decode('base-64')
+    return json.loads(mycrypt.decrypt(key,ciphertext.encode('base-64')))
 
 def wdecode(data):
     from itertools import chain
@@ -79,6 +75,7 @@ def doDemystify(data):
     #init jsFunctions and jsUnpacker
     jsF = JsFunctions()
     jsU = JsUnpacker()
+    jsU2 = JsUnpackerV2()
     jsUW = JsUnwiser()
     jsUI = JsUnIonCube()
     jsUF = JsUnFunc()
@@ -142,7 +139,7 @@ def doDemystify(data):
                 data = data.replace(g, urllib.unquote(base64_data.decode('base-64')))
                 escape_again=True
     
-    r = re.compile('(eval\\(function\\(\w+,\w+,\w+,\w+.*?join\\(\'\'\\);*}\\(.*?\\))', flags=re.DOTALL)
+    r = re.compile('(eval\\(function\\((?!w)\w+,\w+,\w+,\w+.*?join\\(\'\'\\);*}\\(.*?\\))', flags=re.DOTALL)
     for g in r.findall(data):
         try:
             data = data.replace(g, wdecode(g))
@@ -214,6 +211,10 @@ def doDemystify(data):
     # JS P,A,C,K,E,D
     if jsU95.containsPacked(data):
         data = jsU95.unpackAll(data)
+        escape_again=True
+        
+    if jsU2.containsPacked(data):
+        data = jsU2.unpackAll(data)
         escape_again=True
     
     if jsU.containsPacked(data):

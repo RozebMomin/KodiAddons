@@ -6,6 +6,7 @@ import random
 import re
 import urllib
 import string
+import xbmc
 from string import lower
 
 from entities.CList import CList
@@ -165,7 +166,6 @@ class Parser(object):
             demystify = False
             back = ''
             startUrl = inputList.curr_url
-            #print inputList, lItem
             while count == 0 and i <= maxits:
                 if i > 1:
                     ignoreCache = True
@@ -294,7 +294,7 @@ class Parser(object):
 
 
     def __getSection(self, data, section):
-        p = re.compile(section, re.IGNORECASE + re.DOTALL + re.UNICODE)
+        p = re.compile(section, re.IGNORECASE + re.DOTALL + re.MULTILINE + re.UNICODE)
         m = p.search(data)
         if m:
             return m.group(0)
@@ -306,10 +306,10 @@ class Parser(object):
     def __findRedirect(self, page, referer='', demystify=False):
         data = common.getHTML(page, None, referer=referer, xml=False, mobile=False, demystify=demystify)
         
-        if findVideoFrameLink(page, data):
+        if findContentRefreshLink(page, data):
+            return findContentRefreshLink(page, data)
+        elif findVideoFrameLink(page, data):
             return findVideoFrameLink(page, data)
-        elif findContentRefreshLink(data):
-            return findContentRefreshLink(data)
         elif findEmbedPHPLink(data):
             return findEmbedPHPLink(data)
             
@@ -601,6 +601,9 @@ class Parser(object):
 
             elif command == 'decodeBase64':
                 src = cc.decodeBase64(src)
+            
+            elif command == 'encodeBase64':
+                src = cc.encodeBase64(src)
 
             elif command == 'decodeRawUnicode':
                 src = cc.decodeRawUnicode(src)
@@ -612,6 +615,8 @@ class Parser(object):
                 src = cc.decodeXppod(src)
             
             elif command == 'decodeXppodHLS':
+                if 'stkey' in item.infos:
+                    src = src.replace(item.infos['stkey'],'')
                 src = cc.decodeXppod_hls(src)
 
             elif command == 'replace':
@@ -637,10 +642,10 @@ class Parser(object):
 
             elif command == 'gAesDec':
                 src = crypt.gAesDec(src,item.infos[params])
-            
-            elif command == 'aesDec':
-                src = crypt.aesDec(src,item.infos[params])
                 
+            elif command == 'cjsAesDec':
+                src = crypt.cjsAesDec(src,item.infos[params])
+            
             elif command == 'getCookies':
                 src = cc.getCookies(params, src)
 
@@ -672,9 +677,7 @@ class Parser(object):
                 src = src[::-1]
                 
             elif command == 'demystify':
-                print 'demystify'
                 src = crypt.doDemystify(src)
-                print 'after demystify',src
 
             elif command == 'random':
                 paramArr = params.split(',')
@@ -684,6 +687,18 @@ class Parser(object):
 
             elif command == 'debug':
                 common.log('Debug from cfg file: ' + src)
+                
+            elif command == 'startLivestreamerProxy':
+                libPath = os.path.join(common.Paths.rootDir, 'lib')
+                serverPath = os.path.join(libPath, 'livestreamerXBMCLocalProxy.py')
+                try:
+                    import requests
+                    requests.get('http://127.0.0.1:19000/version')
+                    proxyIsRunning = True
+                except:
+                    proxyIsRunning = False
+                if not proxyIsRunning:
+                    xbmc.executebuiltin('RunScript(' + serverPath + ')')
                 
             elif command == 'divide':
                 paramArr = params.split(',')
