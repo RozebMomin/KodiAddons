@@ -1,0 +1,36 @@
+version 0.8.2
+
+  * revert back to v0.7.8a
+
+version 0.7.8a
+
+  * fix for addon.xml to add dependency for script.facebook.media
+
+version 0.7.7d
+
+ * Facebook login fix
+
+version 0.7.7c
+
+  * fixed add-on description caused installation failed 
+
+version 0.7.7
+
+  * make the artist variable passed to infoLabels as list
+
+version 0.7.6
+
+  * update fanart and logo
+
+version 0.7.5
+
+  * fixed german language, clean-up
+
+version 0.7.4
+
+  * fixed Facebook token size, added german language
+
+version 0.7.3
+
+  * last initial version () Github fork from BlueCop
+

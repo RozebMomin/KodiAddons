@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.vevo" name="VEVO" version="0.8.2" provider-name="BlueCop">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+    <import addon="script.module.beautifulsoup" version="3.2.1"/>
+    <import addon="script.facebook.media" version="0.9.2"/>
+
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video audio</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Music Videos from VEVO</summary>
+    <summary lang="de">Musik Videos von VEVO</summary>
+    <description lang="en">Watch your favorite artist's music videos, see premiere performances and search for new music on VEVO.com</description>
+    <description lang="de">Schaue Top Videos und Performances Deiner Lieblingskünstler und entdecke neue Musik auf VEVO.com</description>
+    <disclaimer lang="en">Some parts of this addon may not be legal in your country of residence - please check with your local laws before installing.</disclaimer>
+    <disclaimer lang="de">Einige Teile dieses Addons sind möglicherweise in Ihrem Land nicht legal - bitte prüfen Sie Ihre lokal gültigen Gesetze vor der Installation.</disclaimer>
+    <source>https://github.com/moneymaker365/plugin.video.vevo</source>
+  </extension>
+</addon>

@@ -1,0 +1,51 @@
+<settings>
+	<!-- User Info -->
+	<category label="30021">
+	   <setting type="sep" />
+	   <setting id="getnewtoken" type ="bool" label="30024" default="true"/>
+	   <setting id="login_name" type="text" label="30000" default=""/>
+	   <setting id="login_pass" type="text" label="30001" enable="!eq(-1,)" option="hidden" default=""/>
+	   <setting type="sep" />
+	   <setting id="latitude" type="text" label="30018" default="Lookup by IP"/>
+	   <setting id="longitude" type="text" label="30019" default="Lookup by IP"/>
+	   <setting id="radius" type="enum" label="30020" values="100|200|300|400|500" default="2"/>
+	   <setting type="sep" />
+	   <setting id='rickroll' type ="bool" label="30028" default="false" />
+	   <setting type="sep" />
+	</category>
+	<!-- View Settings -->
+	<category label="30022">
+	   <setting type="sep" />
+	   <setting id="perpage" type="enum" label="30016" values="25|50|75|100|125|150|175|200" default="3"/>
+	   <setting id="viewenable" type ="bool" label="30050" default="true"/>
+	   <setting id="defaultview" type="enum" lvalues="30053|30051|30052" label="30058" default="2"/>
+	   <setting type="sep" />
+	</category>
+	<!-- Streaming -->
+	<category label="30023">
+	   <setting type="sep" />
+	   <setting id='lyricsubs' type ="bool" label="30025" default="false" />
+	   <setting id='defaulthls' type ="bool" label="30031" default="true" />
+	   <setting type="sep" />
+	   <setting id='defaultyoutube' type ="bool" label="30017" default="false" enable="!eq(-2,true)"/>
+	   <setting type="sep" />
+	   <setting id='defaultrtmp' type ="bool" label="30029" default="false" enable="!eq(-2,true) + !eq(-4,true)"/>
+	   <setting id="bitrate" type="enum" lvalues="30005|30006|30007|30008|30009|30010|30011|30012" label="30004" default="7" enable="!eq(-1, false)"/>
+	   <setting type="sep" />
+	   <setting id='unpause' type ="bool" label="30014" default="true" enable="!eq(-5,true) + !eq(-7,true)"/>
+	   <setting id="unpausetime" type="enum" label="30015" values="1|2|3|4|5|6|7|8|9|10" default="4" enable="!eq(-6,true) + !eq(-8,true)"/>
+	   <setting type="sep" />
+	   <setting id='enabled-cache' type ="bool" label="30026" default="false" enable="!eq(-8,true) + !eq(-10,true)"/>
+	   <setting id="cache-folder" type="folder" label="30027" default="" enable="!eq(-9,true) + !eq(-11,true)"/>
+	   <setting type="sep" />
+	</category>
+	<category label="30030">
+		<setting type="sep" />
+		<setting id="us_proxy_enable" type="bool" label="30042" default="false"/>
+		<setting id="us_proxy" type="text" label="30040" default=""/>
+		<setting id="us_proxy_port" type="text" label="30041" default=""/>
+		<setting id="us_proxy_user" type="text" label="30043" default=""/>
+		<setting id="us_proxy_pass" type="text" label="30044" default=""/>
+		<setting type="sep" />
+	</category>
+</settings>
