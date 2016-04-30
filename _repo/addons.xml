@@ -731,9 +731,9 @@
 	</extension>
 </addon>
 
-<addon id="weather.wunderground" name="Weather Underground" version="6.0.0" provider-name="ronie">
+<addon id="weather.wunderground" name="Weather Underground" version="6.0.1" provider-name="ronie">
 	<requires>
-		<import addon="xbmc.python" version="2.24.0"/>
+		<import addon="xbmc.python" version="2.1.0"/>
 	</requires>
 	<extension point="xbmc.python.weather" library="default.py"/>
 	<extension point="xbmc.addon.metadata">
