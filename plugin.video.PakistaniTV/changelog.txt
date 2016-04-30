@@ -1,0 +1,53 @@
+0.0.21 - Update DesiRonak match strings
+       - Update ApnaDramas site url
+       - Display UrlResolver error messages
+
+0.0.20 - Add ApnaDramas
+       - Remove DesiRulez
+
+0.0.19 - Remove old frames menu items from paktv
+       - Sort by and show new shows first
+
+0.0.18 - Update paktv forum site url to thepaktv.net
+       - Add ARY Zindagi and Hum Sitaray channel
+
+0.0.17 - Update paktv forum site url to geopaktv.com
+
+0.0.16 - Ignore empty items in livestream xml
+
+0.0.15 - Add videotanker host
+       - Add null check for livestream xml
+       - Update forum ID regex
+
+0.0.14 - Fix unicode to ascii error in url
+
+0.0.13 - Add MTV in DesiRulez
+       - Add movshare host
+
+0.0.12 - Fix for DesiRulez generic links ('video.php')
+
+0.0.11 - Fix bookmark sorting
+       - PakTV Today's Dramas reflects day of week
+
+0.0.10 - Add error message for failed live stream parsing
+
+0.0.9 - Add live streams from xml (specify url)
+      - Fix match str bug
+
+0.0.8 - Ignore preview links
+
+0.0.7 - Refactor
+      - Fix unicode issue
+
+0.0.6 - Add license
+      - Localization support
+
+0.0.5 - Update sort
+
+0.0.4 - Add Continuous Play
+
+0.0.3 - Ignore promo links
+
+0.0.2 - Add DesiRulez.net
+
+0.0.1 - Initial release

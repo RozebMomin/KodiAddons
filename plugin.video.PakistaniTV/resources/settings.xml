@@ -1,0 +1,3 @@
+﻿<settings>
+    <setting id="livestream_xml_url" type="text" label="30001" default=""/>
+</settings>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <!-- Plugin Name -->
+  <string id="30000">PakTVForum</string>
+
+  <!-- Settings -->
+  <string id="30001">Live Stream XML Url</string>
+
+  <!-- Sites -->
+  <string id="30010">The Pak TV Forum</string>
+  <string id="30011">Desi Ronak Forum</string>
+  <string id="30012">Desi Rulez Forum</string>
+  <string id="30016">Live Streams</string>
+
+  <!-- General -->
+  <string id="30020">Please try again</string>
+  <string id="30021">Website is unavailable</string>
+  <string id="30022">is unavailable at this time</string>
+  <string id="30023">Please try again at a later time</string>
+  <string id="30024">Unable to load channels from xml</string>
+  <string id="30026">No episodes found.</string>
+  <string id="30027">No valid links found.</string>
+  <string id="30028">Unable to play video</string>
+  <string id="30029">Please choose another source</string>
+
+  <!-- Options -->
+  <string id="30100">Url Resolver Settings</string>
+  <string id="30110">Bookmarks</string>
+  <string id="30111">Add Bookmark</string>
+  <string id="30112">Remove Bookmark</string>
+  <string id="30113">- No Bookmarks -</string>
+  <string id="30114">Successfully bookmarked: </string>
+  <string id="30115">Unable to fetch bookmark storage</string>
+  <string id="30116">Bookmark Error</string>
+  <string id="30117">Are you sure you wish to remove bookmark:</string>
+</strings>

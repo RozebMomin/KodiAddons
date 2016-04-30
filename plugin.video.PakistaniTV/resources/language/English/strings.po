@@ -1,0 +1,114 @@
+# XBMC Media Center language file
+# Addon Name: PakTVForum
+# Addon id: plugin.video.paktvforum
+# Addon version: 0.0.6
+# Addon Provider: Irfan Charania
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#30000"
+msgid "PakTVForum"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Live Stream XML Url"
+msgstr ""
+
+#########################
+
+msgctxt "#30010"
+msgid "The Pak TV Forum"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Desi Ronak Forum"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Desi Rulez Forum"
+msgstr ""
+
+msgctxt "#30016"
+msgid "Live Streams"
+msgstr ""
+
+#########################
+
+msgctxt "#30020"
+msgid "Please try again"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Website is unavailable"
+msgstr ""
+
+msgctxt "#30022"
+msgid "is unavailable at this time"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Please try again at a later time"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Unable to load channels from xml"
+msgstr ""
+
+msgctxt "#30026"
+msgid "No episodes found."
+msgstr ""
+
+msgctxt "#30027"
+msgid "No valid links found."
+msgstr ""
+
+msgctxt "#30028"
+msgid "Unable to play video"
+msgstr ""
+
+msgctxt "#30029"
+msgid "Please choose another source"
+msgstr ""
+
+#########################
+
+msgctxt "#30100"
+msgid "Url Resolver Settings"
+msgstr ""
+
+msgctxt "#30110"
+msgid "Bookmarks"
+msgstr ""
+
+msgctxt "#30111"
+msgid "Add Bookmark"
+msgstr ""
+
+msgctxt "#30112"
+msgid "Remove Bookmark"
+msgstr ""
+
+msgctxt "#30113"
+msgid "- No Bookmarks -"
+msgstr ""
+
+msgctxt "#30114"
+msgid "Successfully bookmarked: "
+msgstr ""
+
+msgctxt "#30115"
+msgid "Unable to fetch bookmark storage"
+msgstr ""
+
+msgctxt "#30116"
+msgid "Bookmark Error"
+msgstr ""
+
+msgctxt "#30117"
+msgid "Are you sure you wish to remove bookmark:"
+msgstr ""
