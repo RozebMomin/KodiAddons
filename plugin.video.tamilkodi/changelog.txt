@@ -1,0 +1,53 @@
+Help And Support
+[B]facebook.com/tamilKODITV[/B]
+email:cyberrule.mail@gmail.com
+
+Version v1.006
+ - tamilgun links updated
+ - kind of silent updates
+
+Version v0.3000
+ - [B]UPDATES 28FEB2015[/B]
+ - Movies-Raj bug fixed
+ - Movies-Gun bug fixed
+ - Movies-section removed due to website down
+ - report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com
+
+Version v0.2002
+ - Video links fixed on TamilGun
+
+Version v0.2001
+ - Vimeo video fixed
+
+Version v0.2000
+ - Fixed KODI script failed error
+ - Some script improvement
+
+Version v0.1005
+ - Fixed onDemand Section bug with KODI
+ - Live Radio Channels working
+ - Improved Radio Channels icons
+   + change to thumbnail view for better view
+
+Version v0.1004
+ - fixed some bugs
+ - Help contacts
+
+Version v0.1003
+ - Added Dan Yarl Oli, BBC NEWS Channels
+ - fixed some bugs
+
+Version v0.1002
+ - fix vimeo standard definition videos
+ - fix tamilgun playlist icon
+
+Version v0.1001
+ - Initial Release
+ - Tamil TV Channels URL
+ - Live TV Channels
+ - Live Radio channels
+ - Video On Demand [VOD]
+ - Tamil Movies from 3 different sources
+   +HD MOVIE included
+
+

@@ -1,0 +1,117 @@
+Notice from Cyberrule,
+[COLOR yellow][B]For channel requests, Please Visit and Like for
+MORE DETAILS AND FREEUPDATE[/B][/COLOR]
+[COLOR green][B]facebook.com/tamilKODITV[/B][/COLOR]
+
+[B]UPDATE 2SEPTEMBER2015[/B][COLOR green]
+ + Rushed to fix movies section. Rajmovies and Tamilgun LINKS are fixed
+ + Still Dailymotion add-on is broken now.. Waiting for fix
+ + Vijay TV has been updated on Premium Channels List
+ + Premium channels available on Donation and Requests.
+  > More details Message me on FaceBook
+ + some movies from TamilGun Movies section are down because of their site modification..
+  > I am working on it to make it work..
+  > Use rajtamil movies section for alternative movie links.
+[COLOR yellow] +++++++++++++++++++++++++++++++++++++++++++++++++++[/COLOR]
+ [COLOR white][B]IF YOU WANT TO APPRECIATE/ENCOURAGE MY WORK
+ YOU CAN DONATE ME AT PayPal, email ID: [COLOR yellow]tamil@tamilkodi.com[/COLOR]
+ It will keep me work on this add-on
+ AS RETURNING MY THANKS,
+ MORE THAN $20 DONATED USERS WILL BE ADDED AS PREMIUM USERS FOR 4MONTHS[/B][/COLOR]
+ [COLOR yellow]++++++++++++++++++++++++++++++++++++++++++++++++++++[/COLOR]
+Premium Channels:
+Vijay TV, Kalaignar TV, Jaya TV, Raj TV, JMovie, Sirippoli, Isaiyaruvi, Jaya Max
+Venthar TV, Zee Tamil, Polimer TV, Mega TV, Mega Musiq, Murasu, Chithram
+SPORTS CHANNELS(Sky Sports 1,2,3,4, Ten Cricket)
+Constantly working on to adding more channels..
+
+Donation doesn't mean selling channels. It is appreciation for my effort to keep this add-on.
+If anyone donate me it will encourage me.
+
+ + If you encounter any errors contact me on FB
+   visit: [COLOR yellow][B]facebook.com/tamilkoditv[/B][/COLOR]
+   [/COLOR]
+
+
+
+
+
+
+[B]UPDATE 30MAY2015[/B][COLOR green]
+ + error in Live TV section has been updated
+ + Premium channels available on Donation and Requests.
+   > More details Message me on FaceBook
+
+
+ + If you encounter any errors contact me on FB
+   visit: [COLOR yellow][B]facebook.com/tamilkoditv[/B][/COLOR]
+   [/COLOR]
+
+[B]UPDATE 13APR2015[/B][COLOR yellow]
+ + [COLOR red]!IMPORTANT MESSAGE[/COLOR]
+Take some delays
+
+[/COLOR]
+
+[B]UPDATE 20APR2015[/B][COLOR green]
+ + toolstube links fixed in movie section
+
+ + If you encounter any errors contact me on FB
+   visit: [COLOR yellow][B]facebook.com/tamilkoditv[/B][/COLOR]
+   [/COLOR]
+
+[B]UPDATE 13APR2015[/B][COLOR yellow]
+ + [COLOR red]!IMPORTANT MESSAGE[/COLOR]
+Take some delays
+
+[/COLOR]
+
+
+
+[B]UPDATE 28MAR2015[/B][COLOR green]
+ + Vijay TV Shows Section Taken down from Source Website.
+  Vijay TV Playing monopoly. They have stopped updating their videos on Youtube.
+  They moved to their website called hotstar.com. It is not available other than India.
+  They wanted all foreigners to buy their viewing card.
+  [I DON'T LIKE VIJAY TV :/ ]
+
+ + I have added alternative source for vijay tv serial and tv shows.
+
+ + Please click "Icon Update" and restart KODI/XBMC for New Icon as shown on FB (Android/Mac)
+
+ + If you encounter any errors contact me on FB
+   visit: [COLOR yellow][B]facebook.com/tamilkoditv[/B][/COLOR]
+   [/COLOR]
+
+[B]UPDATES 22MAR2015[/B][COLOR green]
+ + Thanks for your feedbacks.
+ + Sports Sectional Updated with Some reliable links
+ + Critical Movie source bug fixed
+  - Movies section links fixed
+ + Some TV lists updated
+
+   visit: [COLOR yellow][B]facebook.com/tamilkoditv[/B][/COLOR]
+   [/COLOR]
+
+ + If you want tamilbites.com added to this add-on
+   visit: [COLOR yellow][B]facebook.com/tamilkoditv[/B][/COLOR]
+   [/COLOR]
+
+[B]UPDATES 04MAR2015[/B][COLOR green]
+ + NEW SECTION added[COLOR yellow]
+   - It will be maintain by Semmalai Akash [/COLOR]
+   - He will be updating links when he got new links
+[/COLOR]
+ [COLOR green][B]facebook.com/tamilKODITV[/B][/COLOR]
+
+[B]UPDATES 28FEB2015[/B]
+ - [Fixed] Movies-Raj bug fixed
+ - [Fixed] Movies-Gun bug fixed
+ - [Removed] Movies-section removed due to website down
+ - report script error to www.facebook.com/tamilKODITV or cyberrule.mail@gmail.com
+
+
+__notice__ = "0.0119"
+Please Drop me an E-mail: cyberrule.mail@gmail.com
+
+Enjoy :)
