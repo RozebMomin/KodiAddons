@@ -298,6 +298,22 @@
   </extension>
 </addon>
 
+<addon id="plugin.video.LocalNews" name="Local News" version="1.1.0" provider-name="Rozeb Momin">
+  <requires>
+   <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Local News Live</summary>
+    <description lang="en">Local News Live</description>
+    <platform>all</platform>
+    <language>en</language>
+    <email>...</email>
+  </extension>
+</addon>
+
 <addon id="plugin.video.MakkahTVLive" name="MakkahTVLive" version="1.0.5" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
