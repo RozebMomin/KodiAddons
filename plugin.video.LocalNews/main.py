@@ -22,18 +22,18 @@ _handle = int(sys.argv[1])
 VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                        'thumb': 'http://www.fox5atlanta.com/fox-main-theme/images/color-schemes/waga/apple-touch-icon.png',
                        'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=Fox5Atlanta&event_id=2152811&owner_id=4241684&video_id=LIVE',
-                       'genre': 'LIVE'}
+                       'genre': 'Atlanta'}
                       ],
             'New York': [{'name': 'Watch Fox 5 New York LIVE',
                       'thumb': 'http://www.roomy-tv.com/images/161.png',
                       'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=Fox5NewYork&event_id=2592483&owner_id=6372917&video_id=LIVE',
-                      'genre': 'Delhi'}
+                      'genre': 'New York'}
+                     ],
+            'Florida': [{'name': 'Watch NBC 2 LIVE',
+                      'thumb': 'http://wbbh.images.worldnow.com/images/273803_G.jpg',
+                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=FloridaNBC2&event_id=4105198&owner_id=1140&video_id=LIVE',
+                      'genre': 'Florida'}
                      ]}
-            # 'California': [{'name': 'Watch AajTak Tez',
-            #           'thumb': 'http://media2.intoday.in/aajtak/static/tez/Tez_logo.png',
-            #           'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AajTakTez&event_id=4198957&owner_id=13995833&video_id=LIVE',
-            #           'genre': 'Tez'}
-            #          ]}
 
 
 def get_categories():
