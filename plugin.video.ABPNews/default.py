@@ -9,12 +9,12 @@ import re
 
 addon = xbmcaddon.Addon('plugin.video.ABPNews')
 
-r = requests.get("https://hellotv.in/livetv/play?classid=1890&parentId=0&name=MOST%20VISITED", verify=False)
+r = requests.get("https://vuroll.com/livetv/play?classid=1890&parentId=0&name=MOST%20VISITED")
 
 soup = BeautifulSoup(r.content)
 
-need = soup.find_all("script", {'charset':'utf-8'})
-TtoWrite = str(need[1])
+need = soup.findAll('script')
+TtoWrite = str(need[9])
 
 TtoWrite = TtoWrite.replace("	", "")
 TtoWrite = re.search('(delivery.*)', TtoWrite).group()
