@@ -1,4 +1,4 @@
-import re, os, sys
+import re, os, sys, pickle
 import urllib
 import urllib2
 import xbmcplugin
@@ -10,6 +10,7 @@ import socket
 import requests
 import random
 import json
+from cookielib import LWPCookieJar
 
 addon_id = 'plugin.video.DesiTVLive'
 addon = Addon(addon_id, sys.argv)
@@ -23,6 +24,9 @@ profile = xbmc.translatePath(Addon.getAddonInfo('profile'))
 local_db = os.path.join(profile, 'local_db.db')
 pluginDir = sys.argv[0]
 dialog = xbmcgui.Dialog()
+cookie_file = os.path.join(profile, 'cookiejar.txt')
+if not os.path.exists(profile):
+    os.makedirs(profile)
 
 language = (Addon.getSetting('langType'))
 livelanguage = (Addon.getSetting('livelangType'))
@@ -33,6 +37,7 @@ quality = (Addon.getSetting('qualityType')).lower()
 base_url = 'http://www.dittotv.com'
 # base2_url = '/tvshows/all/0/'+language+'/'
 listitem=''
+cookieString=""
 
 if 'Latest' in moviessort:
 	moviessort = 'created%2Cdesc'
@@ -50,15 +55,18 @@ else:
 	
 
 s = requests.Session()
+# s.cookies = LWPCookieJar(cookie_file)
+
+
 
 def addon_log(string):
     if debug == 'true':
         xbmc.log("[plugin.video.DesiTVLive-%s]: %s" %(addon_version, string))
 
-def make_request(url):
-    try:		
-		headers = {'Accept':'text/html,application/xhtml+xml,q=0.9,image/jxr,*/*', 'Accept-Language':'en-US,en;q=0.5', 'Accept-Encoding':'gzip, deflate', 'Connection':'keep-alive', 'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0'}
-		response = s.get(url, headers=headers, cookies=s.cookies)
+def make_request(url, cookies=None):
+    try:	
+		headers = {'Accept':'text/html,application/xhtml+xml,q=0.9,image/jxr,*/*', 'Accept-Language':'en-US,en;q=0.5', 'Accept-Encoding':'gzip, deflate, sdch', 'Connection':'keep-alive', 'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0'}
+		response = s.get(url, headers=headers, cookies=cookies)
 		return response.text
     except urllib2.URLError, e:    # This is the correct syntax
         print e
@@ -70,9 +78,19 @@ def get_menu():
 	addDir(5, 'Search', '', '')
 	addDir(12, 'My Favorites Shows/Movies', '', '')
 	addDir(14, 'My Favorite Live TV Channels', '', '')
+	
+def temp_zee_tv():
+	r = make_request('http://www.dittotv.com/livetv/zee-tv-hd')
+	print 'temp zee cookie', s.cookies.items()
+	with open(cookie_file, 'w') as f:
+		pickle.dump(s.cookies, f)
+	addDir(28, 'Zee TV HD', 'http://www.dittotv.com/livetv/link?name=Zee%20TV%20HD', '',isplayable=True)
 
 def new_live_tv():
 	r = make_request('http://www.dittotv.com/livetv')
+	print 'cookies under new_live_tv are', s.cookies.items()
+	with open(cookie_file, 'w') as f:
+		pickle.dump(s.cookies, f)
 	match = re.compile('Select Channel</option>(.+?)</select>', re.DOTALL).findall(r)[0]
 	match2 = re.compile('<option value="(\d+)">(.+?)</option>').findall(match)
 	for link, title in match2:
@@ -85,19 +103,23 @@ def new_live_tv():
 	setView('default','default-view')
 		
 def new_live_tv_url(name, url):
-	s.headers['Referer']='http://www.dittotv.com/livetv'
-	r = make_request(url)
-	rjson = json.loads(r)
-	url2 = urllib.unquote_plus(url)
+	with open(cookie_file) as f:
+		file_cookies = pickle.load(f)
+		s.cookies = file_cookies
 	if '&' in name:
 		name2 = name.replace('&', '%26')
 	else:
 		name2 = name
-	if '&' in url2:
-		url2 = url2.replace('&','and-')
-	if ' ' in url2:
-		url2 = url2.replace(' ', '-')
-	m3 = rjson['link']+'|Referer=http://www.dittotv.com/livetv/'+url2.lower()
+	if ' ' in name2:
+		name2 = name2.replace(' ','-')
+	s.headers['Referer']='http://www.dittotv.com/livetv/'+name2.lower()
+	# print 'url is', url
+	r = make_request(url, cookies = file_cookies)
+	rjson = json.loads(r)
+	
+	
+	# print 'link is', rjson['link']
+	m3 = rjson['link']+'|Referer=http://www.dittotv.com/livetv/'+name2.lower()
 	listitem =xbmcgui.ListItem(name)
 	listitem.setProperty('IsPlayable', 'true')
 	listitem.setPath(m3)
@@ -323,13 +345,6 @@ def get_shows():
 		addDir(2, '[COLOR gold]>>> Next Page >>>[/COLOR]', match3, '', isplayable=False)		
 	else:
 		print "no more next page"
-		
-	# if (moviessort == "name"):
-		# xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_LABEL )
-
-	# xbmcplugin.endOfDirectory(int(sys.argv[1]))
-	
-	# setView('', 'movie-view')
 
 	setView('episodes', 'episode-view')
 
@@ -373,6 +388,8 @@ def addDir(mode,name,url,image,dirmode=None,isplayable=False):
 
 	ok=True
 	item=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=image)
+	item.addStreamInfo('video', {'codec': 'h264'})
+	item.addStreamInfo('audio', {'codec': 'aac', 'language': 'en', 'channels': 2})
 	item.setInfo( type="Video", infoLabels={ "Title": name } )
 	if 'tv-show' in url:
 		item.setArt({'fanart': image})

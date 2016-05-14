@@ -1,3 +1,7 @@
+[B][COLOR green]V 2.0.5 (Tuesday May 12, 2016)[/COLOR][/B]
+
+-- [COLOR yellow][B]fixes[/COLOR][/B] fix for Live channels, required cookies file.
+
 [B][COLOR green]V 2.0.4 (Tuesday March 15, 2016)[/COLOR][/B]
 
 -- [COLOR yellow][B]fixes[/COLOR][/B] Every category should work. (MOST LIKELY TEMPORARY FIX, need to remove favorites and re-add)
