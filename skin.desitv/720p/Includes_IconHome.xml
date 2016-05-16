@@ -661,6 +661,24 @@
 					<onclick>$INFO[Skin.String(CustomRadio.8.Path)]</onclick>
 					<visible>!IsEmpty(Skin.String(CustomRadio.8.Path))</visible>
 				</item>
+				<item><!-- Music -->
+					<thumb>special://skin/extras/homeicons/music.png</thumb>
+					<label>$LOCALIZE[2]</label>
+					<label2>$LOCALIZE[2]</label2>
+					<onclick>$VAR[MusicLibEntry]</onclick>
+				</item>
+				<item><!-- Videos -->
+					<thumb>special://skin/extras/homeicons/Vids.png</thumb>
+					<label>$LOCALIZE[3]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(Videolibrary,root,return)</onclick>
+				</item>
+				<item><!-- Pictures -->
+					<thumb>special://skin/extras/homeicons/pics.png</thumb>
+					<label>$LOCALIZE[1]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(MyPictures,,return)</onclick>
+				</item>
 				<item><!-- Search -->
 					<visible>Skin.HasSetting(home-search)</visible>
 					<thumb>special://skin/extras/homeicons/search.png</thumb>
