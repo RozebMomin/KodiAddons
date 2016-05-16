@@ -778,7 +778,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
   </extension>
 </addon>
 
-<addon id="skin.desitv" version="1.4.0" name="DesiTV"	provider-name="RozebMomin">
+<addon id="skin.desitv" version="1.4.1" name="DesiTV"	provider-name="RozebMomin">
 	<requires>
 		<import addon="xbmc.gui" version="5.10.0"/>
 		<import addon="resource.uisounds.apptv" version="1.0.2"/>
