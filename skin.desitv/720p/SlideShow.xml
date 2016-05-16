@@ -9,7 +9,8 @@
 				<top>0</top>
 				<width>1280</width>
 				<height>150</height>
-				<texture colordiffuse="mask-background">background.png</texture>
+				<texture>background.png</texture>
+				<colordiffuse>osd-background</colordiffuse>
 			</control>
 			<control type="label" id="10"><!-- Row 1 label -->
 				<left>17</left>
@@ -42,7 +43,8 @@
 				<top>558</top>
 				<width>1280</width>
 				<height>162</height>
-				<texture colordiffuse="mask-background">background.png</texture>
+				<texture>background.png</texture>
+				<colordiffuse>osd-background</colordiffuse>
 			</control>
 			<control type="image"><!-- Cover image -->
 				<left>60</left>

@@ -8,7 +8,7 @@
 			<top>-24</top>
 			<width>1</width>
 			<height>1</height>
-			<onfocus>ActivateWindow(playercontrols)</onfocus>
+			<onfocus>ActivateWindow(PlayerControls)</onfocus>
 			<onfocus>Control.SetFocus(9000)</onfocus>
 		</control>
 
@@ -133,7 +133,7 @@
 					<top>0</top>
 					<width>514</width>
 					<height>56</height>
-					<texture border="6">button-default-focus.png</texture>
+					<texture border="8">button-default-focus.png</texture>
 				</control>
 				<control type="label">
 					<left>26</left>
@@ -301,36 +301,6 @@
 					<visible>!IsEmpty(Skin.String(CustomRadio.5.Path))</visible>
 				</item>
 				<item>
-					<thumb>$INFO[Skin.String(CustomFav.1.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomFav.1.Label)]</label>
-					<onclick>$INFO[Skin.String(CustomFav.1.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomFav.1.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomFav.2.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomFav.2.Label)]</label>
-					<onclick>$INFO[Skin.String(CustomFav.2.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomFav.2.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomFav.3.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomFav.3.Label)]</label>
-					<onclick>$INFO[Skin.String(CustomFav.3.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomFav.3.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomFav.4.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomFav.4.Label)]</label>
-					<onclick>$INFO[Skin.String(CustomFav.4.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomFav.4.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomFav.5.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomFav.5.Label)]</label>
-					<onclick>$INFO[Skin.String(CustomFav.5.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomFav.5.Path))</visible>
-				</item>
-				<item>
 					<thumb>DefaultMusicSongs.png</thumb>
 					<label>$LOCALIZE[31030]</label>
 					<onclick>$VAR[MusicLibEntry]</onclick>
@@ -405,19 +375,19 @@
 				<item>
 					<thumb>DefaultPicture.png</thumb>
 					<label>$LOCALIZE[1]</label>
-					<onclick>ActivateWindow(pictures,,return)</onclick>
+					<onclick>ActivateWindow(MyPictures,,return)</onclick>
 					<visible>Skin.HasSetting(home-photos)</visible>
 				</item>
 				<item>
 					<thumb>icon-weather.png</thumb>
 					<label>$LOCALIZE[31032]</label>
-					<onclick>ActivateWindow(weather,,return)</onclick>
+					<onclick>ActivateWindow(Weather,,return)</onclick>
 					<visible>Skin.HasSetting(home-weather) + !IsEmpty(Weather.plugin)</visible>
 				</item>
 				<item>
 					<thumb>icon-fav.png</thumb>
 					<label>$LOCALIZE[31652]</label>
-					<onclick>ActivateWindow(favourites)</onclick>
+					<onclick>ActivateWindow(Favourites)</onclick>
 					<visible>Skin.HasSetting(home-favorites)</visible>
 				</item>
 				<item>
@@ -427,12 +397,6 @@
 					<visible>Skin.HasSetting(home-search)</visible>
 				</item>
 				<item>
-					<thumb>icon-filemanager.png</thumb>
-					<label>$LOCALIZE[10003]</label>
-					<onclick>ActivateWindow(filemanager)</onclick>
-					<visible>Skin.HasSetting(home-filemanager)</visible>
-				</item>
-				<item>
 					<thumb>icon-profile.png</thumb>
 					<label>$LOCALIZE[20092]</label>
 					<onclick>System.LogOff</onclick>
@@ -440,8 +404,8 @@
 				</item>
 				<item>
 					<thumb>icon-settings.png</thumb>
-					<label>$LOCALIZE[5]</label>
-					<onclick>ActivateWindow(settings,,return)</onclick>
+					<label>$LOCALIZE[13000]</label>
+					<onclick>ActivateWindow(Settings,,return)</onclick>
 				</item>
 				<item>
 					<thumb>DefaultDVDRom.png</thumb>
@@ -452,7 +416,6 @@
 				<item>
 					<thumb>icon-power.png</thumb>
 					<label>$LOCALIZE[13009]</label>
-					<onclick condition="!StringCompare(Skin.String(home-quitaction),$LOCALIZE[31558])">SetProperty(ShutdownKodi,true,Home)</onclick>
 					<onclick>$VAR[QuitAction]</onclick>
 					<visible>!Skin.HasSetting(home-shutdown)</visible>
 				</item>
@@ -760,14 +723,15 @@
 			<width>128</width>
 			<height>128</height>
 			<aspectratio aligny="top">keep</aspectratio>
-			<texture colordiffuse="UnFocusedPosters" background="true">$INFO[Skin.String(custom-watermark)]</texture>
+			<texture background="true">$INFO[Skin.String(custom-watermark)]</texture>
+			<colordiffuse>UnFocusedPosters</colordiffuse>
 			<visible>!IsEmpty(Skin.String(custom-watermark))</visible>
 		</control>
 		<!-- RSS info -->
-		<include condition="System.GetBool(lookandfeel.enablerssfeeds)">page-info</include>
+		<include condition="system.getbool(lookandfeel.enablerssfeeds)">page-info</include>
 		<!-- media infos (music) -->
 		<control type="group" id="9950">
-			<visible>Skin.HasSetting(media-overlay) + !Window.IsActive(playercontrols)</visible>
+			<visible>Skin.HasSetting(media-overlay) + !Window.IsActive(PlayerControls)</visible>
 			<control type="group" id="9960">
 				<visible>Player.HasAudio + IsEmpty(Window(VideoLibrary).Property(PlayingBackgroundMedia))</visible>
 				<control type="image">
@@ -828,7 +792,7 @@
 					<top>537</top>
 					<width>398</width>
 					<height>31</height>
-					<label>$LOCALIZE[31037]</label>
+					<label>$LOCALIZE[13350]</label>
 					<font>font12</font>
 					<textcolor>listselected-text</textcolor>
 				</control>

@@ -108,10 +108,6 @@ msgctxt "#31536"
 msgid "Provider"
 msgstr "Proveedor"
 
-msgctxt "#31553"
-msgid "Custom backgrounds"
-msgstr "Fondos personalizados"
-
 msgctxt "#31555"
 msgid "Profiles"
 msgstr "Perfiles"
@@ -127,10 +123,6 @@ msgstr "Menú de Power"
 msgctxt "#31559"
 msgid "System Info"
 msgstr "Info del sistema"
-
-msgctxt "#31562"
-msgid "View:"
-msgstr "Vista:"
 
 msgctxt "#31563"
 msgid "Skin Version:"
@@ -183,10 +175,6 @@ msgstr "Negrita"
 msgctxt "#31577"
 msgid "Kodi Default"
 msgstr "Kodi Default"
-
-msgctxt "#31578"
-msgid "Light"
-msgstr "Claro"
 
 msgctxt "#31651"
 msgid "Muted"
@@ -423,6 +411,10 @@ msgstr "Recomendado"
 msgctxt "#31960"
 msgid "Recommended Movies"
 msgstr "Películas recomendadas"
+
+msgctxt "#31962"
+msgid "Recommended TV Episodes"
+msgstr "Episodios Recomendados"
 
 msgctxt "#31963"
 msgid "Recommended Albums"

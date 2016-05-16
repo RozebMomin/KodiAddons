@@ -7,7 +7,8 @@
 			<top>462</top>
 			<height>264</height>
 			<width>1280</width>
-			<texture colordiffuse="mask-background">background-mask.png</texture>
+			<texture>colours/black.png</texture>
+			<colordiffuse>osd-background</colordiffuse>
 		</control>
 		<control type="group">
 			<right>0</right>
@@ -15,7 +16,7 @@
 			<width>1280</width>
 			<height>264</height>
 			<control type="group">
-				<control type="image" id="3009"><!-- Poster -->
+				<control type="image" id="3009" description="poster">
 					<left>8</left>
 					<top>3</top>
 					<width>144</width>
@@ -23,14 +24,14 @@
 					<aspectratio scalediffuse="false">scale</aspectratio>
 					<visible>IsEmpty(Control.GetLabel(3006))</visible>
 				</control>
-				<control type="image" id="3006"><!-- Clearart -->
+				<control type="image" id="3006" description="clearart">
 					<left>8</left>
 					<top>40</top>
 					<width>275</width>
 					<height>145</height>
 					<aspectratio>keep</aspectratio>
 				</control>
-				<control type="image" id="3010"><!-- Landscape -->
+				<control type="image" id="3010" description="landscape">
 					<visible>false</visible>
 				</control>
 				<control type="image">
@@ -79,7 +80,7 @@
 					<width>128</width>
 					<height>128</height>
 					<ondown>3013</ondown>
-					<texturefocus>blank.png</texturefocus>
+					<texturefocus>noop</texturefocus>
 				</control>
 				<control type="group">
 					<control type="button" id="3013"><!-- Cancel -->
@@ -109,10 +110,10 @@
 						<font>font18</font>
 						<label>$INFO[Control.GetLabel(3002),$ADDON[service.nextup.notification 30008]... ,]$INFO[Control.GetLabel(3000), ,]</label>
 					</control>
-					<control type="label" id="3002"><!-- Episode/Season info -->
+					<control type="label" description="episode/season info" id="3002">
 						<visible>false</visible>
 					</control>
-					<control type="label" id="3000"><!-- Title -->
+					<control type="label" description="Title" id="3000">
 						<width>100%</width>
 						<left>267</left>
 						<top>0</top>
@@ -120,13 +121,13 @@
 						<font>font13</font>
 						<visible>false</visible>
 					</control>
-					<control type="label" id="3002"><!-- Episode/Season info -->
+					<control type="label" description="episode/season info" id="3002">
 						<visible>false</visible>
 					</control>
-					<control type="label" id="3003"><!-- Rating -->
+					<control type="label" id="3003" description="rating">
 						<visible>false</visible>
 					</control>
-					<control type="label" id="3004"><!-- Year/Runtime -->
+					<control type="label" id="3004" description="year/runtime">
 						<visible>false</visible>
 					</control>
 					<control type="textbox" id="3001"><!-- Plot -->

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol>8999</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>screen-fade</include>
 	<controls>
 		<include>background</include>
 		<control type="image"><!-- skin logo image -->
@@ -17,7 +19,7 @@
 			<top>50</top>
 			<width>310</width>
 			<height>32</height>
-			<label>$LOCALIZE[5]</label>
+			<label>$LOCALIZE[13000]</label>
 			<font>font18</font>
 		</control>
 		<control type="group"><!-- Markers for control area items -->
@@ -56,7 +58,7 @@
 						<top>8</top>
 						<width>440</width>
 						<height>30</height>
-						<font>font11</font>
+						<font>font12</font>
 						<include condition="Skin.HasSetting(text-autoscroll)">scrolltext</include>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
@@ -67,14 +69,14 @@
 						<top>0</top>
 						<width>480</width>
 						<height>50</height>
-						<texture border="6">button-default-focus.png</texture>
+						<texture border="8">button-default-focus.png</texture>
 					</control>
 					<control type="label">
 						<left>18</left>
 						<top>8</top>
 						<width>440</width>
 						<height>30</height>
-						<font>font11</font>
+						<font>font12</font>
 						<include condition="Skin.HasSetting(text-autoscroll)">scrolltext</include>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
@@ -82,31 +84,31 @@
 				<content>
 					<item><!-- Appearance -->
 						<label>$LOCALIZE[480]</label>
-						<onclick>Activatewindow(appearancesettings)</onclick>
+						<onclick>Activatewindow(AppearanceSettings)</onclick>
 					</item>
 					<item><!-- Videos -->
 						<label>$LOCALIZE[3]</label>
-						<onclick>Activatewindow(videossettings)</onclick>
+						<onclick>Activatewindow(VideosSettings)</onclick>
 					</item>
 					<item><!-- TV -->
 						<label>$LOCALIZE[19020]</label>
-						<onclick>Activatewindow(pvrsettings)</onclick>
+						<onclick>Activatewindow(PVRSettings)</onclick>
 					</item>
 					<item><!-- Music -->
 						<label>$LOCALIZE[2]</label>
-						<onclick>Activatewindow(musicsettings)</onclick>
+						<onclick>Activatewindow(MusicSettings)</onclick>
 					</item>
 					<item><!-- Pictures -->
 						<label>$LOCALIZE[1]</label>
-						<onclick>Activatewindow(picturessettings)</onclick>
+						<onclick>Activatewindow(PicturesSettings)</onclick>
 					</item>
 					<item><!-- Addons -->
 						<label>$LOCALIZE[24000]</label>
-						<onclick>Activatewindow(addonbrowser)</onclick>
+						<onclick>Activatewindow(AddonBrowser)</onclick>
 					</item>
 					<item><!-- Weather -->
 						<label>$LOCALIZE[8]</label>
-						<onclick>Activatewindow(weathersettings)</onclick>
+						<onclick>Activatewindow(WeatherSettings)</onclick>
 					</item>
 					<item><!-- Services -->
 						<label>$LOCALIZE[14036]</label>
@@ -114,11 +116,15 @@
 					</item>
 					<item><!-- System -->
 						<label>$LOCALIZE[13000]</label>
-						<onclick>Activatewindow(systemsettings)</onclick>
+						<onclick>Activatewindow(SystemSettings)</onclick>
 					</item>
 					<item><!-- Profiles -->
 						<label>$LOCALIZE[13200]</label>
-						<onclick>ActivateWindow(profiles)</onclick>
+						<onclick>ActivateWindow(Profiles)</onclick>
+					</item>
+					<item><!-- File Manager -->
+						<label>$LOCALIZE[10003]</label>
+						<onclick>ActivateWindow(filemanager)</onclick>
 					</item>
 					<item><!-- System Info -->
 						<label>$LOCALIZE[138]</label>

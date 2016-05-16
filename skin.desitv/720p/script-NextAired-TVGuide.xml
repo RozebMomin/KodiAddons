@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
+	<include>screen-fade</include>
 	<controls>
 		<include>Fake-Overlay</include>
-		<control type="image"><!-- Solid background use as base to other background images -->
-			<include>fullscreenimage</include>
-			<texture>background.png</texture>
-		</control>
-		<control type="image"><!-- Custom background -->
-			<include>fullscreenimage</include>
-			<texture>$INFO[Skin.String(background-custom)]</texture>
-			<aspectratio>stretch</aspectratio>
-			<colordiffuse>$VAR[BackgndImageVisibity]</colordiffuse>
-			<visible>!IsEmpty(Skin.String(background-custom))</visible>
-		</control>
-		<control type="image"><!-- Fanart background -->
+		<control type="image">
 			<include>fullscreenimage</include>
 			<texture background="true">$VAR[NextAiredFanart]</texture>
 			<aspectratio>scale</aspectratio>
-			<colordiffuse>$VAR[BackgndImageVisibity]</colordiffuse>
-			<visible>!IsEmpty(Window(Home).Property(TVGuide.BackgroundFanart)) + !Skin.HasSetting(background-fanarts)</visible>
+			<visible>!IsEmpty(Window(Home).Property(TVGuide.BackgroundFanart)) + Skin.HasSetting(background-fanart)</visible>
+		</control>
+		<control type="image"><!-- mask to fade background -->
+			<include>fullscreenimage</include>
+			<texture>colours/black.png</texture>
+			<colordiffuse>mask-background</colordiffuse>
+			<aspectratio>stretch</aspectratio>
+			<include>background-fade</include>
+			<visible>!IsEmpty(Window(Home).Property(TVGuide.BackgroundFanart)) + Skin.HasSetting(background-fanart)</visible>
 		</control>
 
 		<control type="grouplist">
@@ -111,7 +108,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -121,7 +118,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -139,7 +136,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -148,15 +145,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</itemlayout>
@@ -192,7 +189,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -202,7 +199,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -220,7 +217,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -229,15 +226,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</focusedlayout>
@@ -310,7 +307,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -320,7 +317,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -353,9 +350,9 @@
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</itemlayout>
@@ -391,7 +388,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -401,7 +398,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -419,7 +416,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -428,15 +425,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</focusedlayout>
@@ -509,7 +506,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -519,7 +516,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -537,7 +534,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -546,15 +543,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</itemlayout>
@@ -590,7 +587,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -600,7 +597,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -618,7 +615,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -627,15 +624,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</focusedlayout>
@@ -710,7 +707,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -720,7 +717,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -738,7 +735,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -747,15 +744,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</itemlayout>
@@ -791,7 +788,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -801,7 +798,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -819,7 +816,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -828,15 +825,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</focusedlayout>
@@ -909,7 +906,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -919,7 +916,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -937,7 +934,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -946,15 +943,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</itemlayout>
@@ -990,7 +987,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1000,7 +997,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1018,7 +1015,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -1027,15 +1024,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</focusedlayout>
@@ -1108,7 +1105,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1118,7 +1115,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1136,7 +1133,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -1145,15 +1142,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</itemlayout>
@@ -1189,7 +1186,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1199,7 +1196,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1217,7 +1214,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -1226,15 +1223,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</focusedlayout>
@@ -1307,7 +1304,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1317,7 +1314,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1335,7 +1332,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -1344,15 +1341,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</itemlayout>
@@ -1388,7 +1385,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1398,7 +1395,7 @@
 						<width>160</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<align>center</align>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),1) | StringCompare(Window(Home).Property(TVGuide.ThumbType),2)</visible>
 					</control>
@@ -1416,7 +1413,7 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(NextDate)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="label">
@@ -1425,15 +1422,15 @@
 						<width>105</width>
 						<height>22</height>
 						<label>$INFO[ListItem.Property(ShortTime)]</label>
-						<font>font10</font>
+						<font>font11</font>
 						<visible>StringCompare(Window(Home).Property(TVGuide.ThumbType),0)</visible>
 					</control>
 					<control type="image">
 						<left>178</left>
 						<top>0</top>
-						<width>4</width>
+						<width>2</width>
 						<height>90</height>
-						<texture>separator_vert.png</texture>
+						<texture>separator.png</texture>
 						<colordiffuse>99FFFFFF</colordiffuse>
 					</control>
 				</focusedlayout>
@@ -1456,7 +1453,7 @@
 					<top>-25</top>
 					<width>258</width>
 					<height>100</height>
-					<texture fallback=".">$VAR[NextAiredImage3]</texture>
+					<texture fallback="blank.png">$VAR[NextAiredImage3]</texture>
 				</control>
 				<control type="label"><!-- Next TVShow Title -->
 					<left>0</left>
@@ -1467,7 +1464,7 @@
 					<font>font18</font>
 					<align>center</align>
 					<wrapmultiline>true</wrapmultiline>
-					<visible>SubString(Control.GetLabel(7018),.,Left)</visible>
+					<visible>SubString(Control.GetLabel(7018),blank.png,Left)</visible>
 				</control>
 				<control type="image"><!-- Next Aired Poster -->
 					<left>128</left>

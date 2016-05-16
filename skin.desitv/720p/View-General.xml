@@ -15,7 +15,7 @@
 			<onright condition="!StringCompare(Skin.String(show-scrollbar),$LOCALIZE[31877])">1250</onright>
 			<onup>50</onup>
 			<ondown>50</ondown>
-			<preloaditems>4</preloaditems>
+			<preloaditems>2</preloaditems>
 			<pagecontrol>1250</pagecontrol>
 			<itemlayout width="575" height="66">
 				<control type="label">
@@ -84,14 +84,14 @@
 			<visible>Control.IsVisible(50)</visible>
 			<control type="group">
 				<top>56</top>
-				<visible>[IntegerGreaterThan(Container(50).NumItems,0) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(50).NumItems,-1) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(50).NumItems,0) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(50).NumItems,-1) + system.getbool(filelists.showparentdiritems)]</visible>
 				<control type="group">
 					<control type="image"><!-- Button focus slider -->
 						<left>702</left>
 						<top>330</top>
 						<width>532</width>
 						<height>66</height>
-						<texture border="6">button-default-focus.png</texture>
+						<texture border="8">button-default-focus.png</texture>
 						<aspectratio>stretch</aspectratio>
 					</control>
 					<animation condition="Container(50).Position(0)" effect="slide" start="0,0" end="0,-264"
@@ -189,8 +189,9 @@
 					<top>10</top>
 					<width>160</width>
 					<height>160</height>
-					<texture colordiffuse="UnFocusedPosters">$INFO[ListItem.Icon]</texture>
+					<texture>$INFO[ListItem.Icon]</texture>
 					<aspectratio>keep</aspectratio>
+					<colordiffuse>UnFocusedPosters</colordiffuse>
 				</control>
 				<control type="image">
 					<left>132</left>
@@ -247,7 +248,8 @@
 				<width>160</width>
 				<height>160</height>
 				<aspectratio>keep</aspectratio>
-				<texture colordiffuse="UnFocusedPosters" background="true" diffuse="mask-fadetop.png">$VAR[Icon(10)Thumb]</texture>
+				<colordiffuse>UnFocusedPosters</colordiffuse>
+				<texture background="true" diffuse="mask-fadetop.png">$VAR[Icon(10)Thumb]</texture>
 			</control>
 			<control type="image">
 				<left>300</left>
@@ -255,7 +257,8 @@
 				<width>160</width>
 				<height>160</height>
 				<aspectratio>keep</aspectratio>
-				<texture colordiffuse="UnFocusedPosters" background="true" diffuse="mask-fadetop.png">$VAR[Icon(11)Thumb]</texture>
+				<colordiffuse>UnFocusedPosters</colordiffuse>
+				<texture background="true" diffuse="mask-fadetop.png">$VAR[Icon(11)Thumb]</texture>
 			</control>
 			<control type="image">
 				<left>540</left>
@@ -263,7 +266,8 @@
 				<width>160</width>
 				<height>160</height>
 				<aspectratio>keep</aspectratio>
-				<texture colordiffuse="UnFocusedPosters" background="true" diffuse="mask-fadetop.png">$VAR[Icon(12)Thumb]</texture>
+				<colordiffuse>UnFocusedPosters</colordiffuse>
+				<texture background="true" diffuse="mask-fadetop.png">$VAR[Icon(12)Thumb]</texture>
 			</control>
 			<control type="image">
 				<left>780</left>
@@ -271,7 +275,8 @@
 				<width>160</width>
 				<height>160</height>
 				<aspectratio>keep</aspectratio>
-				<texture colordiffuse="UnFocusedPosters" background="true" diffuse="mask-fadetop.png">$VAR[Icon(13)Thumb]</texture>
+				<colordiffuse>UnFocusedPosters</colordiffuse>
+				<texture background="true" diffuse="mask-fadetop.png">$VAR[Icon(13)Thumb]</texture>
 			</control>
 			<control type="image">
 				<left>1020</left>
@@ -279,7 +284,8 @@
 				<width>160</width>
 				<height>160</height>
 				<aspectratio>keep</aspectratio>
-				<texture colordiffuse="UnFocusedPosters" background="true" diffuse="mask-fadetop.png">$VAR[Icon(14)Thumb]</texture>
+				<colordiffuse>UnFocusedPosters</colordiffuse>
+				<texture background="true" diffuse="mask-fadetop.png">$VAR[Icon(14)Thumb]</texture>
 			</control>
 		</control>
 		<control type="scrollbar" id="1252">
@@ -307,7 +313,7 @@
 			<ondown condition="!StringCompare(Skin.String(show-scrollbar),$LOCALIZE[31877])">1254</ondown>
 			<focusposition>0</focusposition>
 			<orientation>horizontal</orientation>
-			<preloaditems>4</preloaditems>
+			<preloaditems>2</preloaditems>
 			<scrolltime>0</scrolltime>
 			<pagecontrol>1254</pagecontrol>
 			<itemlayout height="176" width="176">
@@ -386,7 +392,7 @@
 			<ondown condition="!StringCompare(Skin.String(show-scrollbar),$LOCALIZE[31877])">1257</ondown>
 			<focusposition>2</focusposition>
 			<orientation>horizontal</orientation>
-			<preloaditems>4</preloaditems>
+			<preloaditems>2</preloaditems>
 			<pagecontrol>1257</pagecontrol>
 			<itemlayout height="390" width="140"></itemlayout>
 			<focusedlayout height="410" width="320"></focusedlayout>
@@ -405,7 +411,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-5).Icon</info>
 				<animation effect="rotatey" center="-40" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,10) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,9) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,10) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,9) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>88</left>
@@ -415,7 +421,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-4).Icon</info>
 				<animation effect="rotatey" center="10" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,8) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,7) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,8) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,7) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>177</left>
@@ -425,7 +431,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-3).Icon</info>
 				<animation effect="rotatey" center="60" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,6) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,5) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,6) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,5) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>265</left>
@@ -435,7 +441,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-2).Icon</info>
 				<animation effect="rotatey" center="110" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,4) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,3) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,4) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,3) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>1008</left>
@@ -445,7 +451,7 @@
 				<texture background="true" diffuse="mask-rect.png">DefaultScript.png</texture>
 				<info>Container.ListItem(4).Icon</info>
 				<animation effect="rotatey" center="1434" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,7) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,6) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,7) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,6) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>920</left>
@@ -455,7 +461,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(3).Icon</info>
 				<animation effect="rotatey" center="1345" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,5) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,4) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,5) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,4) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>831</left>
@@ -465,7 +471,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(2).Icon</info>
 				<animation effect="rotatey" center="1257" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,3) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,2) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,3) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,2) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>743</left>
@@ -475,7 +481,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(1).Icon</info>
 				<animation effect="rotatey" center="1168" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,1) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,0) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,1) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,0) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="group">
 				<visible>Control.IsVisible(57) + Container.OnNext</visible>
@@ -489,7 +495,7 @@
 					<info>Container.ListItem(-1).Icon</info>
 					<visible>Container.OnNext</visible>
 					<animation effect="rotatey" center="220" start="0" end="-60" time="200" reversible="false">Hidden</animation>
-					<visible>[IntegerGreaterThan(Container(57).NumItems,2) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,1) + System.GetBool(filelists.showparentdiritems)]</visible>
+					<visible>[IntegerGreaterThan(Container(57).NumItems,2) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,1) + system.getbool(filelists.showparentdiritems)]</visible>
 				</control>
 				<control type="image">
 					<left>654</left>
@@ -518,7 +524,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-4).Icon</info>
 				<animation effect="rotatey" center="-90" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,8) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,7) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,8) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,7) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>0</left>
@@ -528,7 +534,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-3).Icon</info>
 				<animation effect="rotatey" center="-40" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,6) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,5) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,6) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,5) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>88</left>
@@ -538,7 +544,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-2).Icon</info>
 				<animation effect="rotatey" center="10" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,4) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,3) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,4) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,3) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>177</left>
@@ -548,7 +554,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-1).Icon</info>
 				<animation effect="rotatey" center="60" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,2) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,1) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,2) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,1) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>920</left>
@@ -558,7 +564,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(5).Icon</info>
 				<animation effect="rotatey" center="1345" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,9) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,8) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,9) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,8) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>831</left>
@@ -568,7 +574,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(4).Icon</info>
 				<animation effect="rotatey" center="1257" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,7) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,6) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,7) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,6) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>743</left>
@@ -578,7 +584,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(3).Icon</info>
 				<animation effect="rotatey" center="1168" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,5) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,4) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,5) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,4) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>654</left>
@@ -588,7 +594,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(2).Icon</info>
 				<animation effect="rotatey" center="1080" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,3) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,2) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,3) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,2) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="group">
 				<visible>Control.IsVisible(57) + Container.OnPrevious</visible>
@@ -602,7 +608,7 @@
 					<info>Container.ListItem(1).Icon</info>
 					<visible>Container.OnPrevious</visible>
 					<animation effect="rotatey" center="500" start="0" end="60" time="200" reversible="false">Hidden</animation>
-					<visible>[IntegerGreaterThan(Container(57).NumItems,1) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,0) + System.GetBool(filelists.showparentdiritems)]</visible>
+					<visible>[IntegerGreaterThan(Container(57).NumItems,1) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,0) + system.getbool(filelists.showparentdiritems)]</visible>
 				</control>
 				<control type="image">
 					<left>265</left>
@@ -630,7 +636,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-4).Icon</info>
 				<animation effect="rotatey" center="-40" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,8) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,7) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,8) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,7) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>88</left>
@@ -640,7 +646,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-3).Icon</info>
 				<animation effect="rotatey" center="10" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,6) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,5) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,6) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,5) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>177</left>
@@ -650,7 +656,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-2).Icon</info>
 				<animation effect="rotatey" center="60" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,4) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,3) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,4) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,3) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>265</left>
@@ -660,7 +666,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(-1).Icon</info>
 				<animation effect="rotatey" center="110" start="-60" end="-60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,2) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,1) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,2) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,1) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>920</left>
@@ -670,7 +676,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(4).Icon</info>
 				<animation effect="rotatey" center="1345" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,7) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,6) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,7) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,6) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>831</left>
@@ -680,7 +686,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(3).Icon</info>
 				<animation effect="rotatey" center="1257" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,5) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,4) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,5) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,4) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>743</left>
@@ -690,7 +696,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(2).Icon</info>
 				<animation effect="rotatey" center="1168" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,3) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,2) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,3) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,2) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>654</left>
@@ -700,7 +706,7 @@
 				<texture background="true" diffuse="mask-squ.png">DefaultScript.png</texture>
 				<info>Container.ListItem(1).Icon</info>
 				<animation effect="rotatey" center="1080" start="60" end="60" time="0" condition="true">Conditional</animation>
-				<visible>[IntegerGreaterThan(Container(57).NumItems,1) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,0) + System.GetBool(filelists.showparentdiritems)]</visible>
+				<visible>[IntegerGreaterThan(Container(57).NumItems,1) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,0) + system.getbool(filelists.showparentdiritems)]</visible>
 			</control>
 			<control type="image">
 				<left>484</left>
@@ -724,7 +730,7 @@
 				<onup>57</onup>
 				<orientation>horizontal</orientation>
 				<animation condition="!Control.HasFocus(1257) + !Container.Scrolling + !StringCompare(Skin.String(show-scrollbar),$LOCALIZE[31875])" effect="fade" start="100" end="0" time="200" reversible="true">Conditional</animation>
-				<visible>!StringCompare(Skin.String(show-scrollbar),$LOCALIZE[31877]) + [[IntegerGreaterThan(Container(57).NumItems,10) + !System.GetBool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,9) + System.GetBool(filelists.showparentdiritems)]]</visible>
+				<visible>!StringCompare(Skin.String(show-scrollbar),$LOCALIZE[31877]) + [[IntegerGreaterThan(Container(57).NumItems,10) + !system.getbool(filelists.showparentdiritems)] | [IntegerGreaterThan(Container(57).NumItems,9) + system.getbool(filelists.showparentdiritems)]]</visible>
 			</control>
 			<control type="label">
 				<left>194</left>
@@ -754,7 +760,7 @@
 			<viewtype label="31944">wall</viewtype>
 			<animation effect="rotatey" start="-15" end="-15" time="0" condition="Skin.HasSetting(tilted-videowall)">Conditional</animation>
 			<pagecontrol>1258</pagecontrol>
-			<preloaditems>4</preloaditems>
+			<preloaditems>2</preloaditems>
 			<animation type="TYPE" condition="Skin.HasSetting(tiltmiscwallicon)" reversible="false">
 				<effect type="rotatey" start="-15" end="-15" time="0"/>
 				<effect type="slide" end="65,0" time="0"/>

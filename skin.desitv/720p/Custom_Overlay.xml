@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1150">
-	<zorder>2</zorder>
 	<visible>!Window.IsVisible(startup)</visible>
+	<include>screen-fade</include>
 	<controls>
-		<control type="image"><!-- Kodi has been asked to quit/restart, fade screen down to show that something is happening -->
-			<animation effect="fade" delay="10000" start="0" end="100" time="300" condition="true">Conditional</animation>
-			<include>fullscreenimage</include>
-			<texture colordiffuse="mask-background">background-mask.png</texture>
-			<aspectratio>scale</aspectratio>
-			<visible>!IsEmpty(Window(Home).Property(ShutdownKodi))</visible>
-		</control>
 		<control type="image"><!-- Global debug grid -->
 			<visible>Skin.HasSetting(debug-grid)</visible>
 			<include>fullscreenimage</include>
@@ -27,20 +20,14 @@
 				<control type="label">
 					<include>overlaylabel-dimension</include>
 					<textcolor>info-text</textcolor>
-					<label>Custom_3DDialogSelect.xml</label>
-					<visible>Window.IsVisible(Custom_3DDialogSelect.xml)</visible>
-				</control>
-				<control type="label">
-					<include>overlaylabel-dimension</include>
-					<textcolor>info-text</textcolor>
 					<label>Custom_AddonsList.xml</label>
 					<visible>Window.IsVisible(Custom_AddonsList.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
 					<textcolor>info-text</textcolor>
-					<label>Custom_DialogSelect.xml</label>
-					<visible>Window.IsVisible(Custom_DialogSelect.xml)</visible>
+					<label>Custom_GetExtras.xml</label>
+					<visible>Window.IsVisible(Custom_GetExtras.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -60,6 +47,12 @@
 					<textcolor>info-text</textcolor>
 					<label>AddonBrowser.xml</label>
 					<visible>Window.IsVisible(AddonBrowser.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>info-text</textcolor>
+					<label>CustomSettings.xml</label>
+					<visible>Window.IsVisible(CustomSettings.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -96,6 +89,12 @@
 					<textcolor>info-text</textcolor>
 					<label>MyMusicPlaylistEditor.xml</label>
 					<visible>Window.IsVisible(MyMusicPlaylistEditor.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>info-text</textcolor>
+					<label>MyMusicSongs.xml</label>
+					<visible>Window.IsVisible(MyMusicSongs.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -208,18 +207,6 @@
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
-					<textcolor>info-text</textcolor>
-					<label>DialogAudioDSPManager.xml</label>
-					<visible>Window.IsVisible(DialogAudioDSPManager.xml)</visible>
-				</control>
-				<control type="label">
-					<include>overlaylabel-dimension</include>
-					<textcolor>info-text</textcolor>
-					<label>DialogAudioDSPSettings.xml</label>
-					<visible>Window.IsVisible(DialogAudioDSPSettings.xml)</visible>
-				</control>
-				<control type="label">
-					<include>overlaylabel-dimension</include>
 					<textcolor>kai-text</textcolor>
 					<label>DialogBusy.xml</label>
 					<visible>Window.IsVisible(DialogBusy.xml)</visible>
@@ -257,6 +244,12 @@
 				<control type="label">
 					<include>overlaylabel-dimension</include>
 					<textcolor>kai-text</textcolor>
+					<label>DialogFileStacking.xml</label>
+					<visible>Window.IsVisible(DialogFileStacking.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>kai-text</textcolor>
 					<label>DialogFullScreenInfo.xml</label>
 					<visible>Window.IsVisible(DialogFullScreenInfo.xml)</visible>
 				</control>
@@ -269,14 +262,20 @@
 				<control type="label">
 					<include>overlaylabel-dimension</include>
 					<textcolor>kai-text</textcolor>
-					<label>DialogKeyboard.xml</label>
-					<visible>Window.IsVisible(DialogKeyboard.xml)</visible>
+					<label>DialogKaraokeSongSelector.xml</label>
+					<visible>Window.IsVisible(DialogKaraokeSongSelector.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
 					<textcolor>kai-text</textcolor>
-					<label>DialogMasterModeFreeSurround.xml</label>
-					<visible>Window.IsVisible(DialogMasterModeFreeSurround.xml)</visible>
+					<label>DialogKaraokeSongSelectorLarge.xml</label>
+					<visible>Window.IsVisible(DialogKaraokeSongSelectorLarge.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>kai-text</textcolor>
+					<label>DialogKeyboard.xml</label>
+					<visible>Window.IsVisible(DialogKeyboard.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -323,8 +322,8 @@
 				<control type="label">
 					<include>overlaylabel-dimension</include>
 					<textcolor>kai-text</textcolor>
-					<label>DialogParametricEQ.xml</label>
-					<visible>Window.IsVisible(DialogParametricEQ.xml)</visible>
+					<label>DialogPeripheralManager.xml</label>
+					<visible>Window.IsVisible(DialogPeripheralManager.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -365,8 +364,8 @@
 				<control type="label">
 					<include>overlaylabel-dimension</include>
 					<textcolor>kai-text</textcolor>
-					<label>DialogPVRInfo.xml</label>
-					<visible>Window.IsVisible(DialogPVRInfo.xml)</visible>
+					<label>DialogPVRGuideInfo.xml</label>
+					<visible>Window.IsVisible(DialogPVRGuideInfo.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -379,6 +378,12 @@
 					<textcolor>kai-text</textcolor>
 					<label>DialogPVRGuideSearch.xml</label>
 					<visible>Window.IsVisible(DialogPVRGuideSearch.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>kai-text</textcolor>
+					<label>DialogPVRRecordingInfo.xml</label>
+					<visible>Window.IsVisible(DialogPVRRecordingInfo.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -409,18 +414,6 @@
 					<textcolor>kai-text</textcolor>
 					<label>DialogSongInfo.xml</label>
 					<visible>Window.IsVisible(DialogSongInfo.xml)</visible>
-				</control>
-				<control type="label">
-					<include>overlaylabel-dimension</include>
-					<textcolor>kai-text</textcolor>
-					<label>DialogSpeakerDistance.xml</label>
-					<visible>Window.IsVisible(DialogSpeakerDistance.xml)</visible>
-				</control>
-				<control type="label">
-					<include>overlaylabel-dimension</include>
-					<textcolor>kai-text</textcolor>
-					<label>DialogSpeakerGain.xml</label>
-					<visible>Window.IsVisible(DialogSpeakerGain.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -473,8 +466,20 @@
 				<control type="label">
 					<include>overlaylabel-dimension</include>
 					<textcolor>kai-text</textcolor>
+					<label>MusicKaraokeLyrics.xml</label>
+					<visible>Window.IsVisible(MusicKaraokeLyrics.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>kai-text</textcolor>
 					<label>MusicOSD.xml</label>
 					<visible>Window.IsVisible(MusicOSD.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>kai-text</textcolor>
+					<label>MusicOverlay.xml</label>
+					<visible>Window.IsVisible(MusicOverlay.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -493,6 +498,12 @@
 					<textcolor>kai-text</textcolor>
 					<label>ProfileSettings.xml</label>
 					<visible>Window.IsVisible(ProfileSettings.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>kai-text</textcolor>
+					<label>RecordPrefs.xml</label>
+					<visible>Window.IsVisible(RecordPrefs.xml)</visible>
 				</control>
 				<control type="label">
 					<include>overlaylabel-dimension</include>
@@ -589,6 +600,18 @@
 					<textcolor>kai-text</textcolor>
 					<label>VideoOSDSettings.xml</label>
 					<visible>Window.IsVisible(VideoOSDSettings.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>kai-text</textcolor>
+					<label>VideoOverlay.xml</label>
+					<visible>Window.IsVisible(VideoOverlay.xml)</visible>
+				</control>
+				<control type="label">
+					<include>overlaylabel-dimension</include>
+					<textcolor>kai-text</textcolor>
+					<label>VisualisationPresetList.xml</label>
+					<visible>Window.IsVisible(VisualisationPresetList.xml)</visible>
 				</control>
 			</control>
 			<!-- Control label -->

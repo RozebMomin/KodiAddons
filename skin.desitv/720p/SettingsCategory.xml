@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol>3</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>screen-fade</include>
 	<controls>
 		<include>background</include>
 		<include>Fake-Overlay</include>
@@ -35,7 +37,7 @@
 			<top>578</top>
 			<width>320</width>
 			<height>54</height>
-			<font>font11</font>
+			<font>font12</font>
 			<textcolor>listselected-text</textcolor>
 			<label>$LOCALIZE[10037]</label>
 			<align>right</align>
@@ -50,7 +52,7 @@
 			<width>320</width>
 			<height>54</height>
 			<label>$LOCALIZE[10004]:</label>
-			<font>font11</font>
+			<font>font12</font>
 		</control>
 		<!-- Markers for control area items -->
 		<control type="group">
@@ -102,31 +104,31 @@
 		</control>
 		<control type="button" id="7"><!-- Default button -->
 			<height>54</height>
-			<font>font11</font>
+			<font>font12</font>
 			<invalidcolor>invalid-text</invalidcolor>
 		</control>
 		<control type="radiobutton" id="8"><!-- Default radiobutton -->
 			<height>54</height>
-			<font>font11</font>
+			<font>font12</font>
 			<radioposx>844</radioposx>
 		</control>
 		<control type="spincontrolex" id="9"><!-- Default spincontrolex -->
 			<height>54</height>
-			<font>font11</font>
+			<font>font12</font>
 			<reverse>yes</reverse>
 		</control>
 		<control type="button" id="10"><!-- Default category button -->
 			<width>320</width>
 			<height>54</height>
-			<font>font11</font>
+			<font>font12</font>
 		</control>
 		<control type="sliderex" id="13"><!-- Default slider button -->
 			<height>54</height>
-			<font>font11</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="14"><!-- Default label -->
 			<height>54</height>
-			<font>font11</font>
+			<font>font12</font>
 		</control>
 	</controls>
 </window>

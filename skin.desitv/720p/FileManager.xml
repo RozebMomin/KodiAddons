@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol>20</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<include>screen-fade</include>
 	<controls>
 		<include>background</include>
 		<control type="label"><!-- Screen heading -->
@@ -91,7 +93,7 @@
 					<top>0</top>
 					<width>600</width>
 					<height>46</height>
-					<texture border="6">button-default-focus.png</texture>
+					<texture border="8">button-default-focus.png</texture>
 					<visible>Control.HasFocus(20)</visible>
 				</control>
 				<control type="label">
@@ -154,7 +156,7 @@
 					<top>0</top>
 					<width>600</width>
 					<height>46</height>
-					<texture border="6">button-default-focus.png</texture>
+					<texture border="8">button-default-focus.png</texture>
 					<visible>Control.HasFocus(21)</visible>
 				</control>
 				<control type="label">

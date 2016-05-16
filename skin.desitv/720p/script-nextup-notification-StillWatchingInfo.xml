@@ -7,7 +7,8 @@
 			<top>462</top>
 			<height>264</height>
 			<width>1280</width>
-			<texture colordiffuse="mask-background">background-mask.png</texture>
+			<texture>colours/black.png</texture>
+			<colordiffuse>osd-background</colordiffuse>
 		</control>
 		<control type="group">
 			<right>0</right>

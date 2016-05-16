@@ -5,8 +5,14 @@
 		<left>0</left>
 		<top>0</top>
 	</coordinates>
+	<include>screen-fade</include>
 	<controls>
-		<include>fadebackground</include>
+		<control type="image"><!-- Fade background to hilite keypad -->
+			<include>fullscreenimage</include>
+			<texture>colours/black.png</texture>
+			<aspectratio>scale</aspectratio>
+			<colordiffuse>mask-background</colordiffuse>
+		</control>
 		<control type="image"><!-- Entered text background -->
 			<left>480</left>
 			<top>405</top>
@@ -20,8 +26,8 @@
 			<width>300</width>
 			<height>30</height>
 			<font>font18</font>
-			<textcolor>keyboard-focus-text</textcolor>
-			<shadowcolor>keyboard-shadow-text</shadowcolor>
+			<textcolor>disabled-text</textcolor>
+			<shadowcolor>button-text</shadowcolor>
 			<align>left</align>
 			<visible>IsEmpty(Control.GetLabel(4))</visible>
 		</control>
@@ -31,9 +37,9 @@
 			<width>300</width>
 			<height>30</height>
 			<font>font18</font>
-			<textcolor>keyboard-focus-text</textcolor>
-			<shadowcolor>keyboard-shadow-text</shadowcolor>
-			<align>center</align>
+			<textcolor>shadow-text</textcolor>
+			<shadowcolor>button-text</shadowcolor>
+			<align>left</align>
 		</control>
 		<control type="group">
 			<left>480</left>
@@ -75,10 +81,10 @@
 				<texturefocus border="6">key-standard-focus.png</texturefocus>
 				<label>$LOCALIZE[20177]</label>
 				<onleft>13</onleft>
-				<ondown>1023</ondown>
-				<textcolor>keyboard-special-unfocus-text</textcolor>
-				<focusedcolor>keyboard-special-focus-text</focusedcolor>
-				<shadowcolor></shadowcolor>
+				<ondown>23</ondown>
+				<textcolor>shadow-text</textcolor>
+				<focusedcolor>button-text</focusedcolor>
+				<shadowcolor>-</shadowcolor>
 			</control>
 			<control type="button" id="14"><!-- 4 button -->
 				<left>0</left>
@@ -170,7 +176,7 @@
 				<texturenofocus border="6">key-cursorright-nofocus.png</texturenofocus>
 				<texturefocus border="6">key-cursorright-focus.png</texturefocus>
 				<onleft>10</onleft>
-				<onright>1023</onright>
+				<onright>23</onright>
 				<onup>19</onup>
 			</control>
 			<control type="button" id="1023"><!-- Custom BACKSPACE button -->

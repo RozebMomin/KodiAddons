@@ -5,6 +5,7 @@
 		<left>0</left>
 		<top>0</top>
 	</coordinates>
+	<include>screen-fade</include>
 	<controls>
 		<include>fadebackground</include>
 		<control type="group">
@@ -52,7 +53,7 @@
 				<texturefocus>touch-close.png</texturefocus>
 				<texturenofocus>touch-close.png</texturenofocus>
 				<onclick>Dialog.Close(pvrosdchannels)</onclick>
-				<visible>System.GetBool(input.enablemouse)</visible>
+				<visible>system.getbool(input.enablemouse)</visible>
 			</control>
 			<control type="image">
 				<left>412</left>
@@ -128,6 +129,7 @@
 						<top>78</top>
 						<width>225</width>
 						<height>6</height>
+						<colordiffuse>ScrollBarColor</colordiffuse>
 						<info>ListItem.Progress</info>
 						<visible>ListItem.HasEpg</visible>
 					</control>
@@ -155,7 +157,7 @@
 						<top>0</top>
 						<width>420</width>
 						<height>102</height>
-						<texture border="6">button-default-focus.png</texture>
+						<texture border="8">button-default-focus.png</texture>
 						<visible>Control.HasFocus(11)</visible>
 					</control>
 					<control type="label">
@@ -218,6 +220,7 @@
 						<top>78</top>
 						<width>225</width>
 						<height>6</height>
+						<colordiffuse>ScrollBarColor</colordiffuse>
 						<info>ListItem.Progress</info>
 						<visible>ListItem.HasEpg</visible>
 					</control>

@@ -76,10 +76,6 @@ msgctxt "#31536"
 msgid "Provider"
 msgstr "Poskytovateľ"
 
-msgctxt "#31553"
-msgid "Custom backgrounds"
-msgstr "Vlastné pozadia"
-
 msgctxt "#31555"
 msgid "Profiles"
 msgstr "Profily"
@@ -99,10 +95,6 @@ msgstr "Tučné"
 msgctxt "#31577"
 msgid "Kodi Default"
 msgstr "Predvolené nastavenia v Kodi"
-
-msgctxt "#31578"
-msgid "Light"
-msgstr "slabý(é)"
 
 msgctxt "#31652"
 msgid "Favourites"
