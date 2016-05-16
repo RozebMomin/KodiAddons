@@ -7,20 +7,20 @@
 				<top>0</top>
 				<width>1280</width>
 				<height>192</height>
-				<texture>colours/grey.png</texture>
+				<texture>background-horzshelfbackdrop.png</texture>
 			</control>
 			<control type="image">
 				<left>0</left>
 				<top>192</top>
 				<width>1280</width>
-				<height>102</height>
-				<texture>colours/midgrey.png</texture>
+				<height>122</height>m
+				<texture>background-horzshelf.png</texture>
 			</control>
 			<control type="image">
 				<left>0</left>
 				<top>0</top>
 				<width>1280</width>
-				<height>294</height>
+				<height>314</height>
 				<texture>menu-mask.png</texture>
 			</control>
 		</control>
@@ -28,39 +28,47 @@
 		<control type="group"><!-- Main Horizontal menu bar -->
 			<control type="image"><!-- Background image for menu area -->
 				<left>0</left>
-				<top>292</top>
+				<top>312</top>
 				<width>1280</width>
-				<height>428</height>
-				<texture>colours/black.png</texture>
+				<height>408</height>
+				<texture>background-horzhome.png</texture>
 			</control>
 			<control type="image">
 				<left>0</left>
-				<top>290</top>
+				<top>310</top>
 				<width>1280</width>
 				<height>4</height>
 				<texture>separator.png</texture>
 			</control>
 			<control type="image">
 				<left>0</left>
-				<top>360</top>
+				<top>380</top>
 				<width>1280</width>
 				<height>4</height>
 				<texture>separator.png</texture>
 			</control>
 		</control>
 
-		<control type="button" id="11000"><!-- Fake fullscreen button as a touch screen work around -->
-			<left>0</left>
-			<top>0</top>>
-			<width>1280</width>
-			<height>720</height>
-			<texturefocus>blank.png</texturefocus>
-			<texturenofocus>blank.png</texturenofocus>
-			<visible>system.getbool(input.enablemouse)</visible>
+		<control type="image"><!-- Home menu watermark -->
+			<left>1100</left>
+			<top>592</top>
+			<width>128</width>
+			<height>128</height>
+			<aspectratio aligny="top">keep</aspectratio>
+			<texture colordiffuse="UnFocusedPosters" background="true">$INFO[Skin.String(custom-watermark)]</texture>
+			<visible>!IsEmpty(Skin.String(custom-watermark))</visible>
 		</control>
 
 		<include condition="!Skin.HasSetting(home-time)" file="Includes_Shelf.xml">homeshelf-time</include><!-- Show time on home screen -->
+		<include condition="Skin.HasSetting(media-overlay)" file="Includes_Shelf.xml">shelf-nowplaying</include><!-- Now Playing -->
 
+		<control type="button" id="9810"><!-- Dummy button for mouse control -->
+			<left>0</left>
+			<top>0</top>
+			<width>1280</width>
+			<height>720</height>
+			<texturefocus>blank.png</texturefocus>
+		</control>
 		<control type="group" id="9800"><!-- Shelf icons-->
 			<control type="group" id="9155"><!-- Movie icons -->
 				<visible>Control.HasFocus(9150) | Control.HasFocus(9160) | Control.HasFocus(9180)</visible>
@@ -71,14 +79,14 @@
 						<top>38</top>
 						<width>176</width>
 						<height>176</height>
-						<texture>DefaultVideo.png</texture>
+						<texture>DefaultMovies.png</texture>
 					</control>
 					<control type="image">
 						<left>552</left>
 						<top>214</top>
 						<width>176</width>
 						<height>176</height>
-						<texture flipy="true" diffuse="mask-fade.png">DefaultVideo.png</texture>
+						<texture flipy="true" diffuse="mask-fade.png">DefaultMovies.png</texture>
 					</control>
 				</control>
 				<control type="group">
@@ -138,7 +146,7 @@
 			</control>
 
 			<control type="group" id="9355"><!-- Addon icons -->
-				<visible>Control.HasFocus(9350) | Control.HasFocus(9360)</visible>
+				<visible>Control.HasFocus(9350) | Control.HasFocus(9360) | Control.HasFocus(9380)</visible>
 				<control type="group">
 					<visible>StringCompare(Skin.String(shelf-addonimages),$LOCALIZE[31953]) | !IntegerGreaterThan(Container(9360).NumItems,0)</visible>
 					<control type="image">
@@ -165,7 +173,7 @@
 			<control type="group" id="9405"><!-- Weather icons -->
 				<visible>Control.HasFocus(9400) | Control.HasFocus(9430)</visible>
 				<control type="group">
-					<visible>!Weather.IsFetched</visible>
+					<visible>!Weather.IsFetched | IsEmpty(Window(Weather).Property(Current.Temperature))</visible>
 					<control type="image">
 						<left>552</left>
 						<top>38</top>
@@ -188,7 +196,7 @@
 			</control>
 
 			<control type="group"><!-- Default Shelf icons -->
-				<visible>![Control.IsVisible(9155) | Control.IsVisible(9205) | Control.IsVisible(9255) | Control.IsVisible(9355) | Control.IsVisible(9405)]</visible>
+				<visible>![Control.IsVisible(9155) | Control.IsVisible(9205) | Control.IsVisible(9255) | Control.IsVisible(9355) | Control.IsVisible(9405)] | Control.HasFocus(9810)</visible>
 				<control type="image">
 					<left>552</left>
 					<top>38</top>
@@ -250,7 +258,7 @@
 		<control type="group"><!-- Markers for off screen menu bar items -->
 			<control type="image">
 				<left>0</left>
-				<top>322</top>
+				<top>342</top>
 				<height>16</height>
 				<width>16</width>
 				<texture>scroll-left.png</texture>
@@ -258,7 +266,7 @@
 			</control>
 			<control type="image">
 				<left>1264</left>
-				<top>322</top>
+				<top>342</top>
 				<height>16</height>
 				<width>16</width>
 				<texture>scroll-right.png</texture>
@@ -268,9 +276,9 @@
 
 		<control type="grouplist" id="9000"><!-- Home Sub menus -->
 			<left>10</left>
-			<top>295</top>
+			<top>315</top>
 			<width>1260</width>
-			<height>345</height>
+			<height>352</height>
 			<itemgap>0</itemgap>
 			<orientation>horizontal</orientation>
 			<align>center</align>
@@ -281,7 +289,7 @@
 					<left>0</left>
 					<top>0</top>
 					<width>210</width>
-					<height>345</height>
+					<height>352</height>
 					<texturefocus>blank.png</texturefocus>
 					<onup>9005</onup>
 					<ondown>9100</ondown>
@@ -308,7 +316,7 @@
 						</control>
 						<control type="image">
 							<left>96</left>
-							<top>294</top>
+							<top>336</top>
 							<height>16</height>
 							<width>16</width>
 							<texture>scroll-down.png</texture>
@@ -331,7 +339,7 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9005</onup>
 					<ondown>9005</ondown>
 					<onleft>9005</onleft>
@@ -355,7 +363,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -440,7 +448,7 @@
 						</control>
 						<control type="image">
 							<left>96</left>
-							<top>294</top>
+							<top>336</top>
 							<height>16</height>
 							<width>16</width>
 							<texture>scroll-down.png</texture>
@@ -464,7 +472,7 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9155</onup>
 					<ondown>9005</ondown>
 					<onleft>9100</onleft>
@@ -488,7 +496,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -581,7 +589,7 @@
 						</control>
 						<control type="image">
 							<left>96</left>
-							<top>294</top>
+							<top>336</top>
 							<height>16</height>
 							<width>16</width>
 							<texture>scroll-down.png</texture>
@@ -605,7 +613,7 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9205</onup>
 					<ondown>9005</ondown>
 					<onleft>9150</onleft>
@@ -629,7 +637,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -721,7 +729,7 @@
 						</control>
 						<control type="image">
 							<left>96</left>
-							<top>294</top>
+							<top>336</top>
 							<height>16</height>
 							<width>16</width>
 							<texture>scroll-down.png</texture>
@@ -744,11 +752,11 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9005</onup>
 					<ondown>9005</ondown>
 					<onleft>9200</onleft>
-					<onright>9250</onright>
+					<onright>9550</onright>
 					<viewtype label="31941">list</viewtype>
 					<itemlayout height="42" width="210">
 						<control type="label">
@@ -768,7 +776,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -857,6 +865,134 @@
 					</content>
 				</control>
 			</control>
+			<control type="group" id="9570"><!-- Favourites sub menu -->
+				<visible>!IsEmpty(Skin.String(CustomFav.1.Path)) | !IsEmpty(Skin.String(CustomFav.2.Path)) | !IsEmpty(Skin.String(CustomFav.3.Path)) | !IsEmpty(Skin.String(CustomFav.4.Path)) | !IsEmpty(Skin.String(CustomFav.5.Path))</visible>
+				<width>210</width>
+				<control type="button" id="9580"><!-- Dummy button for mouse control -->
+					<left>0</left>
+					<top>0</top>
+					<width>210</width>
+					<height>345</height>
+					<texturefocus>blank.png</texturefocus>
+					<onup>9005</onup>
+					<ondown>9550</ondown>
+					<onleft>9500</onleft>
+					<onright>9250</onright>
+				</control>
+				<control type="group">
+					<visible>Control.HasFocus(9550) | Control.HasFocus(9580)</visible>
+					<control type="image"><!-- Menu Heading Hilite-->
+						<left>0</left>
+						<top>0</top>
+						<width>210</width>
+						<height>66</height>
+						<texture>menu-focus.png</texture>
+					</control>
+					<control type="group"><!-- Markers for control area items -->
+						<control type="image">
+							<left>96</left>
+							<top>68</top>
+							<height>16</height>
+							<width>16</width>
+							<texture>scroll-up.png</texture>
+							<visible>Container(9550).HasPrevious | IntegerGreaterThan(Container(9580).NumItems,0)</visible>
+						</control>
+						<control type="image">
+							<left>96</left>
+							<top>336</top>
+							<height>16</height>
+							<width>16</width>
+							<texture>scroll-down.png</texture>
+							<visible>Container(9550).HasNext</visible>
+						</control>
+					</control>
+				</control>
+				<control type="label"><!-- Menu Heading -->
+					<left>0</left>
+					<top>17</top>
+					<width>210</width>
+					<height>32</height>
+					<font>font18</font>
+					<align>center</align>
+					<label>$VAR[CustomFavHeading]</label>
+					<animation condition="Control.HasFocus(9160) | Control.HasFocus(9210) | Control.HasFocus(9260) | Control.HasFocus(9360)" effect="fade" start="100" end="65">Conditional</animation>
+				</control>
+				<control type="list" id="9550">
+					<animation condition="!Control.HasFocus(9550) + !Control.HasFocus(9580)" effect="fade" start="100" end="0" reversible="true">Conditional</animation>
+					<left>0</left>
+					<top>84</top>
+					<width>210</width>
+					<height>252</height>
+					<onup>9005</onup>
+					<ondown>9005</ondown>
+					<onleft>9500</onleft>
+					<onright>9250</onright>
+					<viewtype label="31941">list</viewtype>
+					<itemlayout height="42" width="210">
+						<control type="label">
+							<left>8</left>
+							<top>8</top>
+							<width>194</width>
+							<height>22</height>
+							<font>font11</font>
+							<align>center</align>
+							<label>$INFO[ListItem.Label]</label>
+							<include condition="Skin.HasSetting(text-autoscroll)">scrolltext</include>
+						</control>
+					</itemlayout>
+					<focusedlayout height="42" width="210">
+						<control type="image">
+							<left>0</left>
+							<top>0</top>
+							<width>210</width>
+							<height>42</height>
+							<texture border="6">button-default-focus.png</texture>
+						</control>
+						<control type="label">
+							<left>8</left>
+							<top>8</top>
+							<width>194</width>
+							<height>22</height>
+							<font>font11</font>
+							<align>center</align>
+							<label>$INFO[ListItem.Label]</label>
+							<include condition="Skin.HasSetting(text-autoscroll)">scrolltext</include>
+						</control>
+					</focusedlayout>
+					<content>
+						<item><!-- Custom Favourite 1 -->
+							<visible>!IsEmpty(Skin.String(CustomFav.1.Path))</visible>
+							<label>$INFO[Skin.String(CustomFav.1.Label)]</label>
+							<label2>$LOCALIZE[31031]</label2>
+							<onclick>$INFO[Skin.String(CustomFav.1.Path)]</onclick>
+						</item>
+						<item><!-- Custom Favourite 2 -->
+							<visible>!IsEmpty(Skin.String(CustomFav.2.Path))</visible>
+							<label>$INFO[Skin.String(CustomFav.2.Label)]</label>
+							<label2>$LOCALIZE[31031]</label2>
+							<onclick>$INFO[Skin.String(CustomFav.2.Path)]</onclick>
+						</item>
+						<item><!-- Custom Favourite 3 -->
+							<visible>!IsEmpty(Skin.String(CustomFav.3.Path))</visible>
+							<label>$INFO[Skin.String(CustomFav.3.Label)]</label>
+							<label2>$LOCALIZE[31031]</label2>
+							<onclick>$INFO[Skin.String(CustomFav.3.Path)]</onclick>
+						</item>
+						<item><!-- Custom Favourite 4 -->
+							<visible>!IsEmpty(Skin.String(CustomFav.4.Path))</visible>
+							<label>$INFO[Skin.String(CustomFav.4.Label)]</label>
+							<label2>$LOCALIZE[31031]</label2>
+							<onclick>$INFO[Skin.String(CustomFav.4.Path)]</onclick>
+						</item>
+						<item><!-- Custom Favourite 5 -->
+							<visible>!IsEmpty(Skin.String(CustomFav.5.Path))</visible>
+							<label>$INFO[Skin.String(CustomFav.5.Label)]</label>
+							<label2>$LOCALIZE[31031]</label2>
+							<onclick>$INFO[Skin.String(CustomFav.5.Path)]</onclick>
+						</item>
+					</content>
+				</control>
+			</control>
 			<control type="group" id="9270"><!-- Music Sub menu -->
 				<visible>!Skin.HasSetting(home-music) | Skin.HasSetting(home-musicvideo) | !IsEmpty(Skin.String(CustomMusic.1.Path)) | !IsEmpty(Skin.String(CustomMusic.2.Path)) | !IsEmpty(Skin.String(CustomMusic.3.Path)) | !IsEmpty(Skin.String(CustomMusic.4.Path)) | !IsEmpty(Skin.String(CustomMusic.5.Path))</visible>
 				<width>210</width>
@@ -868,7 +1004,7 @@
 					<texturefocus>blank.png</texturefocus>
 					<onup>9255</onup>
 					<ondown>9250</ondown>
-					<onleft>9500</onleft>
+					<onleft>9550</onleft>
 					<onright>9300</onright>
 				</control>
 				<control type="group">
@@ -892,7 +1028,7 @@
 						</control>
 						<control type="image">
 							<left>96</left>
-							<top>294</top>
+							<top>336</top>
 							<height>16</height>
 							<width>16</width>
 							<texture>scroll-down.png</texture>
@@ -916,10 +1052,10 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9255</onup>
 					<ondown>9005</ondown>
-					<onleft>9500</onleft>
+					<onleft>9550</onleft>
 					<onright>9300</onright>
 					<viewtype label="31941">list</viewtype>
 					<itemlayout height="42" width="210">
@@ -940,7 +1076,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -1041,7 +1177,7 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9005</onup>
 					<ondown>9005</ondown>
 					<onleft>9250</onleft>
@@ -1065,7 +1201,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -1127,7 +1263,7 @@
 						</control>
 						<control type="image">
 							<left>96</left>
-							<top>294</top>
+							<top>336</top>
 							<height>16</height>
 							<width>16</width>
 							<texture>scroll-down.png</texture>
@@ -1151,7 +1287,7 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9355</onup>
 					<ondown>9005</ondown>
 					<onleft>9300</onleft>
@@ -1175,7 +1311,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -1242,7 +1378,7 @@
 						<item><!-- Addon browser -->
 							<label>$LOCALIZE[21452]</label>
 							<label2>$LOCALIZE[24001]</label2>
-							<onclick>ActivateWindow(AddonBrowser,,return)</onclick>
+							<onclick>ActivateWindow(addonbrowser,,return)</onclick>
 						</item>
 					</content>
 				</control>
@@ -1284,7 +1420,7 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9005</onup>
 					<ondown>9005</ondown>
 					<onleft>9350</onleft>
@@ -1308,7 +1444,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -1363,7 +1499,7 @@
 						</control>
 						<control type="image">
 							<left>96</left>
-							<top>294</top>
+							<top>336</top>
 							<height>16</height>
 							<width>16</width>
 							<texture>scroll-down.png</texture>
@@ -1386,7 +1522,7 @@
 					<left>0</left>
 					<top>84</top>
 					<width>210</width>
-					<height>210</height>
+					<height>252</height>
 					<onup>9005</onup>
 					<ondown>9005</ondown>
 					<onleft>9400</onleft>
@@ -1410,7 +1546,7 @@
 							<top>0</top>
 							<width>210</width>
 							<height>42</height>
-							<texture border="8">button-default-focus.png</texture>
+							<texture border="6">button-default-focus.png</texture>
 						</control>
 						<control type="label">
 							<left>8</left>
@@ -1452,6 +1588,12 @@
 							<label2>$LOCALIZE[13000]</label2>
 							<onclick>RunScript(script.globalsearch)</onclick>
 						</item>
+						<item><!-- Filemanager -->
+							<visible>Skin.HasSetting(home-filemanager)</visible>
+							<label>$LOCALIZE[10003]</label>
+							<label2>$LOCALIZE[13000]</label2>
+							<onclick>ActivateWindow(filemanager)</onclick>
+						</item>
 						<item><!-- Play DVD -->
 							<visible>System.HasMediadvd + Skin.HasSetting(home-playdisc)</visible>
 							<label>$LOCALIZE[31036]</label>
@@ -1462,13 +1604,14 @@
 							<visible>[Player.HasAudio | Player.HasVideo]</visible>
 							<label>$LOCALIZE[16003] $LOCALIZE[478]</label>
 							<label2>$LOCALIZE[13000]</label2>
-							<onclick>ActivateWindow(PlayerControls)</onclick>
+							<onclick>ActivateWindow(playercontrols)</onclick>
 							<onclick>SetFocus(9450)</onclick>
 						</item>
 						<item><!-- Quit -->
 							<visible>!Skin.HasSetting(home-shutdown)</visible>
 							<label>$LOCALIZE[13009]</label>
 							<label2>$LOCALIZE[13000]</label2>
+							<onclick condition="!StringCompare(Skin.String(home-quitaction),$LOCALIZE[31558])">SetProperty(ShutdownKodi,true,Home)</onclick>
 							<onclick>$VAR[QuitAction]</onclick>
 						</item>
 					</content>
@@ -1476,22 +1619,9 @@
 			</control>
 		</control>
 
-		<control type="image"><!-- Home menu watermark -->
-			<left>1100</left>
-			<top>592</top>
-			<width>128</width>
-			<height>128</height>
-			<aspectratio aligny="top">keep</aspectratio>
-			<texture background="true">$INFO[Skin.String(custom-watermark)]</texture>
-			<colordiffuse>UnFocusedPosters</colordiffuse>
-			<visible>!IsEmpty(Skin.String(custom-watermark))</visible>
-		</control>
-
 		<control type="group" id="9940"><!-- RSS info -->
-			<visible>![Skin.HasSetting(media-overlay) + [Player.HasAudio | Player.HasVideo]]</visible><!-- Don't show RSS if Video or Music overlay showing -->
-			<include condition="system.getbool(lookandfeel.enablerssfeeds)">page-info</include>
+			<include condition="System.GetBool(lookandfeel.enablerssfeeds)">page-info</include>
 		</control>
 
-		<include>home-mediaoverlay</include><!-- Home media overlay -->
 	</include>
 </includes>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window type="dialog" id="1151">
 	<defaultcontrol>500</defaultcontrol>
-	<include>screen-fade</include>
 	<coordinates>
 		<left>0</left>
 		<top>0</top>
@@ -21,8 +20,7 @@
 			<top>100</top>
 			<width>396</width>
 			<height>226</height>
-			<texture border="8">button-menu-background.png</texture>
-			<colordiffuse>UnFocusedPosters</colordiffuse>
+			<texture colordiffuse="UnFocusedPosters" border="8">button-menu-background.png</texture>
 			<visible>Window.IsActive(fullscreenvideo)</visible>
 		</control>
 		<control type="label"><!-- Header -->
@@ -41,7 +39,7 @@
 			<texturefocus>touch-close.png</texturefocus>
 			<texturenofocus>touch-close.png</texturenofocus>
 			<onclick>Dialog.Close(1151)</onclick>
-			<visible>system.getbool(input.enablemouse)</visible>
+			<visible>System.GetBool(input.enablemouse)</visible>
 		</control>
 		<control type="image">
 			<left>730</left>

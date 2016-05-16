@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol>5</defaultcontrol>
-	<include>screen-fade</include>
 	<controls>
 		<include>background</include>
 		<control type="list" id="5">
@@ -38,7 +37,7 @@
 					<top>0</top>
 					<width>708</width>
 					<height>46</height>
-					<texture border="8">button-default-focus.png</texture>
+					<texture border="6">button-default-focus.png</texture>
 				</control>
 				<control type="label">
 					<left>16</left>

@@ -173,12 +173,10 @@ msgid "Display a media case around Album or Video cover icon."
 msgstr ""
 
 msgctxt "#31309"
-msgid "Location of Weather icons to replace Kodi supplied icons."
+msgid "Letterbar allows user to click first letter of media item name to navigate to library starting at clicked letter. Sorry, English only."
 msgstr ""
 
-msgctxt "#31310"
-msgid "Use TVTunes script to provide theme tune for Movies and TVShows while browsing library."
-msgstr ""
+#empty string 31310
 
 msgctxt "#31311"
 msgid "Use Artwork Download script to download additional media images for All library media items."
@@ -219,7 +217,7 @@ msgstr ""
 #empty string id 312320 reserved for future use.
 
 msgctxt "#31321"
-msgid "Type of Home menu type to use on home menu screen."
+msgid "Type of Home menu to use on home menu screen."
 msgstr ""
 
 msgctxt "#31322"
@@ -280,7 +278,11 @@ msgctxt "#31337"
 msgid "Select action of Quit home menu item in home menu screen."
 msgstr ""
 
-#empty strings id 312338 to 31339 reserved for future use.
+msgctxt "#31338"
+msgid "Show 'Filemanager' item in home menu."
+msgstr ""
+
+#empty strings id 312339 reserved for future use.
 
 msgctxt "#31340"
 msgid "Location of custom skin background image."
@@ -335,7 +337,7 @@ msgid "Set location to enter Broadcast Radio library when Radio item selected on
 msgstr ""
 
 msgctxt "#31360"
-msgid "Sub menu to assign custom favourites to menu items."
+msgid "Sub menu to assign custom shortcuts to home menu items."
 msgstr ""
 
 msgctxt "#31370"
@@ -354,11 +356,15 @@ msgctxt "#31373"
 msgid "Turn on debug info overlay to help users identify currently displayed windows and focused screen items."
 msgstr ""
 
+msgctxt "#31374"
+msgid "Click shortcut button to assign home screen shortcut."
+msgstr ""
+
 #End Skin Help Setting strings
 
 #Begin weather strings 31526 - 31550
 
-#empty strings from id 31526 to 31527
+#empty strings from 31526 to 31527
 
 msgctxt "#31528"
 msgid "Currently"
@@ -384,7 +390,19 @@ msgstr ""
 #End weather strings
 #Start system strings 31551 - 31650
 
-#empty string with id 31551 - 31554
+msgctxt "#31551"
+msgid "Static Icons"
+msgstr ""
+
+msgctxt "#31552"
+msgid "Animated Icons"
+msgstr ""
+
+msgctxt "#31553"
+msgid "Custom backgrounds"
+msgstr ""
+
+#empty string 31554
 
 msgctxt "#31555"
 msgid "Profiles"
@@ -414,7 +432,9 @@ msgctxt "#31561"
 msgid "3D Settings"
 msgstr ""
 
-#empty string with id 31562
+msgctxt "#31562"
+msgid "View:"
+msgstr ""
 
 msgctxt "#31563"
 msgid "Skin Version:"
@@ -476,7 +496,11 @@ msgctxt "#31577"
 msgid "Kodi Default"
 msgstr ""
 
-#empty strings from id 31578 to 31650
+msgctxt "#31578"
+msgid "Light"
+msgstr ""
+
+#empty strings from id 31579 to 31650
 #End system strings
 #Begin Misc. strings 31651 - 31800
 
@@ -628,7 +652,7 @@ msgid "Media Entry Points"
 msgstr ""
 
 msgctxt "#31806"
-msgid "Custom Favourites"
+msgid "Home Shortcuts"
 msgstr ""
 
 msgctxt "#31807"
@@ -639,19 +663,45 @@ msgctxt "#31808"
 msgid "Home Screen"
 msgstr ""
 
-#empty strings from id 31809 to 31850
+msgctxt "#31809"
+msgid "Shortcut"
+msgstr ""
+
+msgctxt "#31810"
+msgid "sec"
+msgstr ""
+
+msgctxt "#31811"
+msgid "Second"
+msgstr ""
+
+msgctxt "#31812"
+msgid "Seconds"
+msgstr ""
+
+msgctxt "#31813"
+msgid "Minute"
+msgstr ""
+
+msgctxt "#31814"
+msgid "Minutes"
+msgstr ""
+
+msgctxt "#31815"
+msgid "Never show"
+msgstr ""
+
+#empty strings from id 31816 to 31850
 
 msgctxt "#31851"
-msgid "Intro file:"
+msgid "Intro file"
 msgstr ""
 
 msgctxt "#31852"
 msgid "Use Startup playlist"
 msgstr ""
 
-msgctxt "#31853"
-msgid "Choose playlist:"
-msgstr ""
+#empty string 31853
 
 msgctxt "#31854"
 msgid "Startup screen"
@@ -700,12 +750,10 @@ msgid "Use Artistslideshow as background"
 msgstr ""
 
 msgctxt "#31866"
-msgid "Location of Custom Weather backgrounds"
+msgid "Weather backgrounds"
 msgstr ""
 
-msgctxt "#31867"
-msgid "Reset Custom Weather backgrounds"
-msgstr ""
+#empty string 31867
 
 msgctxt "#31868"
 msgid "Background visibilty"
@@ -726,12 +774,10 @@ msgid "Reset Homescreen Watermark Image"
 msgstr ""
 
 msgctxt "#31873"
-msgid "Location of Custom Weather icons"
+msgid "Weather icons"
 msgstr ""
 
-msgctxt "#31874"
-msgid "Reset Custom Weather icons"
-msgstr ""
+#empty string from id 31874
 
 msgctxt "#31875"
 msgid "Always"
@@ -745,7 +791,13 @@ msgctxt "#31877"
 msgid "Never"
 msgstr ""
 
-#empty strings from id 31878 to 31879
+msgctxt "#31878"
+msgid "Studio icons"
+msgstr ""
+
+msgctxt "#31879"
+msgid "Genre icons"
+msgstr ""
 
 msgctxt "#31880"
 msgid "Lock Screen settings menus"
@@ -763,13 +815,22 @@ msgctxt "#31883"
 msgid "Use media overlays"
 msgstr ""
 
-#empty strings from id 31884 to 31885
+msgctxt "#31884"
+msgid "Use letterbar"
+msgstr ""
+
+
+msgctxt "#31885"
+msgid "Idle animation delay"
+msgstr ""
 
 msgctxt "#31886"
 msgid "Tilt icons"
 msgstr ""
 
-#empty string id 31887
+msgctxt "#31887"
+msgid "Add to home screen"
+msgstr ""
 
 msgctxt "#31888"
 msgid "Time on Home screen"
@@ -851,7 +912,11 @@ msgctxt "#31914"
 msgid "Quit button action"
 msgstr ""
 
-#empty strings from id 31915 31919
+msgctxt "#31915"
+msgid "Filemanager in Home menu"
+msgstr ""
+
+#empty strings from id 31916 to 31919
 
 msgctxt "#31920"
 msgid "Movie library entry point"
@@ -987,9 +1052,21 @@ msgid "Next Aired Episodes"
 msgstr ""
 
 msgctxt "#31962"
-msgid "Recommended TV Episodes"
+msgid "Recommended Episodes"
 msgstr ""
 
 msgctxt "#31963"
 msgid "Recommended Albums"
+msgstr ""
+
+msgctxt "#31964"
+msgid "Recent Movies"
+msgstr ""
+
+msgctxt "#31965"
+msgid "Recent Episodes"
+msgstr ""
+
+msgctxt "#31966"
+msgid "Recent Albums"
 msgstr ""

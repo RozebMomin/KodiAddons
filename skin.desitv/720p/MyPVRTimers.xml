@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol>14</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
-	<include>screen-fade</include>
+	<menucontrol>9000</menucontrol>
 	<views>14</views>
 	<onload>ClearProperty(ShowScreenSettings,Home)</onload>
 	<onunload>ClearProperty(ShowScreenSettings,Home)</onunload>
 	<controls>
-		<include>backgroundvideo</include>
+		<include>background</include>
 		<include>Fake-Overlay</include>
 		<control type="grouplist">
 			<left>780</left>
@@ -46,7 +45,7 @@
 				<left>440</left>
 				<top>130</top>
 				<width>396</width>
-				<height>458</height>
+				<height>438</height>
 				<texture border="8">button-menu-background.png</texture>
 			</control>
 			<control type="label"><!-- Dialog heading -->
@@ -67,7 +66,7 @@
 				<texturenofocus>touch-close.png</texturenofocus>
 				<onclick condition="!StringCompare(Window(Home).Property(ShowScreenSettings),show)">SetProperty(ShowScreenSettings,show,Home)</onclick>
 				<onclick condition="StringCompare(Window(Home).Property(ShowScreenSettings),show)">ClearProperty(ShowScreenSettings,Home)</onclick>
-				<visible>system.getbool(input.enablemouse)</visible>
+				<visible>System.GetBool(input.enablemouse)</visible>
 			</control>
 			<control type="image">
 				<left>450</left>
@@ -107,35 +106,37 @@
 					<height>48</height>
 					<label>$LOCALIZE[19019]</label>
 					<font>font11</font>
-					<onclick condition="IsEmpty(Window.Property(IsRadio))">ActivateWindow(TVChannels)</onclick>
-					<onclick condition="!IsEmpty(Window.Property(IsRadio))">ActivateWindow(RadioChannels)</onclick>
+					<onclick condition="IsEmpty(Window.Property(IsRadio))">ActivateWindow(tvchannels)</onclick>
+					<onclick condition="!IsEmpty(Window.Property(IsRadio))">ActivateWindow(radiochannels)</onclick>
 				</control>
 				<control type="button" id="902"><!-- Guide -->
 					<width>376</width>
 					<height>48</height>
 					<label>$LOCALIZE[22020]</label>
 					<font>font11</font>
-					<onclick condition="IsEmpty(Window.Property(IsRadio))">ActivateWindow(TVGuide)</onclick>
-					<onclick condition="!IsEmpty(Window.Property(IsRadio))">ActivateWindow(RadioGuide)</onclick>
+					<onclick condition="IsEmpty(Window.Property(IsRadio))">ActivateWindow(tvguide)</onclick>
+					<onclick condition="!IsEmpty(Window.Property(IsRadio))">ActivateWindow(radioguide)</onclick>
 				</control>
 				<control type="button" id="903"><!-- Recordings -->
 					<width>376</width>
 					<height>48</height>
 					<label>$LOCALIZE[19163]</label>
 					<font>font11</font>
-					<onclick condition="IsEmpty(Window.Property(IsRadio))">ActivateWindow(TVRecordings)</onclick>
-					<onclick condition="!IsEmpty(Window.Property(IsRadio))">ActivateWindow(RadioRecordings)</onclick>
+					<onclick condition="IsEmpty(Window.Property(IsRadio))">ActivateWindow(tvrecordings)</onclick>
+					<onclick condition="!IsEmpty(Window.Property(IsRadio))">ActivateWindow(radiorecordings)</onclick>
 				</control>
 				<control type="button" id="904"><!-- Search -->
 					<width>376</width>
 					<height>48</height>
 					<label>$LOCALIZE[137]</label>
 					<font>font11</font>
-					<onclick condition="IsEmpty(Window.Property(IsRadio))">ActivateWindow(TVSearch)</onclick>
-					<onclick condition="!IsEmpty(Window.Property(IsRadio))">ActivateWindow(RadioSearch)</onclick>
+					<onclick condition="IsEmpty(Window.Property(IsRadio))">ActivateWindow(tvsearch)</onclick>
+					<onclick condition="!IsEmpty(Window.Property(IsRadio))">ActivateWindow(radiosearch)</onclick>
 				</control>
 			</control>
 		</control>
+
+		<include>group-focusvert</include>
 
 		<include>touch-controls</include>
 

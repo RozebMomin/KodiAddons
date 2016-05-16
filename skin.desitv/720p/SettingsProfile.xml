@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol always="true">2</defaultcontrol>
-	<allowoverlay>yes</allowoverlay>
-	<include>screen-fade</include>
+	<menucontrol>9000</menucontrol>
 	<onload>ClearProperty(ShowScreenSettings,Home)</onload>
 	<onunload>ClearProperty(ShowScreenSettings,Home)</onunload>
 	<controls>
@@ -52,7 +51,7 @@
 					<top>0</top>
 					<width>504</width>
 					<height>56</height>
-					<texture border="8">button-default-focus.png</texture>
+					<texture border="6">button-default-focus.png</texture>
 					<visible>!Control.HasFocus(4)</visible>
 				</control>
 				<control type="label">
@@ -133,7 +132,7 @@
 				<texturenofocus>touch-close.png</texturenofocus>
 				<onclick condition="!StringCompare(Window(Home).Property(ShowScreenSettings),show)">SetProperty(ShowScreenSettings,show,Home)</onclick>
 				<onclick condition="StringCompare(Window(Home).Property(ShowScreenSettings),show)">ClearProperty(ShowScreenSettings,Home)</onclick>
-				<visible>system.getbool(input.enablemouse)</visible>
+				<visible>System.GetBool(input.enablemouse)</visible>
 			</control>
 			<control type="image">
 				<left>450</left>
@@ -171,6 +170,8 @@
 				</control>
 			</control>
 		</control>
+
+		<include>group-focusvert</include>
 
 		<include>touch-controls</include>
 

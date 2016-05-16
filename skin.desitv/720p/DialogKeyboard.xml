@@ -5,7 +5,6 @@
 		<left>0</left>
 		<top>0</top>
 	</coordinates>
-	<include>screen-fade</include>
 	<controls>
 		<include>fadebackground</include>
 		<control type="group">
@@ -22,25 +21,56 @@
 				<texturefocus border="5">blank.png</texturefocus>
 			</control>
 			<control type="label" id="311"><!-- Dialog heading -->
-				<left>140</left>
-				<top>20</top>
-				<width>1000</width>
-				<height>30</height>
-				<font>font18</font>
-				<align>center</align>
-				<aligny>center</aligny>
+				<left>-400</left>
+				<top>0</top>
+				<width>10</width>
+				<height>10</height>
 			</control>
-			<control type="edit" id="312"><!-- Entered text -->
-				<left>224</left>
-				<top>56</top>
-				<width>832</width>
-				<height>40</height>
-				<texturenofocus border="6">background-keyboard-text.png</texturenofocus>
-				<texturefocus border="6">background-keyboard-text.png</texturefocus>
-				<font>font18</font>
-				<aligny>center</aligny>
-				<textcolor>shadow-text</textcolor>
-				<shadowcolor>button-text</shadowcolor>
+			<control type="group">
+				<visible>!Control.IsVisible(313)</visible>
+				<control type="edit" id="312"><!-- Entered text -->
+					<left>224</left>
+					<top>56</top>
+					<width>832</width>
+					<height>40</height>
+					<texturenofocus border="6">background-keyboard-text.png</texturenofocus>
+					<texturefocus border="6">background-keyboard-text.png</texturefocus>
+					<hinttext>$INFO[Control.GetLabel(311)]</hinttext>
+					<font>font18</font>
+					<aligny>top</aligny>
+					<textcolor>keyboard-focus-text</textcolor>
+					<shadowcolor>keyboard-shadow-text</shadowcolor>
+				</control>
+			</control>
+			<control type="group">
+				<visible>Control.IsVisible(313)</visible>
+				<control type="image">
+					<left>224</left>
+					<top>58</top>
+					<width>832</width>
+					<height>40</height>
+					<texture border="6">background-keyboard-text.png</texture>
+				</control>
+				<control type="label" id="313"><!-- coding text input -->
+					<left>140</left>
+					<top>18</top>
+					<width>1000</width>
+					<height>30</height>
+					<font>font18</font>
+					<align>center</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="314"><!-- Coding text choices -->
+					<left>224</left>
+					<top>54</top>
+					<width>832</width>
+					<height>40</height>
+					<font>font12</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>keyboard-focus-text</textcolor>
+					<shadowcolor>keyboard-shadow-text</shadowcolor>
+				</control>
 			</control>
 <!-- First Row -->
 			<control type="grouplist">
@@ -107,8 +137,8 @@
 					<texturefocus border="6">key-standard-focus.png</texturefocus>
 					<label>$LOCALIZE[20177]</label>
 					<font>font13</font>
-					<textcolor>shadow-text</textcolor>
-					<focusedcolor>button-text</focusedcolor>
+					<textcolor>keyboard-special-unfocus-text</textcolor>
+					<focusedcolor>keyboard-special-focus-text</focusedcolor>
 					<shadowcolor></shadowcolor>
 					<align>center</align>
 					<aligny>center</aligny>
@@ -190,7 +220,7 @@
 					<texturenofocus border="6">key-backspace-nofocus.png</texturenofocus>
 					<texturefocus border="6">key-backspace-focus.png</texturefocus>
 					<onup>300</onup>
-					<ondown>148</ondown>
+					<ondown>305</ondown>
 				</control>
 			</control>
 <!-- Third Row -->
@@ -262,10 +292,21 @@
 					<ondown>171</ondown>
 					<include>keyboard-key-common</include>
 				</control>
-				<control type="image"><!-- Blank space to line up this row with correct postion in above row -->
-					<width>128</width>
+				<control type="button" id="305"><!-- Previous button -->
+					<width>64</width>
 					<height>64</height>
-					<texture>blank.png</texture>
+					<texturenofocus border="6">key-cursorleft-nofocus.png</texturenofocus>
+					<texturefocus border="6">key-cursorleft-focus.png</texturefocus>
+					<onup>8</onup>
+					<ondown>303</ondown>
+				</control>
+				<control type="button" id="306"><!-- Next button -->
+					<width>64</width>
+					<height>64</height>
+					<texturenofocus border="6">key-cursorright-nofocus.png</texturenofocus>
+					<texturefocus border="6">key-cursorright-focus.png</texturefocus>
+					<onup>8</onup>
+					<ondown>303</ondown>
 				</control>
 			</control>
 <!-- Forth Row -->
@@ -347,22 +388,6 @@
 					<ondown>306</ondown>
 					<include>keyboard-key-common</include>
 				</control>
-				<control type="button" id="305"><!-- Previous button -->
-					<width>64</width>
-					<height>64</height>
-					<texturenofocus border="6">key-cursorleft-nofocus.png</texturenofocus>
-					<texturefocus border="6">key-cursorleft-focus.png</texturefocus>
-					<onup>148</onup>
-					<ondown>307</ondown>
-				</control>
-				<control type="button" id="306"><!-- Next button -->
-					<width>64</width>
-					<height>64</height>
-					<texturenofocus border="6">key-cursorright-nofocus.png</texturenofocus>
-					<texturefocus border="6">key-cursorright-focus.png</texturefocus>
-					<onup>148</onup>
-					<ondown>307</ondown>
-				</control>
 				<control type="togglebutton" id="303"><!-- CAPS LOCK button -->
 					<width>128</width>
 					<height>64</height>
@@ -370,13 +395,8 @@
 					<texturefocus border="6">key-shiftlock-off-focus.png</texturefocus>
 					<alttexturenofocus border="6">key-shiftlock-on-nofocus.png</alttexturenofocus>
 					<alttexturefocus border="6">key-shiftlock-on-focus.png</alttexturefocus>
-					<onup>148</onup>
+					<onup>305</onup>
 					<ondown>999</ondown>
-				</control>
-				<control type="image"><!-- Blank space to line up this row with correct postion in above row -->
-					<width>64</width>
-					<height>64</height>
-					<texture>blank.png</texture>
 				</control>
 			</control>
 <!-- Fifth Row -->
@@ -395,8 +415,8 @@
 					<texturefocus border="6">key-special-focus.png</texturefocus>
 					<alttexturenofocus border="6">key-special-nofocus.png</alttexturenofocus>
 					<alttexturefocus border="6">key-special-focus.png</alttexturefocus>
-					<textcolor>shadow-text</textcolor>
-					<focusedcolor>button-text</focusedcolor>
+					<textcolor>keyboard-special-unfocus-text</textcolor>
+					<focusedcolor>keyboard-special-focus-text</focusedcolor>
 					<shadowcolor></shadowcolor>
 					<font>font13</font>
 					<align>center</align>
@@ -408,12 +428,12 @@
 				<control type="button" id="32"><!-- SPACE button -->
 					<width>384</width>
 					<height>64</height>
-					<texturenofocus border="6">key-standard-nofocus.png</texturenofocus>
-					<texturefocus border="6">key-standard-focus.png</texturefocus>
+					<texturenofocus border="6">key-special-nofocus.png</texturenofocus>
+					<texturefocus border="6">key-special-focus.png</texturefocus>
 					<label>$LOCALIZE[20182]</label>
 					<font>font13</font>
-					<textcolor>disabled-text</textcolor>
-					<focusedcolor>button-text</focusedcolor>
+					<textcolor>keyboard-special-unfocus-text</textcolor>
+					<focusedcolor>keyboard-special-focus-text</focusedcolor>
 					<shadowcolor></shadowcolor>
 					<align>center</align>
 					<aligny>center</aligny>
@@ -424,7 +444,7 @@
 					<height>64</height>
 					<texturenofocus border="6">key-ip-nofocus.png</texturenofocus>
 					<texturefocus border="6">key-ip-focus.png</texturefocus>
-					<onup>306</onup>
+					<onup>303</onup>
 				</control>
 				<control type="button" id="999"><!-- Keyboard select button -->
 					<width>64</width>
@@ -432,7 +452,7 @@
 					<texturenofocus border="6">key-keyboard-nofocus.png</texturenofocus>
 					<texturefocus border="6">key-keyboard-focus.png</texturefocus>
 					<onclick>SendClick(virtualkeyboard,309)</onclick>
-					<onup>306</onup>
+					<onup>303</onup>
 				</control>
 			</control>
 		</control>

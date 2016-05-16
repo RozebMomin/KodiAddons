@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
 	<defaultcontrol always="true">450</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
 	<coordinates>
 		<left>0</left>
 		<top>0</top>
 	</coordinates>
-	<include>screen-fade</include>
 	<controls>
 		<include>fadebackground</include>
 		<control type="image" id="1"><!-- Background image -->
@@ -59,7 +57,7 @@
 					<top>0</top>
 					<width>675</width>
 					<height>45</height>
-					<texture border="8">button-default-focus.png</texture>
+					<texture border="6">button-default-focus.png</texture>
 					<animation effect="fade" start="100" end="60" condition="ControlGroup(460).HasFocus() | Control.HasFocus(23)">Conditional</animation>
 				</control>
 				<control type="label">
