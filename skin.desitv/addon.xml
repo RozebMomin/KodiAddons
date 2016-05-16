@@ -5,7 +5,7 @@
 		<import addon="resource.uisounds.apptv" version="1.0.2"/>
 		<import addon="script.xbmc.debug.log" version="14.1.0"/>
 		<import addon="script.favourites" version="6.0.3"/>
-		<import addon="script.globalsearch" version="6.0.6"/>
+		<!-- <import addon="script.globalsearch" version="6.0.6"/> -->
 		<import addon="service.library.data.provider" version="0.1.1"/>2
 		<import addon="script.skin.helper.service" version="1.0.43"/>
 		<import addon="script.image.resource.select" version="0.1.0"/>
