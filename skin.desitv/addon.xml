@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.desitv" version="1.4.1" name="DesiTV"	provider-name="RozebMomin">
+<addon id="skin.desitv" version="1.4.2" name="DesiTV"	provider-name="RozebMomin">
 	<requires>
-		<import addon="xbmc.gui" version="5.10.0"/>
-		<import addon="resource.uisounds.apptv" version="1.0.2"/>
-		<import addon="script.xbmc.debug.log" version="14.1.0"/>
-		<import addon="script.favourites" version="6.0.3"/>
-		<!-- <import addon="script.globalsearch" version="6.0.6"/> -->
-		<import addon="service.library.data.provider" version="0.1.1"/>2
-		<import addon="script.skin.helper.service" version="1.0.43"/>
-		<import addon="script.image.resource.select" version="0.1.0"/>
-	</requires>
+                <import addon="xbmc.gui" version="5.9.0"/>
+                <import addon="resource.uisounds.apptv" version="1.0.1"/>
+                <import addon="script.xbmc.debug.log" version="14.1.0"/>
+                <import addon="script.favourites" version="6.0.2"/>
+                <import addon="script.globalsearch" version="5.0.0"/>
+                <import addon="script.skin.helper.service" version="1.0.0"/>
+    </requires>
 	<extension point="xbmc.gui.skin" effectslowdown="1" debugging="false">
 		<res width="1280" height="720" aspect="16:9" default="true" folder="720p"/>
 	</extension>
