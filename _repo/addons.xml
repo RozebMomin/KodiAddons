@@ -691,10 +691,11 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 
 <addon id="script.DesiTVRemoteFix"
       name="DesiTV Remote Fix"
-      version="1.5.7"
+      version="1.5.8"
       provider-name="RozebMomin">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
+    <import addon="script.module.requests" version="2.7.0"/>
   </requires>
   <extension point="xbmc.python.script"
             library="default.py" />
