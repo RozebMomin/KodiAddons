@@ -691,7 +691,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 
 <addon id="script.DesiTVRemoteKeymap"
       name="DesiTV Remote Keymap"
-      version="1.0.2"
+      version="1.0.3"
       provider-name="RozebMomin">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
