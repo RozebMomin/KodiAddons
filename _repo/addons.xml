@@ -691,7 +691,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 
 <addon id="script.DesiTVRemoteFix"
       name="DesiTV Remote Fix"
-      version="1.0.0"
+      version="1.5.6"
       provider-name="RozebMomin">
   <requires>
     <import addon="xbmc.python" version="1.0"/>
@@ -700,8 +700,9 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
             library="default.py" />
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary lang="en">Fix DesiTV Remote issues</summary>
-    <description lang="en">A Script fixes DesiTV Remote issues</description>
+    <minversion>28764</minversion>
+    <summary lang="en">A Script for editing XBMC's built in RSS Ticker</summary>
+    <description lang="en">A Script for editing XBMC's built in RSS Ticker</description>
   </extension>
 </addon>
 
