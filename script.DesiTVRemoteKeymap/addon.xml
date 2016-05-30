@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.DesiTVRemoteKeymap"
+      name="DesiTV Remote Keymap"
+      version="1.0.0"
+      provider-name="RozebMomin">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+  </requires>
+  <extension point="xbmc.python.script"
+            library="default.py" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Fix DesiTV Remote issues</summary>
+    <description lang="en">A Script fixes DesiTV Remote issues</description>
+  </extension>
+</addon>
