@@ -220,6 +220,16 @@
 					<aspectratio>keep</aspectratio>
 					<texture diffuse="homeiconmask.png">$INFO[ListItem.thumb]</texture>
 				</control>
+				<control type="label">
+                    <left>0</left>
+                    <top>138</top>
+                    <width>250</width>
+                    <height>22</height>
+                    <textcolor>disabled-text</textcolor>
+                    <align>center</align>
+                    <label>$INFO[ListItem.label]</label>
+                    <font>font11</font>
+                </control>
 			</itemlayout>
 			<focusedlayout height="160" width="252">
 				<control type="image"><!-- Focused icon image -->
