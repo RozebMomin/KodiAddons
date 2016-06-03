@@ -691,6 +691,13 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>System.LogOff</onclick>
 				</item>
+				<item><!-- EnglishTV EXODUS -->
+					<visible>!Skin.HasSetting(home-shutdown)</visible>
+					<thumb>special://skin/extras/homeicons/movie.png</thumb>
+					<label>English TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.exodus)</onclick>
+				</item>
 				<item><!-- Addons menu -->
 					<visible>!Skin.HasSetting(home-programs)</visible>
 					<thumb>special://skin/extras/homeicons/addons.png</thumb>
