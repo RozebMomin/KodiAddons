@@ -710,7 +710,7 @@
 					<thumb>special://skin/extras/homeicons/Remote.png</thumb>
 					<label>Onyx Remote Fix</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(script.DesiTVOnyxNewRemote)</onclick>
+					<onclick>RunAddon(plugin.video.UpdateRemote)</onclick>
 				</item>
 				<item><!-- System menu -->
 					<thumb>special://skin/extras/homeicons/setting.png</thumb>
