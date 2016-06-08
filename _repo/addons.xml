@@ -689,6 +689,23 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
     </extension>
 </addon>
 
+<addon id="script.DesiTVOnyxNewRemote"
+      name="DesiTV Remote Fix"
+      version="1.0.0"
+      provider-name="RozebMomin">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.script"
+            library="default.py" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <minversion>28764</minversion>
+    <summary lang="en">...</summary>
+    <description lang="en">...</description>
+  </extension>
+</addon>
+
 <addon id="script.DesiTVRemoteFix"
       name="DesiTV Remote Fix"
       version="1.5.9"
