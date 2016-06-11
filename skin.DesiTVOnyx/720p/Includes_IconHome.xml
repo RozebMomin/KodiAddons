@@ -705,13 +705,6 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>ActivateWindow(1155,,return)</onclick>
 				</item>
-				<item><!-- DesiTVRemote Onyx FIX EXODUS -->
-					<visible>!Skin.HasSetting(home-shutdown)</visible>
-					<thumb>special://skin/extras/homeicons/Remote.png</thumb>
-					<label>Onyx Remote Fix</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.UpdateRemote)</onclick>
-				</item>
 				<item><!-- System menu -->
 					<thumb>special://skin/extras/homeicons/setting.png</thumb>
 					<label>$LOCALIZE[13000]</label>
