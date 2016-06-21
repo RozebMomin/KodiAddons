@@ -115,11 +115,13 @@ def new_live_tv_url(name, url):
 	s.headers['Referer']='http://www.dittotv.com/livetv/'+name2.lower()
 	# print 'url is', url
 	r = make_request(url, cookies = file_cookies)
-	rjson = json.loads(r)
-	
-	
-	# print 'link is', rjson['link']
-	m3 = rjson['link']+'|Referer=http://www.dittotv.com/livetv/'+name2.lower()
+	try:
+		html_find = re.compile('application/x-mpegurl.+?"(.+?)"', re.DOTALL).findall(r)[0]
+		m3 = html_find+'|Referer=http://www.dittotv.com/livetv/'+name2.lower()
+	except:
+		rjson = json.loads(r)
+		m3 = rjson['link']+'|Referer=http://www.dittotv.com/livetv/'+name2.lower()
+
 	listitem =xbmcgui.ListItem(name)
 	listitem.setProperty('IsPlayable', 'true')
 	listitem.setPath(m3)
@@ -128,22 +130,30 @@ def new_live_tv_url(name, url):
 def new_movies_url(name, url):
 	print 'inside ditto name', name
 	print 'inside ditto', url
-	r = make_request(url)
+	with open(cookie_file) as f:
+		file_cookies = pickle.load(f)
+		s.cookies = file_cookies	
+	r = make_request(url, cookies=file_cookies)
 	# csrf = re.compile('<meta name="csrf-token" content="(.+?)">').findall(r)[0]
 	movie_src = re.compile('<video.+?src="(.+?)".+?</video>', re.DOTALL).findall(r)[0]
-	m3 = movie_src#+'|Referer='+url
+	m3 = movie_src[:-1]#+'|Referer='+url
 	listitem = xbmcgui.ListItem(name)
 	listitem.setProperty('IsPlayable', 'true')
-	listitem.setProperty('mimetype', 'video/x-msvideo')
+	# listitem.setProperty('mimetype', 'video/x-msvideo')
 	listitem.setPath(m3)
 	print 'm3 is', m3
 	xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, listitem)
+	# xbmc.Player().play(m3)
+	# addDir('','','','')
 	
 	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 	
 def new_episodes_url(name, url):
 	# print url
-	r = make_request(url)
+	with open(cookie_file) as f:
+		file_cookies = pickle.load(f)
+		s.cookies = file_cookies
+	r = make_request(url, cookies=file_cookies)
 	# csrf = re.compile('<meta name="csrf-token" content="(.+?)">').findall(r)[0]
 	movie_src = re.compile('<video.+?src="(.+?)".+?</video>', re.DOTALL).findall(r)[0]
 	m3 = movie_src
@@ -294,6 +304,8 @@ def get_movies():
 	else:
 		new_url ='/movies?page=1&ListingForm%5BorderBy%5D='+moviessort+'&ListingForm%5Blanguage%5D='+language+'&ListingForm%5Bgenre%5D=All'
 		r = make_request(base_url+new_url)
+		with open(cookie_file, 'w') as f:
+			pickle.dump(s.cookies, f)
 
 	match = re.compile('<div class="unit item movie-item pull-left".+?<a href="(.+?)".+?img src=\'(.+?)\'.+?alt="(.+?)"', re.DOTALL).findall(r)
 	print match
@@ -325,6 +337,8 @@ def get_shows():
 	else:
 		new_url ='/tvshows?page=1&ListingForm%5BorderBy%5D='+tvsort+'&ListingForm%5Blanguage%5D='+language+'&ListingForm%5Bgenre%5D=All'
 		r = make_request(base_url+new_url)
+		with open(cookie_file, 'w') as f:
+			pickle.dump(s.cookies, f)
 
 	match = re.compile('<div class="unit item movie-item pull-left".+?<a href="(.+?)".+?img src=\'(.+?)\'.+?alt="(.+?)"', re.DOTALL).findall(r)
 	print match
