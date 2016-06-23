@@ -6,7 +6,7 @@ import os
 
 addon = xbmcaddon.Addon('plugin.video.MakkahTVLive')
 
-xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id=ArVmnth5jB4)')
-#plugin://plugin.video.youtube/?action=play_video&videoid=ArVmnth5jB4)')
+xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id=D8YHp37-tp0)')
+#June 22, 2016 -> D8YHp37-tp0
 
 #util.playMedia(addon.getAddonInfo('name'), addon.getAddonInfo('icon'), URLStream)
