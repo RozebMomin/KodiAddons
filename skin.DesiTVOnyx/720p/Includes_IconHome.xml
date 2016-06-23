@@ -721,12 +721,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.VelayatTV)</onclick>
 				</item>
-				<item><!-- WIN Islamic Channel -->
+				<!-- <item><!-- WIN Islamic Channel
 					<thumb>special://skin/extras/homeicons/WINChannel.png</thumb>
 					<label>WIN Channel</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.WorldIslamicNetwork)</onclick>
-				</item>
+				</item> -->
 				<item><!-- Addons menu -->
 					<visible>!Skin.HasSetting(home-programs)</visible>
 					<thumb>special://skin/extras/homeicons/addons.png</thumb>

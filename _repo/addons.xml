@@ -875,7 +875,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 	</extension>
 </addon>
 
-<addon id="skin.DesiTVOnyx" version="1.4.5" name="DesiTV Onyx"	provider-name="RozebMomin">
+<addon id="skin.DesiTVOnyx" version="1.4.6" name="DesiTV Onyx"	provider-name="RozebMomin">
 	<requires>
 		<import addon="xbmc.gui" version="5.10.0"/>
 		<import addon="resource.uisounds.apptv" version="1.0.2"/>
@@ -884,7 +884,6 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 		<import addon="script.globalsearch" version="6.0.6"/>
 		<import addon="script.skin.helper.service" version="1.0.90"/>
 		<import addon="script.image.resource.select" version="0.1.0"/>
-		<import addon="plugin.video.WorldIslamicNetwork" version="1.1.5"/>
 	</requires>
 	<extension point="xbmc.gui.skin" effectslowdown="1" debugging="false">
 		<res width="1280" height="720" aspect="16:9" default="true" folder="720p"/>
