@@ -692,11 +692,40 @@
 					<onclick>System.LogOff</onclick>
 				</item>
 				<item><!-- EnglishTV EXODUS -->
-					<visible>!Skin.HasSetting(home-shutdown)</visible>
 					<thumb>special://skin/extras/homeicons/movie.png</thumb>
 					<label>English TV</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.exodus)</onclick>
+				</item>
+				<item><!-- Ahlulbayt TV -->
+					<thumb>special://skin/extras/homeicons/AhlulbaytTV.png</thumb>
+					<label>Ahlulbayt TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.AhlulbaytTV.en)</onclick>
+				</item>
+				<item><!-- Karbala TV -->
+					<thumb>special://skin/extras/homeicons/KarbalaLive.png</thumb>
+					<label>Karbala TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.KarbalaTVLive)</onclick>
+				</item>
+				<item><!-- Makkah TV -->
+					<thumb>special://skin/extras/homeicons/MakkahLive.png</thumb>
+					<label>Makkah TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.MakkahTVLive)</onclick>
+				</item>
+				<item><!-- Velayat TV -->
+					<thumb>special://skin/extras/homeicons/VelayatTV.png</thumb>
+					<label>Velayat TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.VelayatTV)</onclick>
+				</item>
+				<item><!-- WIN Islamic Channel -->
+					<thumb>special://skin/extras/homeicons/WINChannel.png</thumb>
+					<label>WIN Channel</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.WorldIslamicNetwork)</onclick>
 				</item>
 				<item><!-- Addons menu -->
 					<visible>!Skin.HasSetting(home-programs)</visible>
