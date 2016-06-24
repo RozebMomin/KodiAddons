@@ -192,12 +192,6 @@
     <language>en</language>
     <email>...</email>
   </extension>
-  <extension point="xbmc.addon.repository" name="DesiTV MediaCenter">
-            <info compressed="false">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/</datadir>
-            <hashes>false</hashes>
-  </extension>
 </addon>
 
 <addon
@@ -551,12 +545,13 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 	</extension>
 </addon>
 
-<addon id="plugin.video.UpdateDesiTV" name="DesiTV Updater" version="1.1.5" provider-name="Rozeb Momin">
+<addon id="plugin.video.UpdateDesiTV" name="DesiTV Updater" version="1.1.6" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
    <import addon="script.module.requests" version="2.7.0"/>
    <import addon="script.module.beautifulsoup" version="3.2.1"/>
    <import addon="script.module.beautifulsoup4" version="4.3.2"/>
+   <import addon="plugin.video.CartoonNetwork" version="1.1.0"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>

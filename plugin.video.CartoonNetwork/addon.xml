@@ -16,10 +16,4 @@
     <language>en</language>
     <email>...</email>
   </extension>
-  <extension point="xbmc.addon.repository" name="DesiTV MediaCenter">
-            <info compressed="false">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/</datadir>
-            <hashes>false</hashes>
-  </extension>
 </addon>
