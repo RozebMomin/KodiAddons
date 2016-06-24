@@ -9,23 +9,11 @@ import re
 
 addon = xbmcaddon.Addon('plugin.video.AasthaTV')
 
-r = requests.get("http://vuroll.com/play/livetv/Aastha-TV_2038")
-# http://vuroll.com/play/livetv/Aastha-TV_2038
-
+r = requests.get("http://vuroll.com/AasthaNetwork")
+print "Getting Soup"
 soup = BeautifulSoup(r.content)
 
-need = soup.findAll('script')
-TtoWrite = str(need[9])
-
-TtoWrite = TtoWrite.replace("	", "")
-TtoWrite = re.search('(delivery.*)', TtoWrite).group()
-TtoWrite = TtoWrite.replace("delivery = ", "")
-TtoWrite = TtoWrite.replace(";", "")
-TtoWrite = TtoWrite.replace("\"", "")
-TtoWrite = TtoWrite.replace("manifest.f4m", "playlist.m3u8")
-
-
-videoSource = TtoWrite
+videoSource = soup.find('source')['src']
 
 URLStream = videoSource
 
