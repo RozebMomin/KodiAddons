@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.CartoonNetwork" name="Cartoon Network" version="1.0.0" provider-name="Rozeb Momin">
+  <requires>
+   <import addon="xbmc.python" version="2.1.0"/>
+   <import addon="script.module.requests" version="2.7.0"/>
+   <import addon="script.module.beautifulsoup" version="3.2.1"/>
+   <import addon="script.module.beautifulsoup4" version="4.3.2"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Cartoon Network Live</summary>
+    <description lang="en">Cartoon Network Live</description>
+    <platform>all</platform>
+    <language>en</language>
+    <email>...</email>
+  </extension>
+  <extension point="xbmc.addon.repository" name="DesiTV MediaCenter">
+            <info compressed="false">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/</datadir>
+            <hashes>false</hashes>
+  </extension>
+</addon>

@@ -341,6 +341,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>ActivateWindow(MyPictures,,return)</onclick>
 				</item>
+				<item><!-- Local News -->
+					<thumb>special://skin/extras/homeicons/LocalNews.png</thumb>
+					<label>Local News</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.LocalNews)</onclick>
+				</item>
 				<item>
 					<thumb>$INFO[Skin.String(CustomMovies.1.Icon)]</thumb>
 					<label>$INFO[Skin.String(CustomMovies.1.Label)]</label>
@@ -691,6 +697,18 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>System.LogOff</onclick>
 				</item>
+				<item><!-- TV9 Gujarati -->
+					<thumb>special://skin/extras/homeicons/TV9Gujarat.png</thumb>
+					<label>TV9 Gujarati</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.TV9Gujarat)</onclick>
+				</item>
+				<item><!-- Cartoon Network -->
+					<thumb>special://skin/extras/homeicons/CartoonNetwork.png</thumb>
+					<label>Cartoon Network</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.CartoonNetwork)</onclick>
+				</item>
 				<item><!-- EnglishTV EXODUS -->
 					<thumb>special://skin/extras/homeicons/movie.png</thumb>
 					<label>English TV</label>
@@ -721,12 +739,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.VelayatTV)</onclick>
 				</item>
-				<!-- <item><!-- WIN Islamic Channel
+				<item><!-- WIN Islamic Channel -->
 					<thumb>special://skin/extras/homeicons/WINChannel.png</thumb>
 					<label>WIN Channel</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.WorldIslamicNetwork)</onclick>
-				</item> -->
+				</item>
 				<item><!-- Addons menu -->
 					<visible>!Skin.HasSetting(home-programs)</visible>
 					<thumb>special://skin/extras/homeicons/addons.png</thumb>
