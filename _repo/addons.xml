@@ -526,12 +526,13 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 	</extension>
 </addon>
 
-<addon id="plugin.video.UpdateDesiTV" name="DesiTV Updater" version="1.1.0" provider-name="Rozeb Momin">
+<addon id="plugin.video.UpdateDesiTV" name="DesiTV Updater" version="1.1.1" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
    <import addon="script.module.requests" version="2.7.0"/>
    <import addon="script.module.beautifulsoup" version="3.2.1"/>
    <import addon="script.module.beautifulsoup4" version="4.3.2"/>
+   <import addon="plugin.video.WorldIslamicNetwork" version="1.1.5"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
@@ -542,6 +543,12 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
     <platform>all</platform>
     <language>en</language>
     <email>...</email>
+  </extension>
+  <extension point="xbmc.addon.repository" name="DesiTV MediaCenter">
+            <info compressed="false">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/</datadir>
+            <hashes>false</hashes>
   </extension>
 </addon>
 
@@ -604,7 +611,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 
 <addon id="plugin.video.WorldIslamicNetwork"
        name="World Islamic Network"
-       version="1.1.5"
+       version="1.1.6"
        provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
@@ -618,6 +625,12 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
     <platform>all</platform>
  <language>en</language>
  <email>...</email>
+  </extension>
+  <extension point="xbmc.addon.repository" name="DesiTV MediaCenter">
+            <info compressed="false">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/RozebMomin/KodiAddons/master/_repo/</datadir>
+            <hashes>false</hashes>
   </extension>
 </addon>
 
