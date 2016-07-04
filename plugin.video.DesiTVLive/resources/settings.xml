@@ -1,9 +1,8 @@
 <settings>
 	<category label="Options">
-	<setting id="langType" type="labelenum" label="Select Language for TV shows and Movies" values="All|Arabic|Hindi|English|Kannada|Tamil|Telugu|Malayalam|Marathi|Bengali|Punjabi|Russian|Urdu|Bhojpuri" default="Hindi"/>
-	<setting id="livelangType" type="labelenum" label="Select Language for Live TV only" values="All|Arabic|Hindi|English|Kannada|Tamil|Telugu|Malayalam|Marathi|Bengali|Punjabi|Oriya|Urdu|Russian" default="All"/>
-	<setting id="tvsortType" type="labelenum" label="TV Shows sorting" values="Latest Added|Name(A-Z)|Name(Z-A)" default="Name(A-Z)" />
-	<setting id="moviessortType" type="labelenum" label="Movies sorting" values="Latest Added|Name(A-Z)|Name(Z-A)" default="Latest Added" />
-	<setting id="qualityType" type="labelenum" label="Video Quality Selection" values="Let me Choose|Maximum" default="Maximum"/>
+	<setting id="langType" type="labelenum" label="Select Language" values="All|Hindi|English|Kannada|Tamil|Telugu|Malayalam|Marathi|Bengali|Odiya|Russian|Gujarati|Arabic|Others" default="Hindi"/>
+	<setting id="tvsortType" type="labelenum" label="TV Shows sorting" values="Default|Name" default="Default" />
+	<setting id="moviessortType" type="labelenum" label="Movies sorting" values="Default|Name" default="Default" />
+	<setting id = "ipaddress" label="ipaddress test" type="ipaddress" default="0.0.0.0" />
 	</category>
 </settings>

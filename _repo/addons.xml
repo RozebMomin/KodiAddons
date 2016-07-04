@@ -196,7 +196,7 @@
 
 <addon
   id="plugin.video.DesiTVLive"
-  version="2.6.0"
+  version="2.6.5"
   name="DesiTVLive"
   provider-name="RozebMomin">
   <requires>
