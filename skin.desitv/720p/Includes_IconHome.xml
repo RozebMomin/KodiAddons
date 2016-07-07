@@ -700,6 +700,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>ActivateWindow(1155,,return)</onclick>
 				</item>
+				<item><!-- Package Manager -->
+					<thumb>special://skin/extras/homeicons/packagemanager.png</thumb>
+					<label>Package Manager</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(addonbrowser,addons://repository.DesiTVMC/xbmc.addon.video,return)</onclick>
+				</item>
 				<item><!-- System menu -->
 					<thumb>special://skin/extras/homeicons/setting.png</thumb>
 					<label>$LOCALIZE[13000]</label>
@@ -716,7 +722,7 @@
 					<thumb>special://skin/extras/homeicons/UpdateIcon.png</thumb>
 					<label>Update</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.UpdateDesiTV)</onclick>
+					<onclick>UpdateAddonRepos</onclick>
 				</item>
 				<item><!-- Quit -->
 					<visible>!Skin.HasSetting(home-shutdown)</visible>
