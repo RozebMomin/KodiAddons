@@ -10,7 +10,7 @@ import util
 import player_config
 import events
 import adobe_activate_api
-from globals import selfAddon, defaultlive, defaultreplay, defaultupcoming, defaultimage, defaultfanart, translation, pluginhandle, LOG_LEVEL
+from globals import selfAddon, defaultlive, defaultreplay, defaultupcoming, defaultimage, defaultfanart, translation, pluginhandle
 from menu_listing import *
 from register_mode import RegisterMode
 
@@ -140,7 +140,7 @@ class Legacy(MenuListing):
                 self.index_event(event, live, upcoming, replay, chosen_sport)
         # Dir for ESPN3/SECPlus
         elif chosen_network is None:
-            if num_espn3 > 0:
+            if num_espn3 > 0 and selfAddon.getSetting('ShowEspn3') == 'true':
                 translation_number = 30191 if num_espn3 == 1 else 30190
                 if selfAddon.getSetting('NoColors') == 'true':
                     name = translation(translation_number) % num_espn3
@@ -148,7 +148,7 @@ class Legacy(MenuListing):
                     name = '[COLOR=FFCC0000]' + (translation(translation_number) % num_espn3) + '[/COLOR]'
                 addDir(name, dict(ESPN_URL=espn_url, MODE=self.make_mode(LIVE_EVENTS_MODE), NETWORK_ID=ESPN3_ID),
                        defaultlive)
-            if num_secplus > 0:
+            if num_secplus > 0 and selfAddon.getSetting('ShowSecPlus') == 'true':
                 translation_number = 30201 if num_espn3 == 1 else 30200
                 if selfAddon.getSetting('NoColors') == 'true':
                     name = translation(translation_number) % num_secplus
@@ -161,14 +161,14 @@ class Legacy(MenuListing):
         networkId = event.find('networkId').text
         if networkId is not None:
             networkName = player_config.get_network_name(networkId)
-        xbmc.log(TAG + ' networkName %s' % networkName, LOG_LEVEL)
+        xbmc.log(TAG + ' networkName %s' % networkName, xbmc.LOGDEBUG)
 
         fanart = event.find('.//thumbnail/large').text
         fanart = fanart.split('&')[0]
         starttime = int(event.find('startTimeGmtMs').text) / 1000
         endtime = int(event.find('endTimeGmtMs').text) / 1000
         length = int(round((endtime - starttime)))
-        xbmc.log(TAG + 'duration %s' % length, LOG_LEVEL)
+        xbmc.log(TAG + 'duration %s' % length, xbmc.LOGDEBUG)
         session_url = base64.b64decode(
             'aHR0cDovL2Jyb2FkYmFuZC5lc3BuLmdvLmNvbS9lc3BuMy9hdXRoL3dhdGNoZXNwbi9zdGFydFNlc3Npb24/')
         session_url += 'channel=' + event.find('adobeResource').text

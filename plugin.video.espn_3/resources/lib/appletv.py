@@ -7,7 +7,7 @@ import xbmcplugin
 import util
 import player_config
 import adobe_activate_api
-from globals import selfAddon, defaultlive, defaultreplay, defaultupcoming, defaultimage, defaultfanart, translation, pluginhandle, LOG_LEVEL
+from globals import selfAddon, defaultlive, defaultreplay, defaultupcoming, defaultimage, defaultfanart, translation, pluginhandle
 from addon_util import *
 from menu_listing import *
 from register_mode import RegisterMode
@@ -68,7 +68,7 @@ class AppleTV(MenuListing):
         selected_nav_id = args.get(SHOWCASE_NAV_ID, None)
         et = util.get_url_as_xml_soup_cache(get_url(url))
         navigation_items = et.findall('.//navigation/navigationItem')
-        xbmc.log('ESPN3 Found %s items' % len(navigation_items), LOG_LEVEL)
+        xbmc.log('ESPN3 Found %s items' % len(navigation_items), xbmc.LOGDEBUG)
         if selected_nav_id is None and len(navigation_items) > 0:
             for navigation_item in navigation_items:
                 name = navigation_item.find('./title').text
@@ -82,12 +82,12 @@ class AppleTV(MenuListing):
         elif len(navigation_items) > 0:
             for navigation_item in navigation_items:
                 if navigation_item.get('id') == selected_nav_id[0]:
-                    xbmc.log('ESPN3 Found nav item %s' % selected_nav_id[0], LOG_LEVEL)
+                    xbmc.log('ESPN3 Found nav item %s' % selected_nav_id[0], xbmc.LOGDEBUG)
                     self.process_item_list(navigation_item.findall('.//twoLineMenuItem'))
                     self.process_item_list(navigation_item.findall('.//twoLineEnhancedMenuItem'))
                     xbmcplugin.setContent(pluginhandle, 'episodes')
         else: # If there are no navigation items then just dump all of the menu entries
-            xbmc.log('ESPN3: Dumping all menu items', LOG_LEVEL)
+            xbmc.log('ESPN3: Dumping all menu items', xbmc.LOGDEBUG)
             self.process_item_list(et.findall('.//twoLineMenuItem'))
             self.process_item_list(et.findall('.//twoLineEnhancedMenuItem'))
             xbmcplugin.setContent(pluginhandle, 'episodes')
@@ -201,7 +201,7 @@ class AppleTV(MenuListing):
                     url = method_info[3]
                     nav_id = method_info[2]
                     url = url + '&navigationItemId=' + nav_id
-                    xbmc.log(TAG + 'Load more url %s' % url, LOG_LEVEL)
+                    xbmc.log(TAG + 'Load more url %s' % url, xbmc.LOGDEBUG)
                     addDir(menu_label,
                            dict(SHOWCASE_URL=url, MODE=self.make_mode(CATEGORY_SHOWCASE_MODE)),
                            defaultimage)
@@ -221,7 +221,7 @@ class AppleTV(MenuListing):
                     stash_json = json.loads(stash, 'utf-8')
                     stashes.append(stash_json)
 
-        xbmc.log(TAG + ' sorting %s items' % len(stashes), LOG_LEVEL)
+        xbmc.log(TAG + ' sorting %s items' % len(stashes), xbmc.LOGDEBUG)
         stashes.sort(cmp=compare_appletv)
         for stash_json in stashes:
             if stash_json['type'] == 'upcoming':

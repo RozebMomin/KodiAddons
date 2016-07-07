@@ -23,9 +23,9 @@ def get_replay_events_url(network_names = []):
     return player_config.get_replay_event_url() + '&channel=' + query_params
 
 def get_live_events(network_names = []):
-    soup = util.get_url_as_xml_soup(player_config.get_live_event_url())
+    soup = util.get_url_as_xml_soup_cache(player_config.get_live_event_url())
     return soup.findall('.//event')
 
 def get_events(url):
-    soup = util.get_url_as_xml_soup(url)
+    soup = util.get_url_as_xml_soup_cache(url)
     return soup.findall('.//event')

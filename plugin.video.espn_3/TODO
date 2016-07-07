@@ -1,2 +1,0 @@
-1. fix sorting to use cmp so that live events always show on top
-future events are sorted ascending, previous events sorting descendin

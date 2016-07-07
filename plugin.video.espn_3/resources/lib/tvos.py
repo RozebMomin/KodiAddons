@@ -5,7 +5,7 @@ import xbmcplugin
 
 import util
 import adobe_activate_api
-from globals import defaultlive, defaultfanart, translation, pluginhandle, LOG_LEVEL
+from globals import defaultlive, defaultfanart, translation, pluginhandle
 from addon_util import *
 from menu_listing import *
 from register_mode import RegisterMode
@@ -80,7 +80,7 @@ class TVOS(MenuListing):
 
     def process_buckets(self, url, buckets, selected_buckets, current_bucket_path):
         selected_bucket = None if selected_buckets is None or len(selected_buckets) == 0 else selected_buckets[0]
-        xbmc.log(TAG + 'Selected buckets: %s Current Path: %s' % (selected_buckets, current_bucket_path), LOG_LEVEL)
+        xbmc.log(TAG + 'Selected buckets: %s Current Path: %s' % (selected_buckets, current_bucket_path), xbmc.LOGDEBUG)
         original_bucket_path = current_bucket_path
         for bucket in buckets:
             current_bucket_path = list(original_bucket_path)
@@ -115,11 +115,11 @@ class TVOS(MenuListing):
                                 xbmcplugin.setContent(pluginhandle, 'episodes')
 
     def parse_json(self, args, url):
-        xbmc.log(TAG + 'Looking at url %s %s' % (url, args), LOG_LEVEL)
+        xbmc.log(TAG + 'Looking at url %s %s' % (url, args), xbmc.LOGDEBUG)
         selected_bucket = args.get(BUCKET, None)
         if selected_bucket is not None:
             selected_bucket = selected_bucket[0].split('/')
-            xbmc.log(TAG + 'Looking at bucket %s' % selected_bucket, LOG_LEVEL)
+            xbmc.log(TAG + 'Looking at bucket %s' % selected_bucket, xbmc.LOGDEBUG)
         json_data = util.get_url_as_json_cache(get_url(url))
         if 'buckets' in json_data['page']:
             buckets = json_data['page']['buckets']

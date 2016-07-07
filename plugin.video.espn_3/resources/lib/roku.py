@@ -5,7 +5,7 @@ import xbmcplugin
 
 import util
 import adobe_activate_api
-from globals import defaultlive, defaultfanart, translation, pluginhandle, LOG_LEVEL
+from globals import defaultlive, defaultfanart, translation, pluginhandle
 from addon_util import *
 from menu_listing import *
 from register_mode import RegisterMode

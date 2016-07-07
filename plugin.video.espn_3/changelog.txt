@@ -1,4 +1,9 @@
 --------------------------------
+version 2.9.7 (June 2016)
+--------------------------------
+- Added in options to show/hide channels
+
+--------------------------------
 version 2.6.0 (June 2016)
 --------------------------------
 - Added in support for premium content with a valid cable TV provider
