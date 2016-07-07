@@ -709,6 +709,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.CartoonNetwork)</onclick>
 				</item>
+				<item><!-- ESPN LIVE -->
+					<thumb>special://skin/extras/homeicons/espnlive.png</thumb>
+					<label>ESPN Live</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.ESPNLive)</onclick>
+				</item>
 				<item><!-- EnglishTV EXODUS -->
 					<thumb>special://skin/extras/homeicons/movie.png</thumb>
 					<label>English TV</label>
