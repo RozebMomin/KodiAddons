@@ -237,21 +237,25 @@
 
 <addon id="plugin.video.ESPNLive"
        name="ESPN Live"
-       version="1.0.1"
+       version="1.0.2"
        provider-name="RozebMomin">
     <requires>
-        <import addon="xbmc.python"                   version="2.1.0"/>
-	   <import addon="script.module.beautifulsoup4"  version="4.3.2"/>
+        <import addon="xbmc.python" version="2.20.0"/>
+        <import addon="script.module.beautifulsoup4" version="4.3.2"/>
+        <import addon="script.module.elementtree" version="1.2.8"/>
+        <import addon="script.module.simplejson" version="3.3.0"/>
+        <import addon="script.module.m3u8" version="0.2.2"/>
+        <import addon="script.module.dateutil" version="2.4.2"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="addon.py">
         <provides>video</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
-	<language />
+        <language/>
         <platform>all</platform>
         <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
         <summary lang="en">ESPN Live</summary>
-        <description lang="en">Watch full live streaming sporting events and replays on ESPN Live, including football, baseball, cricket, soccer, and basketball events.</description>
+        <description lang="en">...</description>
     </extension>
 </addon>
 
