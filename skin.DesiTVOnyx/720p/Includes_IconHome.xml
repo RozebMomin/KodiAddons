@@ -253,6 +253,12 @@
 				</control>
 			</focusedlayout>
 			<content>
+				<item><!-- System menu -->
+					<thumb>special://skin/extras/homeicons/setting.png</thumb>
+					<label>DONOTCLICK</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>UnloadSkin()</onclick>
+				</item>
 				<item><!-- Videos -->
 					<visible>!Skin.HasSetting(home-video)</visible>
 					<thumb>special://skin/extras/homeicons/video.png</thumb>
