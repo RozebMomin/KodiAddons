@@ -693,6 +693,24 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>System.LogOff</onclick>
 				</item>
+				<item><!-- Bangla TV -->
+					<thumb>special://skin/extras/homeicons/BanglaTV.png</thumb>
+					<label>Bangla TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.BanglaTVLive)</onclick>
+				</item>
+				<item><!-- Cartoon Network -->
+					<thumb>special://skin/extras/homeicons/CartoonNetwork.png</thumb>
+					<label>Cartoon Network</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.CartoonNetwork)</onclick>
+				</item>
+				<item><!-- ESPN LIVE -->
+					<thumb>special://skin/extras/homeicons/espnlive.png</thumb>
+					<label>ESPN Live</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.ESPNLive)</onclick>
+				</item>
 				<item><!-- Addons menu -->
 					<visible>!Skin.HasSetting(home-programs)</visible>
 					<thumb>special://skin/extras/homeicons/addons.png</thumb>
