@@ -1,4 +1,17 @@
 --------------------------------
+version 2.9.7 (June 2016)
+--------------------------------
+- Added in options to show/hide channels
+
+--------------------------------
+version 2.6.0 (June 2016)
+--------------------------------
+- Added in support for premium content with a valid cable TV provider
+- Updated the menu system to match the same content available on the Apple TV
+- Added in the ability for high quality streams (720p 60fps)
+
+
+--------------------------------
 version 1.2.4 (September 15 2015)
 --------------------------------
 - Added ability to only list RTMP/HDS Stream Types to prevent confusion. *See Settings*

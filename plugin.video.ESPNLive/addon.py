@@ -1,461 +1,304 @@
 #!/usr/bin/python
 #
 #
+# Written by Ksosez, BlueCop, Romans I XVI, locomot1f, MetalChris, awaters1 (https://github.com/awaters1)
 # Released under GPL(v2)
 
-import urllib, urllib2, xbmcplugin, xbmcaddon, xbmcgui, os, random, string, re
-import cookielib
+import base64
+import json
+import re
 import time
-from datetime import datetime, timedelta
-from bs4 import BeautifulSoup, SoupStrainer
-
-## Get the settings
-
-selfAddon = xbmcaddon.Addon(id='plugin.video.ESPNLive')
-translation = selfAddon.getLocalizedString
-defaultimage = 'special://home/addons/plugin.video.ESPNLive/icon.png'
-defaultfanart = 'special://home/addons/plugin.video.ESPNLive/fanart.jpg'
-defaultlive = 'special://home/addons/plugin.video.ESPNLive/resources/media/new_live.png'
-defaultreplay = 'special://home/addons/plugin.video.ESPNLive/resources/media/new_replay.png'
-defaultupcoming = 'special://home/addons/plugin.video.ESPNLive/resources/media/new_upcoming.png'
-StreamType = selfAddon.getSetting('StreamType')
-pluginpath = selfAddon.getAddonInfo('path')
-pluginhandle = int(sys.argv[1])
-
-ADDONDATA = xbmc.translatePath('special://profile/addon_data/plugin.video.ESPNLive/')
-if not os.path.exists(ADDONDATA):
-    os.makedirs(ADDONDATA)
-USERFILE = os.path.join(ADDONDATA,'userdata.xml')
+import urllib
+import urllib2
+import urlparse
 
 
-cj = cookielib.LWPCookieJar()
-networkmap = {'n360':'ESPN3'}
+import xbmcgui
+import xbmcplugin
 
-channels = '&channel='
-channels += 'espn3'
+from resources.lib import util
+from resources.lib import adobe_activate_api
+from resources.lib.globals import selfAddon, defaultlive, defaultreplay, defaultupcoming, defaultimage, defaultfanart, translation, pluginhandle, UA_PC
+from resources.lib.constants import *
+from resources.lib.addon_util import *
 
-def CATEGORIES():
-    curdate = datetime.utcnow()
-    upcoming = int(selfAddon.getSetting('upcoming'))+1
-    days = (curdate+timedelta(days=upcoming)).strftime("%Y%m%d")
-    addDir(translation(30029), 'http://sports-ak.espn.go.com/watchespn/feeds/startup?action=live'+channels, 1, defaultlive)
-    addDir(translation(30030), 'http://sports-ak.espn.go.com/watchespn/feeds/startup?action=upcoming'+channels+'&endDate='+days+'&startDate='+curdate.strftime("%Y%m%d"), 2,defaultupcoming)
-    enddate = '&endDate='+ (curdate+timedelta(days=1)).strftime("%Y%m%d")
-    replays1 = [5,10,15,20,25]
-    replays1 = replays1[int(selfAddon.getSetting('replays1'))]
-    start1 = (curdate-timedelta(days=replays1)).strftime("%Y%m%d")
-    replays2 = [10,20,30,40,50]
-    replays2 = replays2[int(selfAddon.getSetting('replays2'))]
-    start2 = (curdate-timedelta(days=replays2)).strftime("%Y%m%d")
-    replays3 = [30,60,90,120]
-    replays3 = replays3[int(selfAddon.getSetting('replays3'))]
-    start3 = (curdate-timedelta(days=replays3)).strftime("%Y%m%d")
-    replays4 = [60,90,120,240]
-    replays4 = replays4[int(selfAddon.getSetting('replays4'))]
-    start4 = (curdate-timedelta(days=replays4)).strftime("%Y%m%d")
-    startAll = (curdate-timedelta(days=365)).strftime("%Y%m%d")
-    addDir(translation(30031)+str(replays1)+' Days', 'http://sports-ak.espn.go.com/watchespn/feeds/startup?action=replay'+channels+enddate+'&startDate='+start1, 2, defaultreplay)
-    addDir(translation(30031)+str(replays2)+' Days', 'http://sports-ak.espn.go.com/watchespn/feeds/startup?action=replay'+channels+enddate+'&startDate='+start2, 2, defaultreplay)
-    addDir(translation(30031)+str(replays3)+' Days', 'http://sports-ak.espn.go.com/watchespn/feeds/startup?action=replay'+channels+enddate+'&startDate='+start3, 2, defaultreplay)
-    addDir(translation(30031)+str(replays3)+'-'+str(replays4)+' Days', 'http://sports-ak.espn.go.com/watchespn/feeds/startup?action=replay'+channels+'&endDate='+start3+'&startDate='+start4, 2, defaultreplay)
-    addDir(translation(30032), 'http://sports-ak.espn.go.com/watchespn/feeds/startup?action=replay'+channels+enddate+'&startDate='+startAll, 2, defaultreplay)
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+from resources.lib import legacy
+from resources.lib import appletv
+from resources.lib import tvos
+from resources.lib import roku
+from resources.lib import androidtv
+from resources.lib import events
 
-def LISTNETWORKS(url,name):
-    pass
+TAG = 'ESPN3: '
 
-def LISTSPORTS(url,name):
-    data = get_html(url)
-    #data = '<?xml version="1.0" encoding="CP1252"?>'+data
-    SaveFile('videocache.xml', data, ADDONDATA)
-    if 'action=replay' in url:
-        image = defaultreplay
-    elif 'action=upcoming' in url:
-        image = defaultupcoming
+def ROOT_ITEM(refresh):
+    if not adobe_activate_api.is_authenticated():
+        addDir('[COLOR=FFFF0000]' + translation(30300) + '[/COLOR]',
+               dict(MODE=AUTHENTICATE_MODE),
+               defaultreplay)
+    addDir(translation(30850),
+           dict(MODE=REFRESH_LIVE_MODE),
+           defaultlive)
+    include_premium = adobe_activate_api.is_authenticated()
+    channel_list = events.get_channel_list(include_premium)
+    legacy_inst = legacy.Legacy()
+    espn_url = list()
+    espn_url.append(events.get_live_events_url(channel_list))
+    legacy_inst.index_legacy_live_events(dict(ESPN_URL=espn_url))
+    if selfAddon.getSetting('ShowAndroidTVMenu') == 'true':
+        addDir(translation(30780),
+               dict(MODE='/androidtv/'),
+               defaultlive)
+    if selfAddon.getSetting('ShowAppleTVMenu') == 'true':
+        addDir(translation(30730),
+               dict(MODE='/appletv/'),
+               defaultlive)
+    if selfAddon.getSetting('ShowLegacyMenu') == 'true':
+        addDir(translation(30740),
+               dict(MODE='/legacy/'),
+               defaultlive)
+    if selfAddon.getSetting('ShowRokuMenu') == 'true':
+        addDir(translation(30760),
+               dict(MODE='/roku/'),
+               defaultlive)
+    if selfAddon.getSetting('ShowTVOSMenu') == 'true':
+        addDir(translation(30750),
+               dict(MODE='/tvos/'),
+               defaultlive)
+    if adobe_activate_api.is_authenticated():
+        addDir('[COLOR=FF00FF00]' + translation(30380) + '[/COLOR]',
+           dict(MODE=AUTHENTICATION_DETAILS_MODE),
+           defaultfanart)
+    xbmcplugin.endOfDirectory(pluginhandle, updateListing=refresh)
+
+def PLAY_ITEM(args):
+    url = args.get(PLAYBACK_URL)[0]
+    item = xbmcgui.ListItem(path=url)
+    return xbmcplugin.setResolvedUrl(pluginhandle, True, item)
+
+# Cookie is only needed when authenticating with espn broadband as opposed to uplynk
+#ua UA_PC
+#finalurl = finalurl + '|Connection=keep-alive&User-Agent=' + urllib.quote(ua) + '&Cookie=_mediaAuth=' + urllib.quote(base64.b64encode(pkan))
+def PLAY_TV(args):
+
+    resource = args.get(ADOBE_RSS, None)
+    network_name = args.get(NETWORK_NAME)[0]
+    if resource is None:
+        event_name = args.get(EVENT_NAME)[0]
+        event_guid = args.get(EVENT_GUID)[0]
+        event_parental_rating = args.get(EVENT_PARENTAL_RATING)[0]
+        resource = adobe_activate_api.get_resource(network_name, event_name, event_guid, event_parental_rating)
     else:
-        image = defaultimage
-    addDir(translation(30034), url, 1, image)
-    sports = []
-    events = BeautifulSoup(data, 'html.parser', parse_only = SoupStrainer('event'))
-    for event in events.find_all('event'):
-        sport = event.find('sportdisplayvalue').string.title().encode('utf-8')
-        if sport not in sports:
-            sports.append(sport)
-    for sport in sports:
-        addDir(sport, url, 3, image)
-    xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE)
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+        resource = resource[0]
 
-def INDEXBYSPORT(url,name):
-    INDEX(url,name,bysport=True)
-    
-def INDEX(url,name,bysport=False):
-    if 'action=live' in url:
-        data = get_html(url)
-        #data = '<?xml version="1.0" encoding="CP1252"?>'+data
-    else:
-        data = ReadFile('videocache.xml', ADDONDATA)
-    events = BeautifulSoup(data, 'html.parser', parse_only = SoupStrainer('event'))
-    for event in events.find_all('event'):
-        sport = event.find('sportdisplayvalue').string.title().encode('utf-8')
-        desktopStreamSource = event.find('desktopstreamsource').string
-        if name <> sport and bysport == True:
-            continue
-        elif desktopStreamSource == 'HLS' and StreamType == 'true':
-        	  pass
-        else:
-            ename = event.find('name').string.encode('utf-8')
-            eventid = event.get('id')
-            simulcastAiringId = event.find('simulcastairingid').string
-            desktopStreamSource = event.find('desktopstreamsource').string
-            bamContentId = event.get('bamcontentid')
-            bamEventId = event.get('bameventid')
-            authurl = eventid
-            authurl += ','+bamContentId
-            authurl += ','+bamEventId
-            authurl += ','+simulcastAiringId
-            authurl += ','+desktopStreamSource
-            sport2 = event.find('sport').string.title()
-            if sport <> sport2:
-                sport += ' ('+sport2+')'
-            league = event.find('league').string
-            location = event.find('site').string
-            networkid = event.find('networkid').string
-            if networkid is not None:
-                network = networkmap[networkid]
-            fanart = event.find('large').string
-            fanart = fanart.split('&')[0]
-            thumb = event.find('large').string
-            mpaa = event.find('parentalrating').string
-            starttime = int(event.find('starttimegmtms').string)/1000
-	    eventedt = int(event.find('starttime').string)
-            etime = time.strftime("%I:%M %p",time.localtime(float(starttime)))
-            endtime = int(event.find('endtimegmtms').string)/1000
-            start = time.strftime("%m/%d/%Y %I:%M %p",time.localtime(starttime))
-            aired = time.strftime("%Y-%m-%d",time.localtime(starttime))
-            date = time.strftime("%m/%d/%Y",time.localtime(starttime))
-            udate = time.strftime("%m/%d",time.localtime(starttime))
-            now = datetime.now().strftime('%H%M')
-            etime24 = time.strftime("%H%M",time.localtime(starttime)) 
+    requires_auth = does_requires_auth(network_name)
 
-            if 'action=live' in url and now > etime24:
-                length = str(int(round((endtime - time.time())/60)))
-                ename = '[COLOR=FF'+str(selfAddon.getSetting('color'))+']'+" - ".join((etime, ename))+'[/COLOR]'
-            elif 'action=live' in url:
-                length = str(int(round((endtime - time.time())/60)))
-                ename = " - ".join((etime, ename))
-            else:
-                length = str(int(round((endtime - starttime)/60)))
-                ename = " - ".join((udate, etime, ename))
-            
-            
-            end = event.find('summary').string
-            if end == '':
-                end = event.find('caption').string
-            else: end = 'No Summary/ Caption Provided'
-
-            plot = ''
-            if sport <> None and sport <> ' ':
-                plot += 'Sport: '+sport+'\n'
-            if league <> None and league <> ' ':
-                plot += 'League: '+league+'\n'
-            if location <> None and location <> ' ':
-                plot += 'Location: '+location+'\n'
-            if start <> None and start <> ' ':
-                plot += 'Air Date: '+start+'\n'
-            if length <> None and length <> ' ' and 'action=live' in url:
-                plot += 'Duration: Approximately '+length+' minutes remaining'+'\n'
-	    elif length <> None and length <> ' ' and ('action=replay' in url or 'action=upcoming' in url):
-		plot += 'Duration: '+length+' minutes'+'\n'
-            plot += end
-            infoLabels = {'title':ename,
-                          'genre':sport,
-                          'plot':plot,
-                          'aired':aired,
-                          'premiered':aired,
-                          'duration':length,
-                          'studio':'ESPNLive',
-                          'mpaa':mpaa}
-            if 'action=upcoming' in url:
-                mode = 5
-            elif networkid == 'n360':
-                mode = 4
-            elif networkid == 'n501':
-                mode = 6
-            elif networkid == 'n502':
-                mode = 7   
-            elif networkid == 'n599':
-                mode = 8
-            elif networkid == 'ngl':
-                mode = 9
-            elif networkid == 'nbb':
-                mode = 10  
-            addLink(ename, authurl, mode, fanart, fanart, infoLabels=infoLabels)
-    xbmcplugin.setContent(pluginhandle, 'episodes')
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-def PLAYESPN3(url):
-    PLAY(url,'n360')
-    
-def PLAY(url,videonetwork):
-    data = ReadFile('userdata.xml', ADDONDATA)
-    soup = BeautifulSoup(data, 'html.parser')
-    affiliateid = soup('name')[0].string
-    swid = soup('personalization')[0]['swid']
-    identityPointId = affiliateid+':'+swid
-    
-    # Split up the url so they can be used as needed
-    url_split = url
-    url_split = url.split(',')
-    eventid = str(url_split[0])    
-    contentId = str(url_split[1])
-    eventId = str(url_split[2]) 
-    simulcastAiringId = str(url_split[3]) 
-    streamType = str(url_split[4]) 
-    
-    pk = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(51)])
-    pkan = pk + ('%3D')
-    config = 'https://espn.go.com/watchespn/player/config'
-    data = get_html(config)
-    networks = BeautifulSoup(data, 'html.parser', parse_only = SoupStrainer('network'))
-    for network in networks:
-        if videonetwork == network['id']:
-            playedId = network['playerid']
-            cdnName = network['defaultcdn']
-            channel = network['name']
-            if streamType == 'HLS':
-                 networkurl = 'http://broadband.espn.go.com/espn3/auth/watchespn/startSession?v=1.5'
-            elif streamType == 'HDS' or streamType == 'RTMP':
-                 networkurl = 'https://espn-ws.bamnetworks.com/pubajaxws/bamrest/MediaService2_0/op-findUserVerifiedEvent/v-2.1'
-            authurl = authurl = networkurl
-            if '?' in authurl:
-                authurl +='&'
-            else:
-                authurl +='?'
-            
-            if streamType == 'HLS':
-		       authurl += 'affiliate='+affiliateid
-		       authurl += '&cdnName='+cdnName
-		       authurl += '&channel='+channel
-		       authurl += '&playbackScenario=FMS_CLOUD'
-		       authurl += '&pkan='+pkan
-		       authurl += '&pkanType=SWID'
-		       authurl += '&eventid='+eventid
-		       authurl += '&simulcastAiringId='+simulcastAiringId
-		       authurl += '&rand='+str(random.randint(100000,999999))
-		       authurl += '&playerId='+playedId
-            elif streamType == 'HDS' or streamType == 'RTMP':
-		       authurl += 'identityPointId='+affiliateid
-		       authurl += '&cdnName='+cdnName
-		       authurl += '&channel='+channel
-		       authurl += '&playbackScenario=FMS_CLOUD'
-		       authurl += '&partnerContentId='+eventid
-		       authurl += '&eventId='+eventId
-		       authurl += '&contentId='+contentId
-		       authurl += '&rand='+str(random.randint(100000,999999))
-		       authurl += '&playerId='+playedId     
-            html = get_html(authurl)
-            tree = BeautifulSoup(html, 'html.parser')
-            authstatus = tree.find('auth-status')
-            blackoutstatus = tree.find('blackout-status')
-            if not authstatus.find('successstatus'):
-                if not authstatus.find('notauthorizedstatus'):
-                    if authstatus.find('errormessage').string:
-                        dialog = xbmcgui.Dialog()
-                        import textwrap
-                        errormessage = authstatus.find('errormessage').string
-                        try:
-                            errormessage = textwrap.fill(errormessage, width=50).split('\n')
-                            dialog.ok(translation(30037), errormessage[0],errormessage[1],errormessage[2])
-                        except:
-                            dialog.ok(translation(30037), errormessage[0])
-                        return
-                else:
-                    if not blackoutstatus.find('successstatus'):
-                        if blackoutstatus.find('blackout').string:
-                            dialog = xbmcgui.Dialog()
-                            dialog.ok(translation(30040), blackoutstatus.find('blackout').string)
-                            return
-            #streamType = tree.find('streamtype').string
-            smilurl = tree.find('url').string
-            #xbmc.log('ESPN3:  smilurl: '+smilurl)
-            #xbmc.log('ESPN3:  streamType: '+streamType)
-            if smilurl == ' ' or smilurl == '':
-                dialog = xbmcgui.Dialog()
-                dialog.ok(translation(30037), translation(30038),translation(30039))
-                return
-
-            if streamType == 'HLS':
-                 finalurl = smilurl
-                 item = xbmcgui.ListItem(path=finalurl)
-                 return xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, item)
-
-            elif streamType == 'HDS' or streamType == 'RTMP':  
-		       auth = smilurl.split('?')[1]
-		       smilurl += '&rand='+str(random.randint(100000,999999))
-		   
-		       #Grab smil url to get rtmp url and playpath
-		       html = get_html(smilurl)
-		       soup = BeautifulSoup(html, 'html.parser')
-		       rtmp = soup.findAll('meta')[0]['base']
-		       # Live Qualities
-		       #     0,     1,     2,      3,      4
-		       # Replay Qualities
-		       #            0,     1,      2,      3
-		       # Lowest, Low,  Medium, High,  Highest
-		       # 200000,400000,800000,1200000,1800000
-		       playpath=False
-		       if selfAddon.getSetting("askquality") == 'true':
-		           streams = soup.findAll('video')
-		           quality=xbmcgui.Dialog().select(translation(30033), [str(int(stream['system-bitrate'])/1000)+'kbps' for stream in streams])
-		           if quality!=-1:
-		               playpath = streams[quality]['src']
-		           else:
-		               return
-		       if 'ondemand' in rtmp:
-		           if not playpath:
-		               playpath = soup.findAll('video')[int(selfAddon.getSetting('replayquality'))]['src']
-		           finalurl = rtmp+'/?'+auth+' playpath='+playpath
-		       elif 'live' in rtmp:
-		           if not playpath:
-		               select = int(selfAddon.getSetting('livequality'))
-		               videos = soup.findAll('video')
-		               videosLen = len(videos)-1
-		               if select > videosLen:
-		                   select = videosLen
-		               playpath = videos[select]['src']
-		           finalurl = rtmp+' live=1 playlist=1 subscribe='+playpath+' playpath='+playpath+'?'+auth
-		       item = xbmcgui.ListItem(path=finalurl)
-		       return xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, item)
-
-
-def saveUserdata():
-    userdata1 = 'http://broadband.espn.go.com/espn3/auth/watchespn/userData?format=xml'
-    data1 = get_html(userdata1)
-    SaveFile('userdata.xml', data1, ADDONDATA)
-    soup = BeautifulSoup(data1, 'html.parser')
-    checkrights = 'http://broadband.espn.go.com/espn3/auth/espnnetworks/user'
-
-def get_html(url):
-    try:
-        xbmc.log('ESPNLive:  get_html: '+url)
-        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-        opener.addheaders = [('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/38.0')]
-        usock = opener.open(url)
-        response = usock.read()
-        #xbmc.log('ESPNLive:  get_response: '+response)
-        usock.close()
-        return response
-    except: 
-        xbmc.log('ESPNLive:  get_response: Could not open URL: '+url)
-        return False
-
-def get_params():
-    param = []
-    paramstring = sys.argv[2]
-    if len(paramstring) >= 2:
-        params = sys.argv[2]
-        cleanedparams = params.replace('?', '')
-        if (params[len(params) - 1] == '/'):
-            params = params[0:len(params) - 2]
-        pairsofparams = cleanedparams.split('&')
-        param = {}
-        for i in range(len(pairsofparams)):
-            splitparams = {}
-            splitparams = pairsofparams[i].split('=')
-            if (len(splitparams)) == 2:
-                param[splitparams[0]] = splitparams[1]
-
-    return param
-
-def SaveFile(filename, data, dir):
-    path = os.path.join(dir, filename)
-    try:
-        file = open(path,'w')
-    except:
-        file = open(path,'w+')
-    file.write(data)
-    file.close()
-
-def ReadFile(filename, dir):
-    path = os.path.join(dir, filename)
-    if filename == 'userdata.xml':
+    if requires_auth:
+        if not adobe_activate_api.is_authenticated():
+            dialog = xbmcgui.Dialog()
+            dialog.ok(translation(30037), translation(30410))
+            return
         try:
-            file = open(path,'r')
-        except:
-            saveUserdata()
-            file = open(path,'r')
+            media_token = adobe_activate_api.get_short_media_token(resource)
+        except urllib2.HTTPError as e:
+            if e.code == 410:
+                dialog = xbmcgui.Dialog()
+                dialog.ok(translation(30037), translation(30840))
+                adobe_activate_api.deauthorize()
+                xbmcplugin.endOfDirectory(pluginhandle, succeeded=False, updateListing=True)
+                return
+            else:
+                raise e
+
+        token_type = 'ADOBEPASS'
     else:
-        file = open(path,'r')
-    return file.read()
-
-def addLink(name, url, mode, iconimage, fanart=False, infoLabels=False):
-    u = sys.argv[0] + "?url=" + urllib.quote_plus(url) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name)
-    ok = True
-    liz = xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
-    if not infoLabels:
-        infoLabels={"Title": name}
-    liz.setInfo(type="Video", infoLabels=infoLabels)
-    liz.setProperty('IsPlayable', 'true')
-    if not fanart:
-        fanart=defaultfanart
-    liz.setProperty('fanart_image',fanart)
-    ok = xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=u, listitem=liz)
-    return ok
+        media_token = adobe_activate_api.get_device_id()
+        token_type = 'DEVICE'
 
 
-def addDir(name, url, mode, iconimage, fanart=False, infoLabels=False):
-    u = sys.argv[0] + "?url=" + urllib.quote_plus(url) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name)
-    ok = True
-    liz = xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
-    if not infoLabels:
-        infoLabels={"Title": name}
-    liz.setInfo(type="Video", infoLabels=infoLabels)
-    if not fanart:
-        fanart=defaultfanart
-    liz.setProperty('fanart_image',fanart)
-    ok = xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=u, listitem=liz, isFolder=True)
-    return ok
+    # see aHR0cDovL2FwaS1hcHAuZXNwbi5jb20vdjEvd2F0Y2gvY2xpZW50cy93YXRjaGVzcG4tdHZvcw== for details
+    # see aHR0cDovL2VzcG4uZ28uY29tL3dhdGNoZXNwbi9hcHBsZXR2L2ZlYXR1cmVk for details
+    start_session_url = args.get(SESSION_URL)[0]
+    params = urllib.urlencode({'partner':'watchespn',
+                               'playbackScenario':'HTTP_CLOUD_HIGH',
+                               'platform':'chromecast_uplynk',
+                               'token':media_token,
+                               'tokenType':token_type,
+                               'resource':base64.b64encode(resource),
+                               'v': '2.0.0'
+                               })
+    start_session_url += '&' + params
 
-params = get_params()
-url = None
-name = None
-mode = None
-cookie = None
+    xbmc.log('ESPN3: start_session_url: ' + start_session_url, xbmc.LOGDEBUG)
 
-try:
-    url = urllib.unquote_plus(params["url"])
-except:
-    pass
-try:
-    name = urllib.unquote_plus(params["name"])
-except:
-    pass
-try:
-    mode = int(params["mode"])
-except:
-    pass
+    session_json = util.get_url_as_json(start_session_url)
+    if check_error(session_json):
+        return
 
-xbmc.log("Mode: " + str(mode))
-xbmc.log("URL: " + str(url))
-xbmc.log("Name: " + str(name))
+    playback_url = session_json['session']['playbackUrls']['default']
+    xbmc.log(TAG + 'Playback url %s' % playback_url, xbmc.LOGDEBUG)
+    stream_quality = str(selfAddon.getSetting('StreamQuality'))
+    bitrate_limit = int(selfAddon.getSetting('BitrateLimit'))
+    xbmc.log(TAG + 'Stream Quality %s' % stream_quality, xbmc.LOGDEBUG)
+    try:
+        m3u8_obj = m3u8.load(playback_url)
+    except:
+        playback_url += '|Connection=keep-alive&User-Agent=' + urllib.quote(UA_PC) + '&Cookie=_mediaAuth=' +\
+                        urllib.quote(session_json['session']['token'])
+        item = xbmcgui.ListItem(path=playback_url)
+        return xbmcplugin.setResolvedUrl(pluginhandle, True, item)
 
-if mode == None or url == None or len(url) < 1:
-    xbmc.log("Generate Main Menu")
-    CATEGORIES()
-elif mode == 1:
-    xbmc.log("Indexing Videos")
-    INDEX(url,name)
-elif mode == 2:
-    xbmc.log("List sports")
-    LISTSPORTS(url,name)
-elif mode == 3:
-    xbmc.log("Index by sport")
-    INDEXBYSPORT(url,name)
-elif mode == 4:
-    PLAYESPN3(url)
-elif mode == 5:
-    xbmc.log("Upcoming")
+    success = True
+    if m3u8_obj.is_variant:
+        stream_options = list()
+        bandwidth_key = 'bandwidth'
+        m3u8_obj.playlists.sort(key=lambda playlist: playlist.stream_info.bandwidth, reverse=True)
+        m3u8_obj.data['playlists'].sort(key=lambda playlist: int(playlist['stream_info'][bandwidth_key]), reverse=True)
+        stream_quality_index = str(selfAddon.getSetting('StreamQualityIndex'))
+        stream_index = None
+        should_ask = False
+        try:
+            stream_index = int(stream_quality_index)
+            if stream_index < 0 or stream_index >= len(m3u8_obj.playlists):
+                should_ask = True
+        except:
+            should_ask = True
+        if '0' == stream_quality: # Best
+            stream_index = 0
+            should_ask = False
+            for playlist in m3u8_obj.data['playlists']:
+                stream_info = playlist['stream_info']
+                bandwidth = int(stream_info[bandwidth_key]) / 1024
+                if bandwidth <= bitrate_limit:
+                    break
+                stream_index = stream_index + 1
+        elif '2' == stream_quality: #Ask everytime
+            should_ask = True
+        if should_ask:
+            for playlist in m3u8_obj.data['playlists']:
+                stream_info = playlist['stream_info']
+                resolution = stream_info['resolution']
+                frame_rate = stream_info['frame_rate']
+                bandwidth = int(stream_info[bandwidth_key]) / 1024
+                if 'average_bandwidth' in stream_info:
+                    xbmc.log(TAG + 'bandwidth: %s average bandwidth: %s' %
+                             (stream_info['bandwidth'], stream_info['average_bandwidth']), xbmc.LOGDEBUG)
+                stream_options.append(translation(30450) % (resolution,
+                                                      frame_rate,
+                                                      bandwidth))
+            dialog = xbmcgui.Dialog()
+            stream_index = dialog.select(translation(30440), stream_options)
+            if stream_index < 0:
+                success = False
+            else:
+                selfAddon.setSetting(id='StreamQualityIndex', value=str(stream_index))
+
+        xbmc.log(TAG + 'Chose stream %d' % stream_index, xbmc.LOGDEBUG)
+        item = xbmcgui.ListItem(path=m3u8_obj.playlists[stream_index].uri)
+        return xbmcplugin.setResolvedUrl(pluginhandle, success, item)
+    else:
+        item = xbmcgui.ListItem(path=playback_url)
+        return xbmcplugin.setResolvedUrl(pluginhandle, success, item)
+
+
+def PLAY_LEGACY_TV(args):
+    # check blackout differently for legacy shows
+    event_id = args.get(EVENT_ID)[0]
+    url = base64.b64decode('aHR0cDovL2Jyb2FkYmFuZC5lc3BuLmdvLmNvbS9lc3BuMy9hdXRoL3dhdGNoZXNwbi91dGlsL2lzVXNlckJsYWNrZWRPdXQ/ZXZlbnRJZD0=') + event_id
+    xbmc.log(TAG + 'Blackout url %s' % url, xbmc.LOGDEBUG)
+    blackout_data = util.get_url_as_json(url)
+    blackout = blackout_data['E3BlackOut']
+    if not blackout == 'true':
+        blackout = blackout_data['LinearBlackOut']
+    if blackout == 'true':
+        dialog = xbmcgui.Dialog()
+        dialog.ok(translation(30037), translation(30040))
+        return
+    PLAY_TV(args)
+
+
+base_url = sys.argv[0]
+xbmc.log(TAG + 'QS: %s' % sys.argv[2], xbmc.LOGDEBUG)
+args = urlparse.parse_qs(sys.argv[2][1:])
+xbmc.log('ESPN3: args %s' % args, xbmc.LOGDEBUG)
+mode = args.get(MODE, None)
+
+refresh = False
+if mode is not None and mode[0] == AUTHENTICATE_MODE:
+    xbmc.log('Authenticate Device', xbmc.LOGDEBUG)
+    regcode = adobe_activate_api.get_regcode()
+    dialog = xbmcgui.Dialog()
+    ok = dialog.yesno(translation(30310),
+                   translation(30320),
+                   translation(30330) % regcode,
+                   translation(30340),
+                   translation(30360),
+                   translation(30350))
+    if ok:
+        try:
+            adobe_activate_api.authenticate()
+            dialog.ok(translation(30310), translation(30370))
+        except urllib2.HTTPError as e:
+            dialog.ok(translation(30037), translation(30420) % e)
+    mode = None
+    refresh = True
+elif mode is not None and mode[0] == AUTHENTICATION_DETAILS_MODE:
+    dialog = xbmcgui.Dialog()
+    ok = dialog.yesno(translation(30380),
+                      translation(30390) % adobe_activate_api.get_authentication_expires(),
+                      translation(30700) % (player_config.get_dma(), player_config.get_timezone()),
+                      translation(30710) % (player_config.get_can_sso(), player_config.get_sso_abuse()),
+                      nolabel = translation(30360),
+                      yeslabel = translation(30430))
+    if ok:
+        adobe_activate_api.deauthorize()
+    mode = None
+    refresh = True
+
+
+if mode is not None:
+    paths = mode[0].split('/')
+    if len(paths) > 2:
+        root = paths[1]
+        path = paths[2]
+        xbmc.log(TAG + 'root: %s path: %s' % (root, path), xbmc.LOGDEBUG)
+        for class_def in (appletv.AppleTV, legacy.Legacy, tvos.TVOS, roku.Roku, androidtv.AndroidTV):
+            class_root = getattr(getattr(class_def, '__init__'), 'mode')
+            xbmc.log(TAG + 'class root: %s' % class_root, xbmc.LOGDEBUG)
+            if root == class_root:
+                for method_name in dir(class_def):
+                    method = getattr(class_def, method_name)
+                    xbmc.log(TAG + 'Looking at method %s' % method_name, xbmc.LOGDEBUG)
+                    if hasattr(method, 'mode'):
+                        method_mode = getattr(method, 'mode')
+                        xbmc.log(TAG + 'Found method with mode %s' % method_mode, xbmc.LOGDEBUG)
+                        if method_mode == path:
+                            xbmc.log(TAG + 'Executing method', xbmc.LOGDEBUG)
+                            getattr(class_def(), method_name)(args)
+
+if mode is not None and mode[0] == REFRESH_LIVE_MODE:
+    mode = None
+    refresh = True
+    include_premium = adobe_activate_api.is_authenticated()
+    channel_list = events.get_channel_list(include_premium)
+    util.clear_cache(events.get_live_events_url(channel_list))
+
+if mode is None:
+    try:
+        adobe_activate_api.clean_up_authorization_tokens()
+    except:
+        xbmc.log(TAG + 'Unable to clean up')
+        adobe_activate_api.reset_settings()
+    xbmc.log("Generate Main Menu", xbmc.LOGDEBUG)
+    ROOT_ITEM(refresh)
+elif mode[0] == PLAY_MODE:
+    PLAY_LEGACY_TV(args)
+elif mode[0] == PLAY_ITEM_MODE:
+    PLAY_ITEM(args)
+elif mode[0] == PLAY_TV_MODE:
+    PLAY_TV(args)
+elif mode[0] == UPCOMING_MODE:
+    xbmc.log("Upcoming", xbmc.LOGDEBUG)
     dialog = xbmcgui.Dialog()
     dialog.ok(translation(30035), translation(30036))
-
+    xbmcplugin.endOfDirectory(pluginhandle, succeeded=False, updateListing=True)
