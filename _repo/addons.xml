@@ -237,7 +237,7 @@
 
 <addon id="plugin.video.ESPNLive"
        name="ESPN Live"
-       version="2.9.9"
+       version="3.0.0"
        provider-name="awaters1,locomot1f,MetalChris,BlueCop,Romans I XVI">
     <requires>
         <import addon="xbmc.python" version="2.20.0"/>
