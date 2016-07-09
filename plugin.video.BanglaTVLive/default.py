@@ -59,7 +59,7 @@ def Addtypes():
 
 def getMainMenu():
     list=[]
-    list.append({'name':'Bangla LIVE Channels','url':mainurl+'/list/bangla.php','mode':'IC'})
+    list.append({'name':'Bangla LIVE Channels','url':'http://askmaulana.com/desitvmc.com/packages/banglatv.php','mode':'IC'})
     # list.append({'name':'Islamic Channels','url':mainurl+'/list/bangla.php','mode':'IC'})
     
     # list.append({'name':'Settings','url':'Settings','mode':'Settings'})

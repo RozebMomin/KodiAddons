@@ -177,7 +177,7 @@
 
 <addon id="plugin.video.BanglaTVLive"
        name="Bangla TV Live"
-       version="1.0.1"
+       version="1.0.2"
        provider-name="Rozeb Momin">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
