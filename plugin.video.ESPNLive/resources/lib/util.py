@@ -12,7 +12,7 @@ import re
 
 from globals import ADDON_PATH_PROFILE
 
-TAG = 'ESPN3 util: '
+TAG = 'ESPNLive util: '
 
 def is_file_valid(cache_file, timeout):
     if os.path.isfile(cache_file):

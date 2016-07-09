@@ -63,7 +63,7 @@ def does_requires_auth(network_name):
     if not requires_auth:
         free_content_check = player_config.can_access_free_content()
         if not free_content_check:
-            xbmc.log('ESPN3: User needs login to ESPN3', xbmc.LOGDEBUG)
+            xbmc.log('ESPNLive: User needs login to ESPNLive', xbmc.LOGDEBUG)
             requires_auth = True
     return requires_auth
 

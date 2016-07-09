@@ -68,7 +68,7 @@ class AppleTV(MenuListing):
         selected_nav_id = args.get(SHOWCASE_NAV_ID, None)
         et = util.get_url_as_xml_soup_cache(get_url(url))
         navigation_items = et.findall('.//navigation/navigationItem')
-        xbmc.log('ESPN3 Found %s items' % len(navigation_items), xbmc.LOGDEBUG)
+        xbmc.log('ESPNLive Found %s items' % len(navigation_items), xbmc.LOGDEBUG)
         if selected_nav_id is None and len(navigation_items) > 0:
             for navigation_item in navigation_items:
                 name = navigation_item.find('./title').text
@@ -82,12 +82,12 @@ class AppleTV(MenuListing):
         elif len(navigation_items) > 0:
             for navigation_item in navigation_items:
                 if navigation_item.get('id') == selected_nav_id[0]:
-                    xbmc.log('ESPN3 Found nav item %s' % selected_nav_id[0], xbmc.LOGDEBUG)
+                    xbmc.log('ESPNLive Found nav item %s' % selected_nav_id[0], xbmc.LOGDEBUG)
                     self.process_item_list(navigation_item.findall('.//twoLineMenuItem'))
                     self.process_item_list(navigation_item.findall('.//twoLineEnhancedMenuItem'))
                     xbmcplugin.setContent(pluginhandle, 'episodes')
         else: # If there are no navigation items then just dump all of the menu entries
-            xbmc.log('ESPN3: Dumping all menu items', xbmc.LOGDEBUG)
+            xbmc.log('ESPNLive: Dumping all menu items', xbmc.LOGDEBUG)
             self.process_item_list(et.findall('.//twoLineMenuItem'))
             self.process_item_list(et.findall('.//twoLineEnhancedMenuItem'))
             xbmcplugin.setContent(pluginhandle, 'episodes')

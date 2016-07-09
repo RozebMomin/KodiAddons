@@ -29,7 +29,7 @@ from resources.lib import roku
 from resources.lib import androidtv
 from resources.lib import events
 
-TAG = 'ESPN3: '
+TAG = 'ESPNLive: '
 
 def ROOT_ITEM(refresh):
     if not adobe_activate_api.is_authenticated():
@@ -129,7 +129,7 @@ def PLAY_TV(args):
                                })
     start_session_url += '&' + params
 
-    xbmc.log('ESPN3: start_session_url: ' + start_session_url, xbmc.LOGDEBUG)
+    xbmc.log('ESPNLive: start_session_url: ' + start_session_url, xbmc.LOGDEBUG)
 
     session_json = util.get_url_as_json(start_session_url)
     if check_error(session_json):
@@ -220,7 +220,7 @@ def PLAY_LEGACY_TV(args):
 base_url = sys.argv[0]
 xbmc.log(TAG + 'QS: %s' % sys.argv[2], xbmc.LOGDEBUG)
 args = urlparse.parse_qs(sys.argv[2][1:])
-xbmc.log('ESPN3: args %s' % args, xbmc.LOGDEBUG)
+xbmc.log('ESPNLive: args %s' % args, xbmc.LOGDEBUG)
 mode = args.get(MODE, None)
 
 refresh = False

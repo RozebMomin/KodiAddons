@@ -81,11 +81,11 @@ msgid "Disable SSL Certificate checks (Unsafe)"
 msgstr ""
 
 msgctxt "#30190"
-msgid "ESPN3 (%d events)"
+msgid "ESPNLive (%d events)"
 msgstr ""
 
 msgctxt "#30191"
-msgid "ESPN3 (%d event)"
+msgid "ESPNLive (%d event)"
 msgstr ""
 
 msgctxt "#30200"
@@ -289,7 +289,7 @@ msgid "ESPN2"
 msgstr ""
 
 msgctxt "#30992"
-msgid "ESPN3"
+msgid "ESPNLive"
 msgstr ""
 
 msgctxt "#30993"

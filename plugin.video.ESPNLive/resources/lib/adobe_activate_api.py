@@ -17,7 +17,7 @@ from globals import ADDON_PATH_PROFILE
 
 SETTINGS_FILE = 'adobe.json'
 UA_ATV = 'AppleCoreMedia/1.0.0.13Y234 (Apple TV; U; CPU OS 9_2 like Mac OS X; en_us)'
-TAG = 'ESPN3-adobe-api: '
+TAG = 'ESPNLive-adobe-api: '
 
 # Fixes an issue with 32bit systems not supporting times after 2038
 def save_cookies(cj):

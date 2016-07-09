@@ -1,4 +1,4 @@
-plugin.video.espn_3
+plugin.video.ESPNLive
 ===================
 
 1.  `make_zip.sh` - Makes a zip file for the custom repository, assumes that repo.kodi-addons is also checked out

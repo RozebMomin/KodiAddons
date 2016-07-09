@@ -33,5 +33,5 @@ SPORT = 'SPORT'
 BAM_NS = '{http://services.bamnetworks.com/media/types/2.1}'
 
 # Taken from https://espn.go.com/watchespn/player/config
-ESPN3_ID = 'n360'
+ESPNLive_ID = 'n360'
 SECPLUS_ID = 'n323'

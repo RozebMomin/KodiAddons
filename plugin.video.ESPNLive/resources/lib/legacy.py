@@ -124,7 +124,7 @@ class Legacy(MenuListing):
             networkid = event.find('networkId').text
             if chosen_network <> networkid and chosen_network is not None:
                 continue
-            if networkid == ESPN3_ID and chosen_network is None and live:
+            if networkid == ESPNLive_ID and chosen_network is None and live:
                 num_espn3 = num_espn3 + 1
             elif networkid == SECPLUS_ID and chosen_network is None and live:
                 num_secplus = num_secplus + 1
@@ -146,7 +146,7 @@ class Legacy(MenuListing):
                     name = translation(translation_number) % num_espn3
                 else:
                     name = '[COLOR=FFCC0000]' + (translation(translation_number) % num_espn3) + '[/COLOR]'
-                addDir(name, dict(ESPN_URL=espn_url, MODE=self.make_mode(LIVE_EVENTS_MODE), NETWORK_ID=ESPN3_ID),
+                addDir(name, dict(ESPN_URL=espn_url, MODE=self.make_mode(LIVE_EVENTS_MODE), NETWORK_ID=ESPNLive_ID),
                        defaultlive)
             if num_secplus > 0 and selfAddon.getSetting('ShowSecPlus') == 'true':
                 translation_number = 30201 if num_espn3 == 1 else 30200
