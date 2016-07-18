@@ -757,6 +757,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.WorldIslamicNetwork)</onclick>
 				</item>
+				<item><!-- Jaffari Center of Atlanta Channel -->
+					<thumb>special://skin/extras/homeicons/JaffariCenter.png</thumb>
+					<label>Jaffari Center</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.JaffariCenterATL)</onclick>
+				</item>
 				<item><!-- Addons menu -->
 					<visible>!Skin.HasSetting(home-programs)</visible>
 					<thumb>special://skin/extras/homeicons/addons.png</thumb>
