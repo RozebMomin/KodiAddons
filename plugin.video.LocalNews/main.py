@@ -36,7 +36,7 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                      ],
             'American CNN News': [{'name': 'CNN News Standard Definition',
                       'thumb': 'http://www.dbgod.com/pics/cnn-thumbnail.png',
-                      'video': 'plugin://plugin.video.youtube/?action=play_video&videoid=Sje18clUrqw',
+                      'video': 'plugin://plugin.video.youtube/?action=play_video&videoid=YIG-yS7Brqs',
                       'genre': 'American CNN'}
                      ]}
 #YIG-yS7Brqs
