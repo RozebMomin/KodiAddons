@@ -36,7 +36,11 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                      ],
             'American CNN News': [{'name': 'CNN News Standard Definition',
                       'thumb': 'http://www.dbgod.com/pics/cnn-thumbnail.png',
-                      'video': 'plugin://plugin.video.youtube/?action=play_video&videoid=YIG-yS7Brqs',
+                      'video': 'http://d1hya96e2cm7qi.cloudfront.net/Live/_definst_/amlst:sweetbcha1novD177L240P/chunklist_b500000.m3u8',
+                      'genre': 'American CNN'},
+                      {'name': 'CNN News Higher Definition',
+                      'thumb': 'http://www.dbgod.com/pics/cnn-thumbnail.png',
+                      'video': 'http://d1hya96e2cm7qi.cloudfront.net/Live/_definst_/amlst:sweetbcha1novD177L240P/chunklist_b700000.m3u8',
                       'genre': 'American CNN'}
                      ]}
 #YIG-yS7Brqs

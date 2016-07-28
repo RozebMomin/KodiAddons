@@ -362,11 +362,10 @@
 					<visible>!IsEmpty(Skin.String(CustomMovies.2.Path))</visible>
 				</item>
 				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.3.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.3.Label)]</label>
+					<thumb>special://skin/extras/homeicons/Movies.png</thumb>
+					<label>Movies!</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.3.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.3.Path))</visible>
+					<onclick>ActivateWindow(10025,&quot;plugin://plugin.video.exodus/?action=movieNavigator&quot;,return)</onclick>
 				</item>
 				<item>
 					<thumb>$INFO[Skin.String(CustomMovies.4.Icon)]</thumb>
