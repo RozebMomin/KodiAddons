@@ -21,7 +21,7 @@ _handle = int(sys.argv[1])
 # from some web-site or online service.
 VIDEOS = {'AajTak Live': [{'name': 'Watch AajTak LIVE',
                        'thumb': 'https://upload.wikimedia.org/wikipedia/en/b/bb/Aaj_Tak_logo.png',
-                       'video': 'plugin://plugin.video.youtube/play/?video_id=sjUjzMgN4hE',
+                       'video': 'plugin://plugin.video.youtube/play/?video_id=E9QXO5m_iS0',
                        'genre': 'LIVE'}
                       ],
             'AajTak Delhi': [{'name': 'Watch AajTak Delhi',
