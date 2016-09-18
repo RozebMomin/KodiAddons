@@ -42,6 +42,15 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                       # 'thumb': 'http://www.dbgod.com/pics/cnn-thumbnail.png',
                       # 'video': 'http://d1hya96e2cm7qi.cloudfront.net/Live/_definst_/amlst:sweetbcha1novD177L240P/chunklist_b700000.m3u8',
                       # 'genre': 'American CNN'}
+                     ],
+            'LIVE Sports': [{'name': '49ers Vs Panthers',
+                      'thumb': 'http://www.sports-logos-screensavers.com/user/NFL_Logo.jpg',
+                      'video': 'http://89.248.172.148:8081/live/mamahdvch2.m3u8?e=1474218871&st=Pz_9HiGeePBs9nxzp4YDHA',
+                      'genre': 'NFL Football'},
+                      # {'name': 'CNN News Higher Definition',
+                      # 'thumb': 'http://www.dbgod.com/pics/cnn-thumbnail.png',
+                      # 'video': 'http://d1hya96e2cm7qi.cloudfront.net/Live/_definst_/amlst:sweetbcha1novD177L240P/chunklist_b700000.m3u8',
+                      # 'genre': 'American CNN'}
                      ]}
 #YIG-yS7Brqs
 #http://d1hya96e2cm7qi.cloudfront.net/Live/_definst_/amlst:sweetbcha1novD177L240P/chunklist_b700000.m3u8
