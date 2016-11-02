@@ -19,35 +19,44 @@ _handle = int(sys.argv[1])
 # Here we use a fixed set of properties simply for demonstrating purposes
 # In a "real life" plugin you will need to get info and links to video files/streams
 # from some web-site or online service.
-VIDEOS = {'Imam Hussain': [{'name': 'Watch AajTak LIVE',
-                       'thumb': 'https://upload.wikimedia.org/wikipedia/en/b/bb/Aaj_Tak_logo.png',
-                       'video': 'plugin://plugin.video.youtube/play/?video_id=sjUjzMgN4hE',
-                       'genre': 'LIVE'}
+VIDEOS = {'Imam Hussain (as)': [{'name': 'Trial1',
+                       'thumb': 'http://www.vidsplay.com/vids/crab.jpg',
+                       'video': 'http://askmaulana.com/streams/str1.strm',
+                       'genre': 'Animals'},
+                      {'name': 'Alligator',
+                       'thumb': 'http://www.vidsplay.com/vids/alligator.jpg',
+                       'video': 'http://www.vidsplay.com/vids/alligator.mp4',
+                       'genre': 'Animals'},
+                      {'name': 'Turtle',
+                       'thumb': 'http://www.vidsplay.com/vids/turtle.jpg',
+                       'video': 'http://www.vidsplay.com/vids/turtle.mp4',
+                       'genre': 'Animals'}
                       ],
-            'AajTak Delhi': [{'name': 'Watch AajTak Delhi',
-                      'thumb': 'https://pbs.twimg.com/profile_images/3607329879/f178848f81e1fd7473a378926d856605_400x400.jpeg',
-                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AajTakDelhi&event_id=4198951&owner_id=14014394&video_id=LIVE',
-                      'genre': 'Delhi'}
+            'Hazrat Abbas (as)': [{'name': 'Postal Truck',
+                      'thumb': 'http://www.vidsplay.com/vids/us_postal.jpg',
+                      'video': 'http://www.vidsplay.com/vids/us_postal.mp4',
+                      'genre': 'Cars'},
+                     {'name': 'Traffic',
+                      'thumb': 'http://www.vidsplay.com/vids/traffic1.jpg',
+                      'video': 'http://www.vidsplay.com/vids/traffic1.avi',
+                      'genre': 'Cars'},
+                     {'name': 'Traffic Arrows',
+                      'thumb': 'http://www.vidsplay.com/vids/traffic_arrows.jpg',
+                      'video': 'http://www.vidsplay.com/vids/traffic_arrows.mp4',
+                      'genre': 'Cars'}
                      ],
-            'AajTak Tez': [{'name': 'Watch AajTak Tez',
-                      'thumb': 'http://media2.intoday.in/aajtak/static/tez/Tez_logo.png',
-                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AajTakTez&event_id=4198957&owner_id=13995833&video_id=LIVE',
-                      'genre': 'Tez'}
-                     ]},
-        {'Hazrat Abbas': [{'name': 'Watch AajTak LIVE',
-                       'thumb': 'https://upload.wikimedia.org/wikipedia/en/b/bb/Aaj_Tak_logo.png',
-                       'video': 'plugin://plugin.video.youtube/play/?video_id=sjUjzMgN4hE',
-                       'genre': 'LIVE'}
-                      ],
-            'AajTak Delhi': [{'name': 'Watch AajTak Delhi',
-                      'thumb': 'https://pbs.twimg.com/profile_images/3607329879/f178848f81e1fd7473a378926d856605_400x400.jpeg',
-                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AajTakDelhi&event_id=4198951&owner_id=14014394&video_id=LIVE',
-                      'genre': 'Delhi'}
-                     ],
-            'AajTak Tez': [{'name': 'Watch AajTak Tez',
-                      'thumb': 'http://media2.intoday.in/aajtak/static/tez/Tez_logo.png',
-                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AajTakTez&event_id=4198957&owner_id=13995833&video_id=LIVE',
-                      'genre': 'Tez'}
+            'Food': [{'name': 'Chicken',
+                      'thumb': 'http://www.vidsplay.com/vids/chicken.jpg',
+                      'video': 'http://www.vidsplay.com/vids/bbqchicken.mp4',
+                      'genre': 'Food'},
+                     {'name': 'Hamburger',
+                      'thumb': 'http://www.vidsplay.com/vids/hamburger.jpg',
+                      'video': 'http://www.vidsplay.com/vids/hamburger.mp4',
+                      'genre': 'Food'},
+                     {'name': 'Pizza',
+                      'thumb': 'http://www.vidsplay.com/vids/pizza.jpg',
+                      'video': 'http://www.vidsplay.com/vids/pizza.mp4',
+                      'genre': 'Food'}
                      ]}
 
 
