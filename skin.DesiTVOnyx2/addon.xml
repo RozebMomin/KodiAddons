@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.DesiTVOnyx2" version="1.0.1" name="DesiTV Onyx 2"	provider-name="RozebMomin">
+<addon id="skin.DesiTVOnyx2" version="1.0.2" name="DesiTV Onyx 2"	provider-name="RozebMomin">
 	<requires>
 		<import addon="xbmc.gui" version="5.10.0"/>
 		<import addon="resource.uisounds.apptv" version="1.0.2"/>

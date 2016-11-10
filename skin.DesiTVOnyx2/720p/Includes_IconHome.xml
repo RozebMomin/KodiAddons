@@ -375,7 +375,7 @@
 				</item>
 				<item><!-- WorldNews -->
 					<thumb>special://skin/extras/homeicons/NewsStand.png</thumb>
-					<label>YouTube</label>
+					<label>World News</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.world.news.live)</onclick>
 				</item>
