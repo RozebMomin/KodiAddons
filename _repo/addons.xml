@@ -663,7 +663,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 
 <addon id="plugin.video.WorldIslamicNetwork"
        name="World Islamic Network"
-       version="1.1.7"
+       version="1.1.8"
        provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
