@@ -4,9 +4,20 @@ from subprocess import call
 import json
 import os
 
+from bs4 import BeautifulSoup
+import urllib
+import re
+
 addon = xbmcaddon.Addon('plugin.video.MakkahTVLive')
 
-xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id=9E2OG5PFzh0)')
-#June 22, 2016 -> D8YHp37-tp0
+url = "https://www.youtube.com/channel/UClIIopOeuwL8KEK0wnFcodw/live"
 
-#util.playMedia(addon.getAddonInfo('name'), addon.getAddonInfo('icon'), URLStream)
+page3 = urllib.urlopen(url).read()
+soup3 = BeautifulSoup(page3)
+
+desc = soup3.findAll(attrs={"itemprop":"videoId"}) 
+liveVideoId = desc[0]['content'].encode('utf-8')
+
+xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id='+liveVideoId+')')
+
+# util.playMedia(addon.getAddonInfo('name'), addon.getAddonInfo('icon'), URLStream)
