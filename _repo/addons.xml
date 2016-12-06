@@ -117,25 +117,6 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.ABPNews" name="ABP News" version="1.0.6" provider-name="Rozeb Momin">
-  <requires>
-   <import addon="xbmc.python" version="2.1.0"/>
-   <import addon="script.module.requests" version="2.7.0"/>
-   <import addon="script.module.beautifulsoup" version="3.2.1"/>
-   <import addon="script.module.beautifulsoup4" version="4.3.2"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">ABP News Live</summary>
-    <description lang="en">ABP News Live</description>
-    <platform>all</platform>
-    <language>en</language>
-    <email>...</email>
-  </extension>
-</addon>
-
 <addon id="plugin.video.AhlulbaytTV.en"
        name="Ahlulbayt TV"
        version="1.0.1"
@@ -152,26 +133,6 @@
     <platform>all</platform>
  <language>en</language>
  <email>webmaster@askmaulana.com</email>
-  </extension>
-</addon>
-
-<addon id="plugin.video.AskMaulana"
-	name="Ask Maulana"
-	version="1.0.0"
-	provider-name="Rozeb Momin">
-  <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.addon.common" version="2.0.0"/>
-    <import addon="plugin.video.youtube" version="5.0.0"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-    <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">Ask Maulana</summary>
-    <description lang="en">Youtube videos from Ask Maulana</description>
-    <platform>all</platform>
-    <website>http://www.askmaulana.com/</website>
   </extension>
 </addon>
 
@@ -210,39 +171,6 @@
     <platform>all</platform>
     <language>en</language>
     <email>...</email>
-  </extension>
-</addon>
-
-<addon id="plugin.video.channelPEAR"
-       name="channel PEAR"
-       version="1.0"
-       provider-name="channel PEAR">
-  <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.beautifulsoup" version="3.2.1"/>
-    <import addon="script.module.simple.downloader" version="0.9.4"/>
-    <import addon="script.module.beautifulsoup4" />
-    <import addon="script.module.simple.downloader" version="0.9.4"/>
-    <import addon="script.module.requests" />
-    <import addon="script.module.httplib2" />
-    <import addon="script.module.youtube.dl" optional="true"/>
-    <import addon="plugin.video.youtube" />
-    <import addon="script.module.urlresolver" optional="true"/>
-    <import addon="script.module.simplejson" />
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-    <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <summary>loads your channel PEAR library in Kodi</summary>
-    <description>
-		channel PEAR is a collaborative, cloud-based media platform that enables you to discover, share, and watch live content from around the world on your favorite devices. No downloads or confusing media server setups required - channel PEAR hosts your personal library in the cloud so you don't have to!
-
-		Enter your custom Kodi URL in the addon settings. You can get your custom Kodi URL from your library at https://channelpear.com/library/ (must be logged in - click the "Kodi Channel" link at the top right of the page).
-
-		This addon was contributed by user "podgod" for Kodi. Original credit to Shani and other devs involved.
-    </description>
-    <platform>all</platform>
   </extension>
 </addon>
 
@@ -459,29 +387,6 @@ and basketball events. NOT SUPPORTED BY ESPN OR DISNEY OR ANYONE ELSE
   </extension>
 </addon>
 
-<addon id="plugin.video.MyFoxAtlantaLive" name="MyFoxAtlantaLive" version="2016.4.3" provider-name="RozebMomin">
-  <requires>
-   <import addon="xbmc.python" version="2.1.0"/>
-   <import addon="script.module.simplejson" version="3.3.0"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="main.py">
-        <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <platform>all</platform>
-    <summary lang="en">Live News from My Fox Atlanta</summary>
-    <description lang="en">Credible, Compelling, Complete.</description>
-    <disclaimer lang="en"></disclaimer>
-    <language>en</language>
-    <platform>all</platform>
-    <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-    <forum>...</forum>
-    <website></website>
-    <email></email>
-    <source></source>
-  </extension>
-</addon>
-
 <addon id="plugin.video.PakistaniTV" name="Pakistani TV" version="0.0.2" provider-name="Rozeb Momin">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -505,25 +410,6 @@ and basketball events. NOT SUPPORTED BY ESPN OR DISNEY OR ANYONE ELSE
     property or other violation of rights</disclaimer>
     <forum></forum>
     <license>The MIT License (MIT), 2013</license>
-  </extension>
-</addon>
-
-<addon id="plugin.video.SaudiQuranTV.en"
-       name="Saudi Quran TV"
-       version="1.0.1"
-       provider-name="Rozeb Momin">
-  <requires>
-   <import addon="xbmc.python" version="2.1.0"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">Live stream from Makkah</summary>
-    <description lang="en">Live stream from Makkah</description>
-    <platform>all</platform>
- <language>en</language>
- <email>webmaster@askmaulana.com</email>
   </extension>
 </addon>
 
