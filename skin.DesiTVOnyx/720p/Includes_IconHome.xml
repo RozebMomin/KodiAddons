@@ -696,6 +696,18 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>System.LogOff</onclick>
 				</item>
+				<item><!-- Zem TV LIVE -->
+					<thumb>special://skin/extras/homeicons/LiveTVHI.png</thumb>
+					<label>LIVE TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.ZemTV-shani)</onclick>
+				</item>
+				<item><!-- HD Indian Movies -->
+					<thumb>special://skin/extras/homeicons/HDMovies.png</thumb>
+					<label>HD Indian Movies</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.einthusan)</onclick>
+				</item>
 				<item><!-- TV9 Gujarati -->
 					<thumb>special://skin/extras/homeicons/TV9Gujarat.png</thumb>
 					<label>TV9 Gujarati</label>
