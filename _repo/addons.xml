@@ -902,7 +902,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 	</extension>
 </addon>
 
-<addon id="skin.DesiTVOnyx2" version="1.0.2" name="DesiTV Onyx 2"	provider-name="RozebMomin">
+<addon id="skin.DesiTVOnyx2" version="1.0.3" name="DesiTV Onyx 2"	provider-name="RozebMomin">
 	<requires>
 		<import addon="xbmc.gui" version="5.10.0"/>
 		<import addon="resource.uisounds.apptv" version="1.0.2"/>

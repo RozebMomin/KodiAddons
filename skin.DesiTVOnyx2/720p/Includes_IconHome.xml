@@ -786,12 +786,6 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>System.LogOff</onclick>
 				</item>
-				<item><!-- TV9 Gujarati -->
-					<thumb>special://skin/extras/homeicons/TV9Gujarat.png</thumb>
-					<label>TV9 Gujarati</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.TV9Gujarat)</onclick>
-				</item>
 				<item><!-- Bangla TV -->
 					<thumb>special://skin/extras/homeicons/BanglaTV.png</thumb>
 					<label>Bangla TV</label>
