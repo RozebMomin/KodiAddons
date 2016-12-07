@@ -644,7 +644,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 
 <addon id="plugin.video.ZemTV-shani"
        name="ZemTV.com"
-       version="5.0.0"
+       version="5.0.1"
        provider-name="shani">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
