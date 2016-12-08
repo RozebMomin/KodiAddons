@@ -728,7 +728,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 </addon>
 
 <addon id="script.UpdateDTVMC"
-    name="UpdateDTVMC" version="1.0.1" provider-name="RozebMomin">
+    name="UpdateDTVMC" version="1.0.2" provider-name="RozebMomin">
   <requires>
     <import addon="xbmc.python" version="2.19.0"/>
   </requires>
