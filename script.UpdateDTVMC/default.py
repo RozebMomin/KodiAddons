@@ -17,8 +17,7 @@ if os.path.exists(fileNameOne):
     print "Path already exists."
     xbmcgui.Dialog().notification('DesiTV Media Center', 'Shani Repository Already Exists!', xbmcgui.NOTIFICATION_WARNING, 4000)
 else:
-	xbmcgui.Dialog().notification('DesiTV Media Center', 'Downloading Shani Repository', xbmcgui.NOTIFICATION_INFO, 2000)
-    print "Downloading file."
+    xbmcgui.Dialog().notification('DesiTV Media Center', 'Downloading Shani Repository', xbmcgui.NOTIFICATION_INFO, 2000)
     getFile.retrieve(sourcePathFileOne, targetPathFileOne)
     print "Successfully retrieved file."
     print "Unzipping ZIP file to target directory."
