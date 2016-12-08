@@ -29,7 +29,7 @@ else:
     print "Successfully unzipped file to target directory."
 
 ## ZEM TV Addon Installation
-fileNameZem = "/storage/.kodi/addons/plugin.video.ZemTV-shani"
+fileNameZemTV = "/storage/.kodi/addons/plugin.video.ZemTV-shani"
 sourcePathFileZemTV = "http://desitvmc.com/packages/plugin.video.ZemTV-shani-5.0.0.zip"
 targetPathFileZemTV = "/tmp/plugin.video.ZemTV-shani-5.0.0.zip"
 
