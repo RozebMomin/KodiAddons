@@ -89,3 +89,7 @@ else:
     xbmcgui.Dialog().notification(titleString, 'Successfully Installed F4MTester.')
     print "Successfully unzipped file to target directory."
 
+## Successful Update Dialog
+xbmc.executebuiltin("UpdateLocalAddons")
+xbmc.executebuiltin("UpdateAddonRepos")
+xbmcgui.Dialog().ok(titleString, "Congratulations!", "Your DesiTV Media Center has been updated successfully!")
