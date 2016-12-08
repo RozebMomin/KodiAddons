@@ -727,6 +727,24 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 	</extension>
 </addon>
 
+<addon id="script.UpdateDTVMC"
+    name="UpdateDTVMC" version="1.0.0" provider-name="RozebMomin">
+  <requires>
+    <import addon="xbmc.python" version="2.19.0"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+     <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_US">Backup and restore your XBMC database and configuration files in the event of a crash or file corruption.</summary>
+    <language></language>
+    <platform>all</platform>
+    <license>The MIT License</license>
+    <forum>...</forum>
+    <source>...</source>
+  </extension>
+</addon>
+
 <addon id="script.xbmcbackup"
     name="Backup" version="1.0.7" provider-name="robweber">
   <requires>
