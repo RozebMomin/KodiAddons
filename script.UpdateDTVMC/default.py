@@ -59,10 +59,10 @@ if os.path.exists(fileNameShaniRepository):
     xbmcgui.Dialog().notification(titleString, 'Shani Repository Already Installed!')
 else:
     xbmcgui.Dialog().notification(titleString, 'Downloading Shani Repository')
-    getFile.retrieve(sourcePathFileOne, targetPathFileOne)
+    getFile.retrieve(sourcePathFileShaniRepository, targetPathFileShaniRepository)
     print "Successfully retrieved file."
     print "Unzipping ZIP file to target directory."
-    zip_ref = zipfile.ZipFile(targetPathFileOne, 'r')
+    zip_ref = zipfile.ZipFile(targetPathFileShaniRepository, 'r')
     zip_ref.extractall(extractionDirectory)
     zip_ref.close()
     xbmcgui.Dialog().notification(titleString, 'Successfully Installed Shani Repository.')
