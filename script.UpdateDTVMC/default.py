@@ -2,7 +2,8 @@ import os
 import os.path
 import urllib
 import zipfile
-import xbmc, xbmcgui
+import xbmc
+import xbmcgui
 
 
 fileNameOne = "/storage/.kodi/addons/repository.shani"
@@ -17,6 +18,7 @@ if os.path.exists(fileNameOne):
     xbmcgui.Dialog().notification('DesiTV Media Center', 'Shani Repository Already Exists!', xbmcgui.NOTIFICATION_WARNING, 4000)
 else:
 	xbmcgui.Dialog().notification('DesiTV Media Center', 'Downloading Shani Repository', xbmcgui.NOTIFICATION_INFO, 2000)
+    print "Downloading file."
     getFile.retrieve(sourcePathFileOne, targetPathFileOne)
     print "Successfully retrieved file."
     print "Unzipping ZIP file to target directory."
