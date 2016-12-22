@@ -89,7 +89,94 @@ else:
     xbmcgui.Dialog().notification(titleString, 'Successfully Installed F4MTester.')
     print "Successfully unzipped file to target directory."
 
+## Aftershock Repo Installation
+fileNameAFRepo = "/storage/.kodi/addons/repository.aftershock"
+sourcePathFileAFRepo = "http://desitvmc.com/packages/repository.aftershock-2.0.1.zip"
+targetPathFileAFRepo = "/tmp/repository.aftershock-2.0.1.zip"
+
+
+if os.path.exists(fileNameAFRepo):
+    print "Path already exists."
+    xbmcgui.Dialog().notification(titleString, 'AFRepo Already Installed!')
+else:
+    xbmcgui.Dialog().notification(titleString, 'Downloading AFRepo')
+    getFile.retrieve(sourcePathFileAFRepo, targetPathFileAFRepo)
+    print "Successfully retrieved file."
+    print "Unzipping ZIP file to target directory."
+    zip_ref = zipfile.ZipFile(targetPathFileAFRepo, 'r')
+    zip_ref.extractall(extractionDirectory)
+    zip_ref.close()
+    xbmcgui.Dialog().notification(titleString, 'Successfully Installed AFRepo.')
+    print "Successfully unzipped file to target directory."
+
+## Aftershock Artwork Installation
+fileNameAFArtwork = "/storage/.kodi/addons/script.aftershock.artwork"
+sourcePathFileAFArtwork = "http://desitvmc.com/packages/script.aftershock.artwork-1.1.0.zip"
+targetPathFileAFArtwork = "/tmp/script.aftershock.artwork-1.1.0.zip"
+
+
+if os.path.exists(fileNameAFArtwork):
+    print "Path already exists."
+    xbmcgui.Dialog().notification(titleString, 'AFArtwork Already Installed!')
+else:
+    xbmcgui.Dialog().notification(titleString, 'Downloading AFArtwork')
+    getFile.retrieve(sourcePathFileAFArtwork, targetPathFileAFArtwork)
+    print "Successfully retrieved file."
+    print "Unzipping ZIP file to target directory."
+    zip_ref = zipfile.ZipFile(targetPathFileAFArtwork, 'r')
+    zip_ref.extractall(extractionDirectory)
+    zip_ref.close()
+    xbmcgui.Dialog().notification(titleString, 'Successfully Installed AFArtwork.')
+    print "Successfully unzipped file to target directory."
+
+## Aftershock Guide Installation
+fileNameAFGuide = "/storage/.kodi/addons/script.aftershocknow.guide"
+sourcePathFileAFGuide = "http://desitvmc.com/packages/script.aftershocknow.guide-1.1.5.zip"
+targetPathFileAFGuide = "/tmp/script.aftershocknow.guide-1.1.5.zip"
+
+
+if os.path.exists(fileNameAFGuide):
+    print "Path already exists."
+    xbmcgui.Dialog().notification(titleString, 'AFGuide Already Installed!')
+else:
+    xbmcgui.Dialog().notification(titleString, 'Downloading AFGuide')
+    getFile.retrieve(sourcePathFileAFGuide, targetPathFileAFGuide)
+    print "Successfully retrieved file."
+    print "Unzipping ZIP file to target directory."
+    zip_ref = zipfile.ZipFile(targetPathFileAFGuide, 'r')
+    zip_ref.extractall(extractionDirectory)
+    zip_ref.close()
+    xbmcgui.Dialog().notification(titleString, 'Successfully Installed AFGuide.')
+    print "Successfully unzipped file to target directory."
+
+## Aftershock Main Addon Installation
+fileNameAFMainAddon = "/storage/.kodi/addons/plugin.video.aftershock"
+sourcePathFileAFMainAddon = "http://desitvmc.com/packages/plugin.video.aftershock-4.3.5.zip"
+targetPathFileAFMainAddon = "/tmp/plugin.video.aftershock-4.3.5.zip"
+
+
+if os.path.exists(fileNameAFMainAddon):
+    print "Path already exists."
+    xbmcgui.Dialog().notification(titleString, 'AFMainAddon Already Installed!')
+else:
+    xbmcgui.Dialog().notification(titleString, 'Downloading AFMainAddon')
+    getFile.retrieve(sourcePathFileAFMainAddon, targetPathFileAFMainAddon)
+    print "Successfully retrieved file."
+    print "Unzipping ZIP file to target directory."
+    zip_ref = zipfile.ZipFile(targetPathFileAFMainAddon, 'r')
+    zip_ref.extractall(extractionDirectory)
+    zip_ref.close()
+    xbmcgui.Dialog().notification(titleString, 'Successfully Installed AFMainAddon.')
+    print "Successfully unzipped file to target directory."
+
 ## Successful Update Dialog
 xbmc.executebuiltin("UpdateLocalAddons")
 xbmc.executebuiltin("UpdateAddonRepos")
-xbmcgui.Dialog().ok(titleString, "Congratulations!", "Your DesiTV Media Center has been updated successfully!")
+
+if os.path.exists(fileNameEinthusan) and os.path.exists(fileNameZemTV) and os.path.exists(fileNameShaniRepository) and os.path.exists(fileNameF4MTester):
+    xbmcgui.Dialog().ok(titleString, "Congratulations!", "Your DesiTV Media Center has been updated successfully!")
+
+else:
+    xbmcgui.Dialog().ok(titleString, "Looks like something went wrong!", "Looks like your DesiTV has not been updated fully!", "Please run this program again!")
+
+# xbmcgui.Dialog().ok(titleString, "Congratulations!", "Your DesiTV Media Center has been updated successfully!")
