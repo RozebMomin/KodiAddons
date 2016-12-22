@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.aftershock" name="Aftershock" version="4.3.6" provider-name="Aftershock">
+    <requires>
+        <import addon="xbmc.python" version="2.19.0"/>
+        <import addon="repository.aftershock" version="2.0.1"/>
+        <import addon="script.aftershock.artwork" version="1.1.0"/>
+        <import addon="script.module.urlresolver"  version="3.0.21"/>
+		<import addon="script.module.metahandler"  version="1.0.0"/>
+		<import addon="script.module.beautifulsoup" version="3.2.1"/>
+        <import addon="script.aftershocknow.guide" version="1.1.1"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.python.module" library="resources" />
+    <extension point="xbmc.addon.metadata">
+    <summary lang="en">Watch Hindi Movies &amp; TV Shows</summary>
+    <description lang="en">Addon to browse and play a wide selection of Desi Movies, TV Shows and Live Streams. The author doesn't have any affiliation with the content providers nor uploads any content to the providers.</description>
+    <disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content provider.</disclaimer>
+    <platform>all</platform>
+    <forum>https://forums.tvaddons.ag/addon-releases/41405-aftershock-video-addon-indian-movies-tv.html</forum>
+	<website>https://forums.tvaddons.ag/addon-releases/41405-aftershock-video-addon-indian-movies-tv.html</website>
+  </extension>
+</addon>
