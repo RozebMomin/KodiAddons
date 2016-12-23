@@ -292,7 +292,7 @@ and basketball events. NOT SUPPORTED BY ESPN OR DISNEY OR ANYONE ELSE
 
 <addon id="plugin.video.GujaratiNatak"
 	name="Gujarati Natak"
-	version="1.1.0"
+	version="1.1.1"
 	provider-name="Rozeb Momin">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
