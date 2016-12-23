@@ -19,12 +19,7 @@ _handle = int(sys.argv[1])
 # Here we use a fixed set of properties simply for demonstrating purposes
 # In a "real life" plugin you will need to get info and links to video files/streams
 # from some web-site or online service.
-VIDEOS = {'AajTak Live': [{'name': 'Watch AajTak LIVE',
-                       'thumb': 'https://upload.wikimedia.org/wikipedia/en/b/bb/Aaj_Tak_logo.png',
-                       'video': 'plugin://plugin.video.youtube/play/?video_id=oMETNh3Tr0Q',
-                       'genre': 'LIVE'}
-                      ],
-            'AajTak Delhi': [{'name': 'Watch AajTak Delhi',
+VIDEOS = {'AajTak Delhi': [{'name': 'Watch AajTak Delhi',
                       'thumb': 'https://pbs.twimg.com/profile_images/3607329879/f178848f81e1fd7473a378926d856605_400x400.jpeg',
                       'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AajTakDelhi&event_id=4198951&owner_id=14014394&video_id=LIVE',
                       'genre': 'Delhi'}

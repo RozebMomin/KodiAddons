@@ -439,12 +439,6 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.AasthaTV)</onclick>
 				</item>
-				<item><!-- TV9 Gujarat -->
-					<thumb>special://skin/extras/homeicons/TV9Gujarat.png</thumb>
-					<label>TV9 Gujarat</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.TV9Gujarat)</onclick>
-				</item>
 				<item>
 					<thumb>$INFO[Skin.String(CustomMovies.4.Icon)]</thumb>
 					<label>$INFO[Skin.String(CustomMovies.4.Label)]</label>
@@ -658,7 +652,7 @@
 					<thumb>special://skin/extras/homeicons/HDMovies.png</thumb>
 					<label>HD Indian Movies</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.einthusan)</onclick>
+					<onclick>RunAddon(plugin.video.aftershock)</onclick>
 				</item>
 				<item><!-- Custom TV 1 -->
 					<thumb>$INFO[Skin.String(CustomTV.1.Icon)]</thumb>
