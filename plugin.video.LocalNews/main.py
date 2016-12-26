@@ -36,8 +36,13 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                      ],
             'Alabama': [{'name': 'Watch WBRC Fox6 LIVE',
                       'thumb': 'http://ftpcontent4.worldnow.com/wbrc/custom/2015/images/hdr_branding.png',
-                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AlabamaFox6&event_id=3855294&owner_id=1140&video_id=LIVE',
+                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AlabamaFox6&event_id=3855294&owner_id=12446860&video_id=LIVE',
                       'genre': 'Alabama'}
+                     ],
+            'Tennessee': [{'name': 'Watch WSMV CH4 LIVE',
+                      'thumb': 'https://img.new.livestream.com/accounts/0000000000619a8c/92494261-962d-4761-9367-82fcb6fbcaee_170x170.png',
+                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=TennesseeCH4&event_id=3622128&owner_id=6396556&video_id=LIVE',
+                      'genre': 'Tennessee'}
                      ]}
                      
 def get_categories():
