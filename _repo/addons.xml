@@ -603,7 +603,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
   </extension>
 </addon>
 
-<addon id="plugin.video.world.news.live" name="World News Live" version="1.5.2" provider-name="K3oni | moneymaker | andre_pl">
+<addon id="plugin.video.world.news.live" name="World News Live" version="1.5.2.1" provider-name="K3oni | moneymaker | andre_pl">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.beautifulsoup" version="3.2.1"/>

@@ -54,7 +54,7 @@ class Antena3(BaseChannel):
 ##################
 
 class AlJazeeraEnglish(BaseChannel):
-    playable = False
+    playable = True
     short_name = 'aljazeera_en'
     long_name = 'Al Jazeera English'
     default_action = 'play_stream'
@@ -100,7 +100,7 @@ class ABCNews24(BaseChannel):
 #########  
 
 class BBCNEWS(BaseChannel):
-    playable = False
+    playable = True
     short_name = 'bbc'
     long_name = 'BBC'
     default_action = 'list_streams'
