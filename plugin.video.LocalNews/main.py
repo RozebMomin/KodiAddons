@@ -34,14 +34,12 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                       'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=FloridaNBC2&event_id=4105198&owner_id=1140&video_id=LIVE',
                       'genre': 'Florida'}
                      ],
-            'American CNN News': [{'name': 'CNN News',
-                      'thumb': 'http://www.dbgod.com/pics/cnn-thumbnail.png',
-                      'video': 'http://149.255.152.110/cnn/index.m3u8',
-                      'genre': 'American CNN'}
+            'Alabama': [{'name': 'Watch WBRC Fox6 LIVE',
+                      'thumb': 'http://ftpcontent4.worldnow.com/wbrc/custom/2015/images/hdr_branding.png',
+                      'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=AlabamaFox6&event_id=3855294&owner_id=1140&video_id=LIVE',
+                      'genre': 'Alabama'}
                      ]}
-#YIG-yS7Brqs
-#http://d1hya96e2cm7qi.cloudfront.net/Live/_definst_/amlst:sweetbcha1novD177L240P/chunklist_b700000.m3u8
-#http://d1hya96e2cm7qi.cloudfront.net/Live/_definst_/amlst:sweetbcha1novD177L240P/chunklist_b500000.m3u8
+                     
 def get_categories():
     """
     Get the list of video categories.
