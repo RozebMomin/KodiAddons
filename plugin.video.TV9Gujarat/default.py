@@ -30,7 +30,7 @@ addon = xbmcaddon.Addon('plugin.video.TV9Gujarat')
 
 # URLStream = "rtsp://edge-ind.inapcdn.in:1935/berry/inewsup.stream_aac"
 
-liveVideoId = "i-yvP8CBa60"
+liveVideoId = "DNmHwhi21vk"
 
 xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id='+liveVideoId+')')
 
