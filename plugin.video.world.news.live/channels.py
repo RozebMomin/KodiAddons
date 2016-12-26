@@ -103,7 +103,7 @@ class BBCNEWS(BaseChannel):
     playable = True
     short_name = 'bbc'
     long_name = 'BBC'
-    default_action = 'list_streams'
+    default_action = 'play_stream'
 
     def action_play_stream(self):        
         self.plugin.set_stream_url('https://edge-997-uk-ld.filmon.com/live/27.low.stream/playlist.m3u8?id=0ad5aac39bb13fbe624e2dc09cff9dec8e90a6f6553d1d95f3cb8b5d2bc6a49aaa95ed6f8fc44f47cd89a1b53e8ebd9552b91f09e8a6410bb33783227d8f354ca062f76b55ccb1bd154184f525f1b7562761ca6049194af588de5f88e8678d5e3e617184056ac5e97790cd64ccc1e3b77e947e1c8ef4bb612c82bea3717f16e9766c1f21d0e3ccbf562d68ecf84ec74823b39487f57c1545')
