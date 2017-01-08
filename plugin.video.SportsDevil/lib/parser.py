@@ -547,6 +547,9 @@ class Parser(object):
 
             elif command == 'convTimestamp':
                 src = cc.convTimestamp(params, src)
+                
+            elif command == 'convDateUtil':
+                src = cc.convDateUtil(params, src)
 
             elif command == 'select':
                 src = cc.select(params, src)
@@ -645,7 +648,16 @@ class Parser(object):
                 
             elif command == 'cjsAesDec':
                 src = crypt.cjsAesDec(src,item.infos[params])
-            
+                
+            elif command == 'm3u8AesDec':
+                src = crypt.m3u8AesDec(src,item.infos[params])
+
+            elif command == 'drenchDec':
+                src = crypt.drenchDec(src,item.infos[params])
+                
+            elif command == 'onetv':
+                src = crypt.onetv(src)
+
             elif command == 'getCookies':
                 src = cc.getCookies(params, src)
 
@@ -656,7 +668,10 @@ class Parser(object):
                 src = dt.getUnixTimestamp()
                 
             elif command == 'rowbalance':
-                src = rb.get()
+                src = rb.get(src)
+                
+            elif command == 'simpleToken':
+                src = cc.simpleToken(src)
 
             elif command == 'urlMerge':
                 src = cc.urlMerge(params, src)
