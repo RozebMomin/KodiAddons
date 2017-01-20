@@ -367,6 +367,78 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>ActivateWindow(10025,&quot;plugin://plugin.video.exodus/?action=movieNavigator&quot;,return)</onclick>
 				</item>
+				<item><!-- YouTube -->
+					<thumb>special://skin/extras/homeicons/youtube.png</thumb>
+					<label>YouTube</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.youtube)</onclick>
+				</item>
+				<item><!-- WorldNews -->
+					<thumb>special://skin/extras/homeicons/NewsStand.png</thumb>
+					<label>World News</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.world.news.live)</onclick>
+				</item>
+				<item><!-- LIVE TV Basic -->
+					<thumb>special://skin/extras/homeicons/tv.png</thumb>
+					<label>Live TV Basic</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.ustvnow.tva)</onclick>
+				</item>
+				<item><!-- Sports -->
+					<thumb>special://skin/extras/homeicons/Sports.png</thumb>
+					<label>Sports</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.SportsDevil)</onclick>
+				</item>
+				<item><!-- DesiTV Live -->
+					<thumb>special://skin/extras/homeicons/DesiTVLive.png</thumb>
+					<label>Desi TV Live</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.DesiTVLive)</onclick>
+				</item>
+				<item><!-- Desi TV -->
+					<thumb>special://skin/extras/homeicons/desitv_icon.png</thumb>
+					<label>Desi TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.tvondesizonexl)</onclick>
+				</item>
+				<item><!-- Pakistani TV -->
+					<thumb>special://skin/extras/homeicons/PakistaniTV.png</thumb>
+					<label>Pakistani TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.PakistaniTV)</onclick>
+				</item>
+				<item><!-- South Indian TV -->
+					<thumb>special://skin/extras/homeicons/TamilKodi.png</thumb>
+					<label>South Indian TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.tamilkodi)</onclick>
+				</item>
+				<item><!-- Spotify -->
+					<thumb>special://skin/extras/homeicons/Spotify.png</thumb>
+					<label>Spotify</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(script.audio.spotimc)</onclick>
+				</item>
+				<item><!-- Gujarati Natak -->
+					<thumb>special://skin/extras/homeicons/GujaratiNatak.png</thumb>
+					<label>Gujarati Natak</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.GujaratiNatak)</onclick>
+				</item>
+				<item><!-- Aaj Tak News -->
+					<thumb>special://skin/extras/homeicons/AajTak.png</thumb>
+					<label>Aaj Tak News</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.AajTak)</onclick>
+				</item>
+				<item><!-- Aastha TV -->
+					<thumb>special://skin/extras/homeicons/AasthaTV.png</thumb>
+					<label>Aastha TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.AasthaTV)</onclick>
+				</item>
 				<item>
 					<thumb>$INFO[Skin.String(CustomMovies.4.Icon)]</thumb>
 					<label>$INFO[Skin.String(CustomMovies.4.Label)]</label>
@@ -570,6 +642,18 @@
 					<onclick>$INFO[Skin.String(CustomAddon.8.Path)]</onclick>
 					<visible>!IsEmpty(Skin.String(CustomAddon.8.Path))</visible>
 				</item>
+				<item><!-- Live TV Zem -->
+					<thumb>special://skin/extras/homeicons/LiveTVHI.png</thumb>
+					<label>Live TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.ZemTV-shani)</onclick>
+				</item>
+				<item><!-- HD Movies Ethusian -->
+					<thumb>special://skin/extras/homeicons/HDMovies.png</thumb>
+					<label>HD Indian Movies</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.aftershock)</onclick>
+				</item>
 				<item><!-- Custom TV 1 -->
 					<thumb>$INFO[Skin.String(CustomTV.1.Icon)]</thumb>
 					<label>$INFO[Skin.String(CustomTV.1.Label)]</label>
@@ -695,24 +779,6 @@
 					<label>$LOCALIZE[20092]</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>System.LogOff</onclick>
-				</item>
-				<item><!-- Zem TV LIVE -->
-					<thumb>special://skin/extras/homeicons/LiveTVHI.png</thumb>
-					<label>LIVE TV</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.ZemTV-shani)</onclick>
-				</item>
-				<item><!-- HD Indian Movies -->
-					<thumb>special://skin/extras/homeicons/HDMovies.png</thumb>
-					<label>HD Indian Movies</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.einthusan)</onclick>
-				</item>
-				<item><!-- TV9 Gujarati -->
-					<thumb>special://skin/extras/homeicons/TV9Gujarat.png</thumb>
-					<label>TV9 Gujarati</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.TV9Gujarat)</onclick>
 				</item>
 				<item><!-- Bangla TV -->
 					<thumb>special://skin/extras/homeicons/BanglaTV.png</thumb>
