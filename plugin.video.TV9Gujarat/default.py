@@ -61,10 +61,10 @@ addon_handle = int(sys.argv[1])
 xbmcplugin.setContent(addon_handle, 'videos')
 
 # #YouTube TV9 Gujarat Uploads
-# requestUrl = "https://www.youtube.com/user/JaffariCenterATL/videos?live_view=500&sort=dd&view=0&flow=list"
-# r = requests.get(requestUrl)
-# data = r.text
-# soup = BeautifulSoup(data)
+requestUrl = "https://www.youtube.com/user/gujarattv9/videos?live_view=500&sort=dd&view=0&flow=list"
+r = requests.get(requestUrl)
+data = r.text
+soup = BeautifulSoup(data)
 
 #YouTube Jaffari Center LIVE Stream
 liveGetURL = "https://www.youtube.com/user/tv9gujaratlive/live"
@@ -76,28 +76,28 @@ desc = soup3.findAll(attrs={"itemprop":"videoId"})
 liveStreamVideoId = desc[0]['content'].encode('utf-8')
 
 # #Define Empty Variables
-# dataTitles = []
-# dataLinks = []
-# dataThumbnails = []
-# i=0
+dataTitles = []
+dataLinks = []
+dataThumbnails = []
+i=0
 
 # #Define BeautifulSoup Queries
-# videoTitle = soup.find_all('h3', 'yt-lockup-title ')
-# videoLink = soup.find_all('div',{"data-context-item-id":True})
-# videoThumbnail = soup.find('span', 'yt-thumb-clip')
+videoTitle = soup.find_all('h3', 'yt-lockup-title ')
+videoLink = soup.find_all('div',{"data-context-item-id":True})
+videoThumbnail = soup.find('span', 'yt-thumb-clip')
 
 # # Fill Empty Queries
-# for row in videoTitle:
-#         Title = row.get_text()
-#         Title = Title.strip()
-#         Title = Title.encode('utf-8')
-#         Title = Title.split("-")[0]
-#         dataTitles.append(Title)
+for row in videoTitle:
+        Title = row.get_text()
+        Title = Title.strip()
+        Title = Title.encode('utf-8')
+        Title = Title.split("-")[0]
+        dataTitles.append(Title)
 
-# for link in videoLink:
-#         properLink = str()
-#         properLink = link['data-context-item-id']
-#         dataLinks.append(properLink)
+for link in videoLink:
+        properLink = str()
+        properLink = link['data-context-item-id']
+        dataLinks.append(properLink)
 
 #Get Length of Directory
 
@@ -106,13 +106,13 @@ li2 = xbmcgui.ListItem(' LIVE ', iconImage='http://i.ytimg.com/vi/'+liveStreamVi
 li2.setProperty('IsPlayable', 'true')
 xbmcplugin.addDirectoryItem(handle=addon_handle, url=liveURL, listitem=li2)
 
-# maxResults = len(dataLinks)
-# for i in range(0, maxResults):
-#         url = "plugin://plugin.video.youtube/play/?video_id=" + str(dataLinks[i])
-#         li = xbmcgui.ListItem(' '+str(dataTitles[i])+' ', iconImage='http://i.ytimg.com/vi/'+str(dataLinks[i])+'/maxresdefault.jpg')
-#         li.setProperty('IsPlayable', 'true')
-#         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
-#         i+=1
+maxResults = len(dataLinks)
+for i in range(0, maxResults):
+        url = "plugin://plugin.video.youtube/play/?video_id=" + str(dataLinks[i])
+        li = xbmcgui.ListItem(' '+str(dataTitles[i])+' ', iconImage='http://i.ytimg.com/vi/'+str(dataLinks[i])+'/maxresdefault.jpg')
+        li.setProperty('IsPlayable', 'true')
+        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
+        i+=1
 
 # print "-----------" + str(maxResults)
 
