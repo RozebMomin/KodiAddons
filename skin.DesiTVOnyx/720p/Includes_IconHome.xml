@@ -391,12 +391,6 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.SportsDevil)</onclick>
 				</item>
-				<item><!-- DesiTV Live -->
-					<thumb>special://skin/extras/homeicons/DesiTVLive.png</thumb>
-					<label>Desi TV Live</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.DesiTVLive)</onclick>
-				</item>
 				<item><!-- Desi TV -->
 					<thumb>special://skin/extras/homeicons/desitv_icon.png</thumb>
 					<label>Desi TV</label>
