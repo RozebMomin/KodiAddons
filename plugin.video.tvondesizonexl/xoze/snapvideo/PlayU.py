@@ -34,10 +34,7 @@ def retrieveVideoInfo(video_id):
         else:
             html = html.replace(' ', '')
             html = html.replace('\'', '"')
-            try:
-                video_link = 'http' + re.compile('file:"http(.+?)m3u8"').findall(html)[0] + 'm3u8'
-            except:
-                video_link = 'http' + re.compile('file:"http(.+?)mp4"').findall(html)[0] + 'mp4'
+            video_link = 'http' + re.compile('\,\{file:"http(.+?)mp4"').findall(html)[0] + 'mp4'
             img_link = re.compile('image:"(.+?)"').findall(html)[0]
             video.set_thumb_image(img_link)
         video.set_stopped(False)

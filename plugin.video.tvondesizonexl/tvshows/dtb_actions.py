@@ -32,7 +32,7 @@ import xbmc  # @UnresolvedImport
 import xbmcgui  # @UnresolvedImport
 from xoze.context import AddonContext, SnapVideo
 from xoze.snapvideo import WatchVideo2US, VideoWeed, CloudEC, LetWatch, PlayU, \
-    Playwire
+    TVLogy, Playwire, Streamin, Watchers
 from xoze.utils import file, http, jsonfile
 from xoze.utils.cache import CacheManager
 from xoze.utils.http import HttpClient
@@ -45,33 +45,27 @@ DIRECT_CHANNELS = {"Awards & Concerts":{"iconimage":"Awards.jpg",
                    "channelType": "IND",
                    "tvshow_episodes_url": "/forums/20-Latest-Exclusive-Movie-HQ"}}
  
-LIVE_CHANNELS = {"MTunes":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/mm/m_tunes_hd.png",
+LIVE_CHANNELS = {"9XM":{"iconimage":"http://www.lyngsat.com/logo/tv/num/9x_music.png|Referer=http://www.lyngsat.com/",
                         "channelType": "IND",
-                        "channelUrl": "http://akamaihd.wowzahls12.yuppcdn.net/live/mtunes/chunklist.m3u8|User-Agent=Apache"},
-                 "Music India":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/mm/music_india.png",
-                        "channelType": "IND",
-                        "channelUrl": "http://akamaihd.wowzahls12.yuppcdn.net/live/musicindia/chunklist.m3u8|User-Agent=Apache"},
-                 "9XM":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_music.png",
-                        "channelType": "IND",
-                        "channelUrl": "http://d2ckk42trw29cy.cloudfront.net/9xmedia/ngrp:9xmusic_all/playlist.m3u8"},
-                 "9X Jalwa":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_jalwa.png",
-                             "channelType": "IND",
-                             "channelUrl": "http://dls96d52aauuo.cloudfront.net/9xmedia/ngrp:9xjalwa_all/playlist.m3u8"},
-                 "9x Tashan":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_tashan.png",
-                              "channelType": "IND",
-                              "channelUrl": "http://dhkvssi8he6y9.cloudfront.net/9xmedia/ngrp:9xtashan_all/playlist.m3u8"},
-                 "9x Jhakaas":{"iconimage":"http://www.lyngsat-logo.com/logo/tv/num/9x_jhakaas.png",
-                              "channelType": "IND",
-                              "channelUrl": "http://d20rca8w7x9af9.cloudfront.net/9xmedia/ngrp:9xjhakaas_all/playlist.m3u8"},
-                 "IBN7": {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ii/ibn7.png",
+                        "channelUrl": "http://ind19-lh.akamaihd.net/i/ind19_9xm@440010/master.m3u8"},
+                 "IBN7": {"iconimage":"http://www.lyngsat.com/logo/tv/ii/ibn7.png|Referer=http://www.lyngsat.com/",
                           "channelType": "IND",
                           "channelUrl": "http://ibn7_hls-lh.akamaihd.net/i/ibn7_hls_n_1@174951/index_3_av-b.m3u8?sd=10&play-only=backup&rebase=on"},
-                 "India TV": {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ii/india_tv_in.png",
+                 "India TV": {"iconimage":"http://www.lyngsat.com/logo/tv/ii/india_tv_in.png|Referer=http://www.lyngsat.com/",
                               "channelType": "IND",
-                              "channelUrl": "http://indiatvnews-lh.akamaihd.net/i/ITV_1@199237/master.m3u8"}                          
+                              "channelUrl": "http://indiatvnews-lh.akamaihd.net/i/ITV_1@199237/master.m3u8"},
+                 "NDTV 24x7": {"iconimage":"http://www.lyngsat.com/logo/tv/nn/ndtv_24x7.png|Referer=http://www.lyngsat.com/",
+                              "channelType": "IND",
+                              "channelUrl": "http://ndtv.live-s.cdn.bitgravity.com/cdn-live-b7/_definst_/ndtv/live/ndtv247live.smil/playlist.m3u8"},
+                 "NDTV India": {"iconimage":"http://www.lyngsat.com/logo/tv/nn/ndtv_india.png|Referer=http://www.lyngsat.com/",
+                              "channelType": "IND",
+                              "channelUrl": "http://ndtv.live-s.cdn.bitgravity.com/cdn-live-b7/_definst_/ndtv/live/ndtvindialive.smil/playlist.m3u8"},
+                 "NDTV GoodTimes": {"iconimage":"http://www.lyngsat.com/logo/tv/nn/ndtv_good_times.png|Referer=http://www.lyngsat.com/",
+                              "channelType": "IND",
+                              "channelUrl": "http://ndtv.live-s.cdn.bitgravity.com/cdn-live-b3/_definst_/ndtv/live/ndtvgoodtime.smil/playlist.m3u8"}
                  }
 
-BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpdHZib3gubWU=')
+BASE_WSITE_URL = base64.b64decode('aHR0cDovL3d3dy5kZXNpdHZib3gubmV0')
     
 def check_cache(req_attrib, modelMap):
     logging.getLogger().debug('DTB - Check cache ***********************')
@@ -100,55 +94,55 @@ def refresh_cache(req_attrib, modelMap):
     logging.getLogger().debug('Reloading cache...')
     
     tv_data = {"channels": {"Star Plus":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ss/star_plus.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/ss/star_plus_hk.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/star-plus/"},
                   "Zee TV":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/zz/zee_tv.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/zz/zee_tv_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/zee-tv/"},
                   "Sony TV":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ss/set_in.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/ss/set_asia.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/sony-tv/"},
                   "Sony Pal":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ss/sony_pal_in.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/ss/sony_pal_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/sony-pal/"},
                   "Life OK":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ll/life_ok_in.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/ll/life_ok_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/life-ok/"},
                   "Sahara One":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ss/sahara_one.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/ss/sahara_one_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/sahara-one/"},
                   "Colors TV":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/cc/colors_in.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/cc/colors_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
-                   "running_tvshows_url": "/colors-tv/"},
+                   "running_tvshows_url": "/color-tv/"},
                   "Sab TV":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/ss/sony_sab_tv.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/ss/sony_sab_tv_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/sab-tv/"},
                   "&TV":
-                  {"iconimage":"http://akamai.vidz.zeecdn.com/zeedigital/AndTV/domain-data/logo/andtv-logo-pink-1421822560.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/aa/and_tv_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/and-tv/"},
                   "MTV":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/mm/mtv_india.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/mm/mtv_us.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/mtv-channel/"},
                   "Bindass TV":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/uu/utv_bindass.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/bb/bindass_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/utv-bindass/"},
                   "Channel [V]":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/cc/channel_v_in.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/cc/channel_v_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/channel-v/"},
                   "Zindagi TV":
-                  {"iconimage":"http://www.lyngsat-logo.com/logo/tv/zz/zee_zindagi_in.png",
+                  {"iconimage":"http://www.lyngsat.com/logo/tv/zz/zee_zindagi_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/zindagi/"}
                 }
@@ -390,7 +384,7 @@ def remove_favorite(req_attrib, modelMap):
     logging.getLogger().debug('remove tv show favorite...')
     favorite = CacheManager().get('selected_favorite')
     favorite_thumb = CacheManager().get('selected_favorite_thumb')
-    favorites = CacheManager().get('tv_favorites')
+    favorites = CacheManager().get('dtb_tv_favorites')
     if favorites is None:
         favorites = {}
     elif favorites.has_key(favorite):
@@ -434,13 +428,13 @@ def load_tv_show_episodes(req_attrib, modelMap):
         if currentPage != 1:
             url = url + 'page/' + req_attrib['tv-show-page'] + '/'
     logging.getLogger().debug('load tv show episodes...' + url)
-    contentDiv = BeautifulSoup.SoupStrainer('div', {'id':'left-div'})
+    contentDiv = BeautifulSoup.SoupStrainer('div', {'class':'item_content'})
     soup = HttpClient().get_beautiful_soup(url=url + '?tag=video', parseOnlyThese=contentDiv)
 #     soup = BeautifulSoup.BeautifulSoup(HttpClient().get_html_content(url=url)).findAll('div', {'id':'contentBody'})[0]
     
     tv_show_episode_items = []
     
-    threads = soup.findAll('h2', {'class':'titles'})
+    threads = soup.findAll('h4')
     tv_show_episode_items.extend(__retrieveTVShowEpisodes__(threads, tv_show_name, channel_type, channel_name))
     logging.getLogger().debug('In DTB: total tv show episodes: %s' % str(len(tv_show_episode_items)))
     
@@ -626,7 +620,7 @@ def __retrieve_tv_shows__(tv_channel_url):
         return tv_shows
     tv_channel_url = BASE_WSITE_URL + tv_channel_url
     logging.getLogger().debug(tv_channel_url)
-    contentDiv = BeautifulSoup.SoupStrainer('li', {'class':'categories'})
+    contentDiv = BeautifulSoup.SoupStrainer('li', {'class': re.compile(r'\bcat-item cat-item-\b')})
     soup = HttpClient().get_beautiful_soup(url=tv_channel_url, parseOnlyThese=contentDiv)
 #     soup = BeautifulSoup.BeautifulSoup(HttpClient().get_html_content(url=tv_channel_url)).findAll('div', {'id':'forumbits', 'class':'forumbits'})[0]
     for title_tag in soup.findAll('li'):
@@ -635,7 +629,7 @@ def __retrieve_tv_shows__(tv_channel_url):
         if tv_show_url[0:4] != "http":
             tv_show_url = BASE_WSITE_URL + '/' + tv_show_url
         tv_show_name = aTag.getText()
-        if not re.search('Completed Shows', tv_show_name, re.IGNORECASE):
+        if not re.search('-completed-shows', tv_show_url, re.IGNORECASE):
             tv_shows.append({"name":http.unescape(tv_show_name), "url":tv_show_url, "iconimage":""})
         else:
             tv_shows = tv_channel["finished_tvshows"]
@@ -668,7 +662,7 @@ def _retrieve_video_links_(req_attrib, modelMap):
     ignoreAllLinks = False
     
     list_items = []
-    contentDiv = BeautifulSoup.SoupStrainer('div', {'id':'left-div'})
+    contentDiv = BeautifulSoup.SoupStrainer('div', {'class':'entry_content'})
     soup = HttpClient().get_beautiful_soup(url=req_attrib['episode-url'], parseOnlyThese=contentDiv)
 #     soup = BeautifulSoup.BeautifulSoup(HttpClient().get_html_content(url=req_attrib['episode-url'])).findAll('blockquote', {'class':re.compile(r'\bpostcontent\b')})[0]
       
@@ -755,7 +749,7 @@ def __prepareVideoLink__(video_link):
     video_url = video_link['videoLink']
     video_source = video_link['videoSource']
     new_video_url = None
-    if re.search('videos.desihome.info', video_url, flags=re.I):
+    if re.search('media.php\?id\=', video_url, flags=re.I):
         new_video_url = __parseDesiHomeUrl__(video_url)
     if new_video_url is None:        
         
@@ -769,10 +763,16 @@ def __prepareVideoLink__(video_link):
             new_video_url = 'http://playu.net/embed-' + video_id + '-540x304.html'
         elif re.search('watchvideo.php', video_url, flags=re.I) or re.search('watchvideo', video_source, flags=re.I):
             new_video_url = 'http://watchvideo2.us/embed-' + video_id + '-540x304.html'
+        elif re.search('estream.php', video_url, flags=re.I) or re.search('estream', video_source, flags=re.I):
+            new_video_url = 'https://estream.to/embed-' + video_id + '-540x304.html'
+        elif re.search('streamin.php', video_url, flags=re.I) or re.search('streamin', video_source, flags=re.I):
+            new_video_url = 'http://streamin.to/embed-' + video_id + '-520x400.html'
+        elif re.search('watchers.php', video_url, flags=re.I) or re.search('watchers', video_source, flags=re.I):
+            new_video_url = 'http://watchers.to/embed-' + video_id + '.html'
         elif re.search('idowatch.php', video_url, flags=re.I) or re.search('idowatch', video_source, flags=re.I):
             new_video_url = 'http://idowatch.net/embed-' + video_id + '-520x400.html'
         elif re.search('tvlogy', video_source, flags=re.I):
-            new_video_url = 'http://tvlogy.com/watch.php?v=' + video_id + '&'
+            new_video_url = 'http://tvlogy.to/watch.php?v=' + video_id + '&'
         elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
             new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'
         elif re.search('mega.co.nz', video_url, flags=re.I):
@@ -824,8 +824,12 @@ def __parseDesiHomeUrl__(video_url):
     video_link = None
     logging.getLogger().debug('video_url = ' + video_url)
     html = HttpClient().get_html_content(url=video_url)
-    if re.search('dailymotion.com', html, flags=re.I):
-        video_link = 'http://www.dailymotion.com/' + re.compile('dailymotion.com/(.+?)"').findall(html)[0] + '&'
+    if re.search('\/d\.php\?id\=', html, flags=re.I):
+        video_link = 'http://www.dailymotion.com/embed/video/' + re.compile('d.php\?id\=(.+?)"').findall(html)[0] + '&'
+    elif re.search('config.playwire.com', html, flags=re.I):
+        video_link = 'http://config.playwire.com/videos/' + re.compile('/v2/(.+?)/zeus.json"').findall(html)[0] + '/'
+    elif re.search('tvlogy.to', html, flags=re.I):
+        video_link = 'http://tvlogy.to/watch.php?v=' + re.compile('tvlogy\.to\/watch\.php\?v\=(.+?)"').findall(html)[0]
     elif re.search('hostingbulk.com', html, flags=re.I):
         video_link = 'http://hostingbulk.com/' + re.compile('hostingbulk.com/(.+?)"').findall(html)[0] + '&'
     elif re.search('movzap.com', html, flags=re.I):

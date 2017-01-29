@@ -1,3 +1,46 @@
+[B]Version 2.8.21[/B]
+- Fixed Watchvideo
+- Added estream
+
+[B]Version 2.8.20[/B]
+- Fixed finished shows issue
+
+[B]Version 2.8.19[/B]
+- Fixed 9xm and rest removed
+- Fixed Desitvbox
+
+[B]Version 2.8.18[/B]
+- Fixed the broken addon
+
+[B]Version 2.8.17[/B]
+- Fixed Dailymotion
+
+[B]Version 2.8.16[/B]
+- Fixed Desitvbox loading issue
+
+[B]Version 2.8.15[/B]
+- Added watchers, streamin
+- Fixed watchvideo, PlayU, Dailymotion
+
+[B]Version 2.8.14[/B]
+- Fixed Icons
+
+[B]Version 2.8.13[/B]
+- Added Maa TV and Zee Telugu
+
+[B]Version 2.8.12[/B]
+- Image search fixed
+
+[B]Version 2.8.11[/B]
+- Fixed Playwire, Letwatch, TVLogy
+
+[B]Version 2.8.10[/B]
+- Fixed Desitvbox
+
+[B]Version 2.8.9[/B]
+- Fixed Playwire
+- Added Colors Marathi
+
 [B]Version 2.8.8[/B]
 - Fixed TVLogy
 
