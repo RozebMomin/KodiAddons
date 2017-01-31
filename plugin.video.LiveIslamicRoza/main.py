@@ -19,44 +19,15 @@ _handle = int(sys.argv[1])
 # Here we use a fixed set of properties simply for demonstrating purposes
 # In a "real life" plugin you will need to get info and links to video files/streams
 # from some web-site or online service.
-VIDEOS = {'Imam Hussain (as)': [{'name': 'Trial1',
-                       'thumb': 'http://www.vidsplay.com/vids/crab.jpg',
-                       'video': 'http://askmaulana.com/streams/str1.strm',
-                       'genre': 'Animals'},
-                      {'name': 'Alligator',
-                       'thumb': 'http://www.vidsplay.com/vids/alligator.jpg',
-                       'video': 'http://www.vidsplay.com/vids/alligator.mp4',
-                       'genre': 'Animals'},
-                      {'name': 'Turtle',
-                       'thumb': 'http://www.vidsplay.com/vids/turtle.jpg',
-                       'video': 'http://www.vidsplay.com/vids/turtle.mp4',
-                       'genre': 'Animals'}
-                      ],
-            'Hazrat Abbas (as)': [{'name': 'Postal Truck',
-                      'thumb': 'http://www.vidsplay.com/vids/us_postal.jpg',
-                      'video': 'http://www.vidsplay.com/vids/us_postal.mp4',
-                      'genre': 'Cars'},
-                     {'name': 'Traffic',
-                      'thumb': 'http://www.vidsplay.com/vids/traffic1.jpg',
-                      'video': 'http://www.vidsplay.com/vids/traffic1.avi',
-                      'genre': 'Cars'},
-                     {'name': 'Traffic Arrows',
-                      'thumb': 'http://www.vidsplay.com/vids/traffic_arrows.jpg',
-                      'video': 'http://www.vidsplay.com/vids/traffic_arrows.mp4',
-                      'genre': 'Cars'}
+VIDEOS = {'Hazrat Abbas (as)': [{'name': 'Watch Live',
+                      'thumb': 'http://3.bp.blogspot.com/-khVC7Ln7UYY/UOSBCZ9lkvI/AAAAAAAABDw/_up0U7wXEeo/s1600/Shrine+Of+Hazrat+Abbas+6.jpg',
+                      'video': 'rtmp://live.alkafeel.net/live/alkafeel/rAa5PGot5',
+                      'genre': 'Hazrat Abbas'}
                      ],
-            'Food': [{'name': 'Chicken',
-                      'thumb': 'http://www.vidsplay.com/vids/chicken.jpg',
-                      'video': 'http://www.vidsplay.com/vids/bbqchicken.mp4',
-                      'genre': 'Food'},
-                     {'name': 'Hamburger',
-                      'thumb': 'http://www.vidsplay.com/vids/hamburger.jpg',
-                      'video': 'http://www.vidsplay.com/vids/hamburger.mp4',
-                      'genre': 'Food'},
-                     {'name': 'Pizza',
-                      'thumb': 'http://www.vidsplay.com/vids/pizza.jpg',
-                      'video': 'http://www.vidsplay.com/vids/pizza.mp4',
-                      'genre': 'Food'}
+            'Imam Reza (as)': [{'name': 'Watch Live',
+                      'thumb': 'https://i.ytimg.com/vi/ky0AC20ZpN0/hqdefault.jpg',
+                      'video': 'http://185.23.131.61/hls/rozeh2.m3u8',
+                      'genre': 'Imam Reza'}
                      ]}
 
 
