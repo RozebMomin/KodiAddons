@@ -159,6 +159,35 @@
   </extension>
 </addon>
 
+<addon id="plugin.video.AIN"
+	name="AIN"
+	version="1.0.1"
+	provider-name="adilj">
+
+	<requires>
+		<import addon="xbmc.python" version="2.1.0"/>
+		<import addon="script.module.urlresolver" version="1.0.0"/>
+		<import addon="plugin.video.youtube" version="2.9.2" optional="true"/>
+		<import addon="script.module.simplejson" version="3.3.0"/>
+		<import addon="script.module.elementtree" version="1.2.8"/>
+	<import addon="plugin.video.f4mTester" version="2.2.3" optional="true" />
+	</requires>
+
+	<extension point="xbmc.python.pluginsource"
+		library="default.py">
+		<provides>video</provides>
+	</extension>
+
+	<extension point="xbmc.addon.metadata">
+		<summary>AIN Add-on for Einthusan</summary>
+		<description>Watch Einthusan on your XBMC.</description>
+		<disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with any of the content provider.</disclaimer>
+		<forum></forum>
+		<email></email>
+		<platform>all</platform>
+	</extension>
+</addon>
+
 <addon id="plugin.video.BanglaTVLive"
        name="Bangla TV Live"
        version="1.0.2"

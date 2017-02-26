@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="32001">
+        <setting id="singleLanguage" type="enum" label="32002" lvalues="32003|32004|32005|32006|32007|32008|32009|32010|32011" />
+     </category>
+</settings>
