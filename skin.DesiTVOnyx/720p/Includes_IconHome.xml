@@ -260,6 +260,12 @@
 					<label2>$LOCALIZE[8]</label2>
 					<onclick>ActivateWindow(Weather,,return)</onclick>
 				</item>
+				<item><!-- Favourites -->
+					<thumb>special://skin/extras/homeicons/Favourites.png</thumb>
+					<label>$LOCALIZE[31652]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(Favourites)</onclick>
+				</item>
 				<item><!-- Music -->
 					<thumb>special://skin/extras/homeicons/music.png</thumb>
 					<label>$LOCALIZE[2]</label>
@@ -350,6 +356,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.AajTak)</onclick>
 				</item>
+				<item><!-- TV9 Gujarat News -->
+					<thumb>special://skin/extras/homeicons/TV9Gujarat.png</thumb>
+					<label>TV9 Gujarat News</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.TV9Gujarat)</onclick>
+				</item>
 				<item><!-- Aastha TV -->
 					<thumb>special://skin/extras/homeicons/AasthaTV.png</thumb>
 					<label>Aastha TV</label>
@@ -366,7 +378,7 @@
 					<thumb>special://skin/extras/homeicons/HDMovies.png</thumb>
 					<label>HD Indian Movies</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(plugin.video.aftershock)</onclick>
+					<onclick>RunAddon(plugin.video.AIN)</onclick>
 				</item>
 				<item><!-- Bangla TV -->
 					<thumb>special://skin/extras/homeicons/BanglaTV.png</thumb>
@@ -458,6 +470,12 @@
 					<label>Update</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>UpdateAddonRepos</onclick>
+				</item>
+				<item><!-- HELP -->
+					<thumb>special://skin/extras/homeicons/Help.png</thumb>
+					<label>Help</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>Notification(WWW.DESITVMC.COM/SUPPORT,OR WWW.DESITVMC.COM/BLOG OR CALL 4045005791.,20000,/script.hellow.world.png)</onclick>
 				</item>
 				<item><!-- Quit -->
 					<visible>!Skin.HasSetting(home-shutdown)</visible>
