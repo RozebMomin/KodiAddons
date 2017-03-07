@@ -340,12 +340,6 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.tamilkodi)</onclick>
 				</item>
-				<item><!-- Spotify -->
-					<thumb>special://skin/extras/homeicons/Spotify.png</thumb>
-					<label>Spotify</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunAddon(script.audio.spotimc)</onclick>
-				</item>
 				<item><!-- Gujarati Natak -->
 					<thumb>special://skin/extras/homeicons/GujaratiNatak.png</thumb>
 					<label>Gujarati Natak</label>
