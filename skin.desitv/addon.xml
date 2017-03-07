@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="skin.desitv" version="1.4.7" name="DesiTV"	provider-name="RozebMomin">
+<addon id="skin.desitv" version="1.4.8" name="DesiTV"	provider-name="RozebMomin">
 	<requires>
                 <import addon="xbmc.gui" version="5.9.0"/>
                 <import addon="resource.uisounds.apptv" version="1.0.1"/>

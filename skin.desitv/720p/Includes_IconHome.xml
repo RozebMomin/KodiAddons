@@ -255,34 +255,6 @@
 				</control>
 			</focusedlayout>
 			<content>
-				<item><!-- Videos -->
-					<visible>!Skin.HasSetting(home-video)</visible>
-					<thumb>special://skin/extras/homeicons/video.png</thumb>
-					<label>$LOCALIZE[3]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>ActivateWindow(Videolibrary,root,return)</onclick>
-				</item>
-				<item><!-- Movies -->
-					<visible>!Skin.HasSetting(home-movie)</visible>
-					<thumb>special://skin/extras/homeicons/movie.png</thumb>
-					<label>$LOCALIZE[31026]</label>
-					<label2>$LOCALIZE[31026]</label2>
-					<onclick>$VAR[MovieLibEntry]</onclick>
-				</item>
-				<item><!-- TV Shows -->
-					<visible>!Skin.HasSetting(home-tvshows)</visible>
-					<thumb>special://skin/extras/homeicons/tv.png</thumb>
-					<label>$LOCALIZE[20343]</label>
-					<label2>$LOCALIZE[20343]</label2>
-					<onclick>$VAR[TVLibEntry]</onclick>
-				</item>
-				<item><!-- Music -->
-					<visible>!Skin.HasSetting(home-music)</visible>
-					<thumb>special://skin/extras/homeicons/music.png</thumb>
-					<label>$LOCALIZE[2]</label>
-					<label2>$LOCALIZE[2]</label2>
-					<onclick>$VAR[MusicLibEntry]</onclick>
-				</item>
 				<item><!-- Weather -->
 					<visible>!IsEmpty(Weather.plugin) + [Skin.HasSetting(home-weather) | Skin.HasSetting(home-currentweather)]</visible>
 					<thumb>special://skin/extras/homeicons/weather.png</thumb>
@@ -290,37 +262,8 @@
 					<label2>$LOCALIZE[8]</label2>
 					<onclick>ActivateWindow(Weather,,return)</onclick>
 				</item>
-				<item><!-- Music Videos -->
-					<visible>Skin.HasSetting(home-musicvideo)</visible>
-					<thumb>special://skin/extras/homeicons/musicvideo.png</thumb>
-					<label>$LOCALIZE[31028]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$VAR[MusicVideoLibEntry]</onclick>
-				</item>
-				<item><!-- Live TV -->
-					<visible>System.GetBool(pvrmanager.enabled) + Pvr.HasTVChannels</visible>
-					<thumb>special://skin/extras/homeicons/livetv.png</thumb>
-					<label>$LOCALIZE[19020]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$VAR[TVEntry]</onclick>
-				</item>
-				<item><!-- Live Radio -->
-					<visible>System.GetBool(pvrmanager.enabled) + Pvr.HasRadioChannels</visible>
-					<thumb>special://skin/extras/homeicons/radio.png</thumb>
-					<label>$LOCALIZE[19021]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$VAR[RadioEntry]</onclick>
-				</item>
-				<item><!-- Pictures -->
-					<visible>Skin.HasSetting(home-photos)</visible>
-					<thumb>special://skin/extras/homeicons/pics.png</thumb>
-					<label>$LOCALIZE[1]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>ActivateWindow(MyPictures,,return)</onclick>
-				</item>
 				<item><!-- Favourites -->
-					<visible>Skin.HasSetting(home-favorites)</visible>
-					<thumb>special://skin/extras/homeicons/favs.png</thumb>
+					<thumb>special://skin/extras/homeicons/Favourites.png</thumb>
 					<label>$LOCALIZE[31652]</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>ActivateWindow(Favourites)</onclick>
@@ -343,355 +286,101 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>ActivateWindow(MyPictures,,return)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.1.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.1.Label)]</label>
+				<item><!-- Local News -->
+					<thumb>special://skin/extras/homeicons/LocalNews.png</thumb>
+					<label>Local News</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.1.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.1.Path))</visible>
+					<onclick>RunAddon(plugin.video.LocalNews)</onclick>
 				</item>
 				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.2.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.2.Label)]</label>
+					<thumb>special://skin/extras/homeicons/Movies.png</thumb>
+					<label>Movies!</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.2.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.2.Path))</visible>
+					<onclick>ActivateWindow(10025,&quot;plugin://plugin.video.exodus/?action=movieNavigator&quot;,return)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.3.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.3.Label)]</label>
+				<item><!-- YouTube -->
+					<thumb>special://skin/extras/homeicons/youtube.png</thumb>
+					<label>YouTube</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.3.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.3.Path))</visible>
+					<onclick>RunAddon(plugin.video.youtube)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.4.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.4.Label)]</label>
+				<item><!-- WorldNews -->
+					<thumb>special://skin/extras/homeicons/NewsStand.png</thumb>
+					<label>World News</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.4.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.4.Path))</visible>
+					<onclick>RunAddon(plugin.video.world.news.live)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.5.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.5.Label)]</label>
+				<item><!-- LIVE TV Basic -->
+					<thumb>special://skin/extras/homeicons/tv.png</thumb>
+					<label>Live TV Basic</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.5.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.5.Path))</visible>
+					<onclick>RunAddon(plugin.video.ustvnow.tva)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.6.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.6.Label)]</label>
+				<item><!-- Sports -->
+					<thumb>special://skin/extras/homeicons/Sports.png</thumb>
+					<label>Sports</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.6.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.6.Path))</visible>
+					<onclick>RunAddon(plugin.video.SportsDevil)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.7.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.7.Label)]</label>
+				<item><!-- Desi TV -->
+					<thumb>special://skin/extras/homeicons/desitv_icon.png</thumb>
+					<label>Desi TV</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.7.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.7.Path))</visible>
+					<onclick>RunAddon(plugin.video.tvondesizonexl)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMovies.8.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMovies.8.Label)]</label>
+				<item><!-- Pakistani TV -->
+					<thumb>special://skin/extras/homeicons/PakistaniTV.png</thumb>
+					<label>Pakistani TV</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMovies.8.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMovies.8.Path))</visible>
+					<onclick>RunAddon(plugin.video.PakistaniTV)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomTVShow.1.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTVShow.1.Label)]</label>
+				<item><!-- South Indian TV -->
+					<thumb>special://skin/extras/homeicons/TamilKodi.png</thumb>
+					<label>South Indian TV</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTVShow.1.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTVShow.1.Path))</visible>
+					<onclick>RunAddon(plugin.video.tamilkodi)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomTVShow.2.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTVShow.2.Label)]</label>
+				<item><!-- Spotify -->
+					<thumb>special://skin/extras/homeicons/Spotify.png</thumb>
+					<label>Spotify</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTVShow.2.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTVShow.2.Path))</visible>
+					<onclick>RunAddon(script.audio.spotimc)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomTVShow.3.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTVShow.3.Label)]</label>
+				<item><!-- Gujarati Natak -->
+					<thumb>special://skin/extras/homeicons/GujaratiNatak.png</thumb>
+					<label>Gujarati Natak</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTVShow.3.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTVShow.3.Path))</visible>
+					<onclick>RunAddon(plugin.video.GujaratiNatak)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomTVShow.4.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTVShow.4.Label)]</label>
+				<item><!-- Aaj Tak News -->
+					<thumb>special://skin/extras/homeicons/AajTak.png</thumb>
+					<label>Aaj Tak News</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTVShow.4.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTVShow.4.Path))</visible>
+					<onclick>RunAddon(plugin.video.AajTak)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomTVShow.5.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTVShow.5.Label)]</label>
+				<item><!-- TV9 Gujarat News -->
+					<thumb>special://skin/extras/homeicons/TV9Gujarat.png</thumb>
+					<label>TV9 Gujarat News</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTVShow.5.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTVShow.5.Path))</visible>
+					<onclick>RunAddon(plugin.video.TV9Gujarat)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomTVShow.6.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTVShow.6.Label)]</label>
+				<item><!-- Aastha TV -->
+					<thumb>special://skin/extras/homeicons/AasthaTV.png</thumb>
+					<label>Aastha TV</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTVShow.6.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTVShow.6.Path))</visible>
+					<onclick>RunAddon(plugin.video.AasthaTV)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomTVShow.7.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTVShow.7.Label)]</label>
+				<item><!-- Live TV Zem -->
+					<thumb>special://skin/extras/homeicons/LiveTVHI.png</thumb>
+					<label>Live TV</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTVShow.7.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTVShow.7.Path))</visible>
+					<onclick>RunAddon(plugin.video.ZemTV-shani)</onclick>
 				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomTVShow.8.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTVShow.8.Label)]</label>
+				<item><!-- HD Movies Ethusian -->
+					<thumb>special://skin/extras/homeicons/HDMovies.png</thumb>
+					<label>HD Indian Movies</label>
 					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTVShow.8.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTVShow.8.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMusic.1.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMusic.1.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMusic.1.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMusic.1.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMusic.2.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMusic.2.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMusic.2.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMusic.2.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMusic.3.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMusic.3.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMusic.3.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMusic.3.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMusic.4.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMusic.4.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMusic.4.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMusic.4.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMusic.5.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMusic.5.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMusic.5.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMusic.5.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMusic.6.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMusic.6.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMusic.6.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMusic.6.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMusic.7.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMusic.7.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMusic.7.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMusic.7.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomMusic.8.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomMusic.8.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomMusic.8.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomMusic.8.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomAddon.1.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomAddon.1.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomAddon.1.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomAddon.1.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomAddon.2.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomAddon.2.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomAddon.2.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomAddon.2.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomAddon.3.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomAddon.3.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomAddon.3.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomAddon.3.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomAddon.4.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomAddon.4.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomAddon.4.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomAddon.4.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomAddon.5.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomAddon.5.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomAddon.5.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomAddon.5.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomAddon.6.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomAddon.6.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomAddon.6.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomAddon.6.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomAddon.7.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomAddon.7.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomAddon.7.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomAddon.7.Path))</visible>
-				</item>
-				<item>
-					<thumb>$INFO[Skin.String(CustomAddon.8.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomAddon.8.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomAddon.8.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomAddon.8.Path))</visible>
-				</item>
-				<item><!-- Custom TV 1 -->
-					<thumb>$INFO[Skin.String(CustomTV.1.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTV.1.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTV.1.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTV.1.Path))</visible>
-				</item>
-				<item><!-- Custom TV 2 -->
-					<thumb>$INFO[Skin.String(CustomTV.2.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTV.2.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTV.2.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTV.2.Path))</visible>
-				</item>
-				<item><!-- Custom TV 3 -->
-					<thumb>$INFO[Skin.String(CustomTV.3.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTV.3.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTV.3.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTV.3.Path))</visible>
-				</item>
-				<item><!-- Custom TV 4 -->
-					<thumb>$INFO[Skin.String(CustomTV.4.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTV.4.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTV.4.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTV.4.Path))</visible>
-				</item>
-				<item><!-- Custom TV 5 -->
-					<thumb>$INFO[Skin.String(CustomTV.5.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTV.5.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTV.5.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTV.5.Path))</visible>
-				</item>
-				<item><!-- Custom TV 6 -->
-					<thumb>$INFO[Skin.String(CustomTV.6.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTV.6.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTV.6.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTV.6.Path))</visible>
-				</item>
-				<item><!-- Custom TV 7 -->
-					<thumb>$INFO[Skin.String(CustomTV.7.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTV.7.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTV.7.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTV.7.Path))</visible>
-				</item>
-				<item><!-- Custom TV 8 -->
-					<thumb>$INFO[Skin.String(CustomTV.8.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomTV.8.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomTV.8.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomTV.8.Path))</visible>
-				</item>
-				<item><!-- Custom Radio 1 -->
-					<thumb>$INFO[Skin.String(CustomRadio.1.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomRadio.1.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomRadio.1.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomRadio.1.Path))</visible>
-				</item>
-				<item><!-- Custom Radio 2 -->
-					<thumb>$INFO[Skin.String(CustomRadio.2.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomRadio.2.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomRadio.2.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomRadio.2.Path))</visible>
-				</item>
-				<item><!-- Custom Radio 3 -->
-					<thumb>$INFO[Skin.String(CustomRadio.3.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomRadio.3.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomRadio.3.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomRadio.3.Path))</visible>
-				</item>
-				<item><!-- Custom Radio 4 -->
-					<thumb>$INFO[Skin.String(CustomRadio.4.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomRadio.4.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomRadio.4.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomRadio.4.Path))</visible>
-				</item>
-				<item><!-- Custom Radio 5 -->
-					<thumb>$INFO[Skin.String(CustomRadio.5.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomRadio.5.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomRadio.5.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomRadio.5.Path))</visible>
-				</item>
-				<item><!-- Custom Radio 6 -->
-					<thumb>$INFO[Skin.String(CustomRadio.6.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomRadio.6.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomRadio.6.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomRadio.6.Path))</visible>
-				</item>
-				<item><!-- Custom Radio 7 -->
-					<thumb>$INFO[Skin.String(CustomRadio.7.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomRadio.7.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomRadio.7.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomRadio.7.Path))</visible>
-				</item>
-				<item><!-- Custom Radio 8 -->
-					<thumb>$INFO[Skin.String(CustomRadio.8.Icon)]</thumb>
-					<label>$INFO[Skin.String(CustomRadio.8.Label)]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>$INFO[Skin.String(CustomRadio.8.Path)]</onclick>
-					<visible>!IsEmpty(Skin.String(CustomRadio.8.Path))</visible>
-				</item>
-				<item><!-- Search -->
-					<visible>Skin.HasSetting(home-search)</visible>
-					<thumb>special://skin/extras/homeicons/search.png</thumb>
-					<label>$LOCALIZE[137]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>RunScript(script.globalsearch)</onclick>
-				</item>
-				<item><!-- Profiles -->
-					<visible>Skin.HasSetting(home-profile)</visible>
-					<thumb>special://skin/extras/homeicons/users.png</thumb>
-					<label>$LOCALIZE[20092]</label>
-					<label2>$LOCALIZE[571]</label2>
-					<onclick>System.LogOff</onclick>
+					<onclick>RunAddon(plugin.video.AIN)</onclick>
 				</item>
 				<item><!-- Bangla TV -->
 					<thumb>special://skin/extras/homeicons/BanglaTV.png</thumb>
@@ -710,6 +399,48 @@
 					<label>ESPN Live</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.ESPNLive)</onclick>
+				</item>
+				<item><!-- EnglishTV EXODUS -->
+					<thumb>special://skin/extras/homeicons/movie.png</thumb>
+					<label>English TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.exodus)</onclick>
+				</item>
+				<item><!-- Ahlulbayt TV -->
+					<thumb>special://skin/extras/homeicons/AhlulbaytTV.png</thumb>
+					<label>Ahlulbayt TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.AhlulbaytTV.en)</onclick>
+				</item>
+				<item><!-- Karbala TV -->
+					<thumb>special://skin/extras/homeicons/KarbalaLive.png</thumb>
+					<label>Karbala TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.KarbalaTVLive)</onclick>
+				</item>
+				<item><!-- Makkah TV -->
+					<thumb>special://skin/extras/homeicons/MakkahLive.png</thumb>
+					<label>Makkah TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.MakkahTVLive)</onclick>
+				</item>
+				<item><!-- Velayat TV -->
+					<thumb>special://skin/extras/homeicons/VelayatTV.png</thumb>
+					<label>Velayat TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.VelayatTV)</onclick>
+				</item>
+				<item><!-- WIN Islamic Channel -->
+					<thumb>special://skin/extras/homeicons/WINChannel.png</thumb>
+					<label>WIN Channel</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.WorldIslamicNetwork)</onclick>
+				</item>
+				<item><!-- Jaffari Center of Atlanta Channel -->
+					<thumb>special://skin/extras/homeicons/JaffariCenter.png</thumb>
+					<label>Jaffari Center</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.JaffariCenterATL)</onclick>
 				</item>
 				<item><!-- Addons menu -->
 					<visible>!Skin.HasSetting(home-programs)</visible>
@@ -741,6 +472,12 @@
 					<label>Update</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>UpdateAddonRepos</onclick>
+				</item>
+				<item><!-- HELP -->
+					<thumb>special://skin/extras/homeicons/Help.png</thumb>
+					<label>Help</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>Notification(WWW.DESITVMC.COM/SUPPORT,OR WWW.DESITVMC.COM/BLOG OR CALL 4045005791.,20000,/script.hellow.world.png)</onclick>
 				</item>
 				<item><!-- Quit -->
 					<visible>!Skin.HasSetting(home-shutdown)</visible>
