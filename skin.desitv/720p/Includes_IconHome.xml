@@ -256,7 +256,6 @@
 			</focusedlayout>
 			<content>
 				<item><!-- Weather -->
-					<visible>!IsEmpty(Weather.plugin) + [Skin.HasSetting(home-weather) | Skin.HasSetting(home-currentweather)]</visible>
 					<thumb>special://skin/extras/homeicons/weather.png</thumb>
 					<label>$LOCALIZE[8]</label>
 					<label2>$LOCALIZE[8]</label2>
@@ -370,12 +369,12 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.ZemTV-shani)</onclick>
 				</item>
-				<item><!-- HD Movies Ethusian -->
+				<!-- <item>
 					<thumb>special://skin/extras/homeicons/HDMovies.png</thumb>
 					<label>HD Indian Movies</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.AIN)</onclick>
-				</item>
+				</item> -->
 				<item><!-- Bangla TV -->
 					<thumb>special://skin/extras/homeicons/BanglaTV.png</thumb>
 					<label>Bangla TV</label>

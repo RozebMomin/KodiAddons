@@ -1,3 +1,9 @@
+[B]1.4.9[/B]
+- Removed Spotify
+- Changed Favourites Icon
+- Changed Weather Visibility
+- Removed HD Indian Movies
+
 [B]1.4.8[/B]
 - Added Favourites
 - Added TV9 Gujarat
