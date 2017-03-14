@@ -169,11 +169,31 @@ else:
     xbmcgui.Dialog().notification(titleString, 'Successfully Installed AFMainAddon.')
     print "Successfully unzipped file to target directory."
 
+## SpeedTest Addon Installation
+fileNameSpeedTestAddon = "/storage/.kodi/addons/script.speedtestnet"
+sourcePathFileSpeedTestAddon = "http://arnuboxota.com/repo/addons/script.speedtestnet/script.speedtestnet-1.0.0.zip"
+targetPathFileSpeedTestAddon = "/tmp/script.speedtestnet-1.0.0.zip"
+
+
+if os.path.exists(fileNameSpeedTestAddon):
+    print "Path already exists."
+    xbmcgui.Dialog().notification(titleString, 'SpeedTest Already Installed!')
+else:
+    xbmcgui.Dialog().notification(titleString, 'Downloading SpeedTest')
+    getFile.retrieve(sourcePathFileSpeedTestAddon, targetPathFileSpeedTestAddon)
+    print "Successfully retrieved file."
+    print "Unzipping ZIP file to target directory."
+    zip_ref = zipfile.ZipFile(targetPathFileSpeedTestAddon, 'r')
+    zip_ref.extractall(extractionDirectory)
+    zip_ref.close()
+    xbmcgui.Dialog().notification(titleString, 'Successfully Installed SpeedTest.')
+    print "Successfully unzipped file to target directory."
+
 ## Successful Update Dialog
 xbmc.executebuiltin("UpdateLocalAddons")
 xbmc.executebuiltin("UpdateAddonRepos")
 
-if os.path.exists(fileNameEinthusan) and os.path.exists(fileNameZemTV) and os.path.exists(fileNameShaniRepository) and os.path.exists(fileNameF4MTester):
+if os.path.exists(fileNameEinthusan) and os.path.exists(fileNameZemTV) and os.path.exists(fileNameShaniRepository) and os.path.exists(fileNameF4MTester) and os.path.exists(fileNameSpeedTestAddon):
     xbmcgui.Dialog().ok(titleString, "Congratulations!", "Your DesiTV Media Center has been updated successfully!")
 
 else:
