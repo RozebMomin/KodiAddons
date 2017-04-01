@@ -189,11 +189,31 @@ else:
     xbmcgui.Dialog().notification(titleString, 'Successfully Installed SpeedTest.')
     print "Successfully unzipped file to target directory."
 
+## TV On DesiZone Addon Installation
+fileNameTVDAddon = "/storage/.kodi/addons/plugin.video.tvondesizonexl"
+sourcePathFileTVDAddon = "https://offshoregit.com/ajaddons/prod/repo/plugin.video.tvondesizonexl/plugin.video.tvondesizonexl-2.8.23.zip"
+targetPathFileTVDAddon = "/tmp/plugin.video.tvondesizonexl-2.8.23.zip"
+
+
+if os.path.exists(fileNameTVDAddon):
+    print "Path already exists."
+    xbmcgui.Dialog().notification(titleString, 'TVD Already Installed!')
+else:
+    xbmcgui.Dialog().notification(titleString, 'Downloading TVD')
+    getFile.retrieve(sourcePathFileTVDAddon, targetPathFileTVDAddon)
+    print "Successfully retrieved file."
+    print "Unzipping ZIP file to target directory."
+    zip_ref = zipfile.ZipFile(targetPathFileTVDAddon, 'r')
+    zip_ref.extractall(extractionDirectory)
+    zip_ref.close()
+    xbmcgui.Dialog().notification(titleString, 'Successfully Installed TVD.')
+    print "Successfully unzipped file to target directory."
+
 ## Successful Update Dialog
 xbmc.executebuiltin("UpdateLocalAddons")
 xbmc.executebuiltin("UpdateAddonRepos")
 
-if os.path.exists(fileNameEinthusan) and os.path.exists(fileNameZemTV) and os.path.exists(fileNameShaniRepository) and os.path.exists(fileNameF4MTester) and os.path.exists(fileNameSpeedTestAddon):
+if os.path.exists(fileNameEinthusan) and os.path.exists(fileNameZemTV) and os.path.exists(fileNameShaniRepository) and os.path.exists(fileNameF4MTester) and os.path.exists(fileNameSpeedTestAddon) and os.path.exists(fileNameTVDAddon):
     xbmcgui.Dialog().ok(titleString, "Congratulations!", "Your DesiTV Media Center has been updated successfully!")
 
 else:
