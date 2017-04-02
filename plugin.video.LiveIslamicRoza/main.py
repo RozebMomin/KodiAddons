@@ -25,12 +25,15 @@ VIDEOS = {'Hazrat Abbas (as)': [{'name': 'Watch Live',
                       'genre': 'Hazrat Abbas'}
                      ],
             'Imam Reza (as)': [{'name': 'Watch Live',
-                      'thumb': 'https://i.ytimg.com/vi/ky0AC20ZpN0/hqdefault.jpg',
+                      'thumb': 'https://i.ytimg.com/vi/EjuGGiY5GFw/maxresdefault.jpg',
                       'video': 'http://185.23.131.61/hls/rozeh2.m3u8',
                       'genre': 'Imam Reza'}
+                     ],
+            'Imam Ali (as)': [{'name': 'Watch Live',
+                      'thumb': 'https://en.shafaqna.com/wp-content/uploads/2016/04/117706_167.jpg',
+                      'video': 'plugin://plugin.video.youtube/play/?video_id=57sTSgecVOg',
+                      'genre': 'Imam Ali'}
                      ]}
-
-
 
 def get_categories():
     """

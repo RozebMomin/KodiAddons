@@ -400,7 +400,7 @@ and basketball events. NOT SUPPORTED BY ESPN OR DISNEY OR ANYONE ELSE
   </extension>
 </addon>
 
-<addon id="plugin.video.LiveIslamicRoza" name="Live Islamic Roza" version="1.0.2" provider-name="Rozeb Momin">
+<addon id="plugin.video.LiveIslamicRoza" name="Live Islamic Roza" version="1.0.3" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
   </requires>
