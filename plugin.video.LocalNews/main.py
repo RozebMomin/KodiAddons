@@ -48,6 +48,11 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                       'thumb': 'https://img.new.livestream.com/accounts/0000000000a81ab8/66696b3c-d583-47de-b493-f741159d70aa_170x170.png',
                       'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=SouthCarolinaWCSC&event_id=3600153&owner_id=11016888&video_id=LIVE',
                       'genre': 'South Carolina'}
+                     ],
+            'Republiv TV News': [{'name': 'Watch Republic TV LIVE',
+                      'thumb': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Republic_TV.jpg/220px-Republic_TV.jpg',
+                      'video': 'https://republicalive1-a.akamaihd.net/148efaf62f0441d8aeba7f156b3cb0f3/ap-southeast-1/5384493731001/profile_4/chunklist.m3u8',
+                      'genre': 'Republic TV'}
                      ]}
                      
 def get_categories():
