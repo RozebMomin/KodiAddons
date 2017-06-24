@@ -21,7 +21,7 @@ along with XOZE.  If not, see <http://www.gnu.org/licenses/>.
 
 from xoze.context import AddonContext, SnapVideo
 from xoze.snapvideo import WatchVideo2US, Playwire, VideoWeed, CloudEC, LetWatch, \
-    TVLogy, PlayU, Streamin, Watchers
+    TVLogy, PlayU, Streamin, Watchers, VidWatch
 from xoze.utils import file, http, jsonfile
 from xoze.utils.cache import CacheManager
 from xoze.utils.http import HttpClient
@@ -102,12 +102,7 @@ def refresh_cache(req_attrib, modelMap):
         return
     logging.getLogger().debug('Reloading cache...')
     
-    tv_data = {"channels": {"UTV Stars":
-                  {"iconimage":"https://www.lyngsat-logo.com/hires/uu/utv_stars.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=1274",
-                   "finished_tvshows_url": "/forumdisplay.php?f=1435"},
-                  "Star Plus":
+    tv_data = {"channels": {"Star Plus":
                   {"iconimage":"http://www.lyngsat.com/logo/tv/ss/star_plus_hk.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/forumdisplay.php?f=42",
@@ -117,11 +112,6 @@ def refresh_cache(req_attrib, modelMap):
                    "channelType": "IND",
                    "running_tvshows_url": "/forumdisplay.php?f=73",
                    "finished_tvshows_url": "/forumdisplay.php?f=3499"},
-                  "Zee Anmol":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/zz/zee_anmol_in.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=2819",
-                   "finished_tvshows_url": "/forumdisplay.php?f=2935"},
                   "Sony TV":
                   {"iconimage":"http://www.lyngsat.com/logo/tv/ss/set_asia.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
@@ -177,11 +167,6 @@ def refresh_cache(req_attrib, modelMap):
                    "channelType": "IND",
                    "running_tvshows_url": "/forumdisplay.php?f=633",
                    "finished_tvshows_url": "/forumdisplay.php?f=961"},
-                  "DD National":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/dd/dd_national.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=535",
-                   "finished_tvshows_url": "/forumdisplay.php?f=801"},
                   "Ary Digital":
                   {"iconimage":"http://www.lyngsat.com/logo/tv/aa/ary_digital_asia.png|Referer=http://www.lyngsat.com/",
                    "channelType": "PAK",
@@ -197,36 +182,6 @@ def refresh_cache(req_attrib, modelMap):
                    "channelType": "PAK",
                    "running_tvshows_url": "/forumdisplay.php?f=448",
                    "finished_tvshows_url": "/forumdisplay.php?f=4006"},
-                  "A PLUS":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/aa/a_plus_pk.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "PAK",
-                   "running_tvshows_url": "/forumdisplay.php?f=1327",
-                   "finished_tvshows_url": "/forumdisplay.php?f=1334"},
-                  "POGO":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/pp/pogo.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=500",
-                   "finished_tvshows_url": "/forumdisplay.php?f=2692"},
-                  "Disney Channel":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/dd/disney_channel_global.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=479",
-                   "finished_tvshows_url": "/forumdisplay.php?f=2341"},
-                  "Discovery Kids":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/dd/discovery_kids_us.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=2096",
-                   "finished_tvshows_url": "/forumdisplay.php?f=2340"},
-                  "Hungama TV":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/hh/hungama.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=472",
-                   "finished_tvshows_url": "/forumdisplay.php?f=2102"},
-                  "Cartoon Network":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/cc/cartoon_network_global.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=509",
-                   "finished_tvshows_url": "/forumdisplay.php?f=2342"},
                   "WWE":
                   {"iconimage":"http://www.lyngsat.com/logo/tv/ww/world_wrestling_entertainment.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
@@ -252,16 +207,6 @@ def refresh_cache(req_attrib, modelMap):
                    "channelType": "IND",
                    "running_tvshows_url": "/forumdisplay.php?f=676",
                    "finished_tvshows_url": "/forumdisplay.php?f=802"},
-                  "Mahuaa TV":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/mm/mahuaa_tv.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=772",
-                   "finished_tvshows_url": "/forumdisplay.php?f=803"},
-                  "Epic TV":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/ee/epic_in.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=2929",
-                   "finished_tvshows_url": "/forumdisplay.php?f=3144"},
                   "Zindagi TV":
                   {"iconimage":"http://www.lyngsat.com/logo/tv/zz/zee_zindagi_in.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
@@ -272,31 +217,16 @@ def refresh_cache(req_attrib, modelMap):
                    "channelType": "IND",
                    "running_tvshows_url": "/forumdisplay.php?f=2624",
                    "finished_tvshows_url": None},
-                  "Zee Q":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/zz/zee_q_in.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=2555",
-                   "finished_tvshows_url": "/forumdisplay.php?f=2689"},
                   "Colors Marathi":
                   {"iconimage":"http://www.lyngsat.com/logo/tv/cc/colors_in_marathi.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/forumdisplay.php?f=2369",
                    "finished_tvshows_url": "/forumdisplay.php?f=2562"},
-                  "Sonic":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/nn/nickelodeon_sonic_us.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=1533",
-                   "finished_tvshows_url": "/forumdisplay.php?f=2234"},
                   "Maa TV":
                   {"iconimage":"http://www.lyngsat.com/logo/tv/mm/maa_tv.png|Referer=http://www.lyngsat.com/",
                    "channelType": "IND",
                    "running_tvshows_url": "/forumdisplay.php?f=3165",
-                   "finished_tvshows_url": "/forumdisplay.php?f=3411"},
-                  "Zee Telugu":
-                  {"iconimage":"http://www.lyngsat.com/logo/tv/zz/zee_telugu.png|Referer=http://www.lyngsat.com/",
-                   "channelType": "IND",
-                   "running_tvshows_url": "/forumdisplay.php?f=3163",
-                   "finished_tvshows_url": "/forumdisplay.php?f=3410"}                  
+                   "finished_tvshows_url": "/forumdisplay.php?f=3411"}                  
                 }
             }
     current_index = 0
@@ -972,6 +902,8 @@ def __prepareVideoLink__(video_link):
             new_video_url = 'http://idowatch.net/embed-' + video_id + '-520x400.html'
         elif re.search('tvlogy', video_source, flags=re.I):
             new_video_url = 'http://tvlogy.to/watch.php?v=' + video_id + '&' 
+        elif re.search('vidwatch.php', video_url, flags=re.I) or re.search('vidwatch', video_source, flags=re.I):
+            new_video_url = 'http://vidwatch3.me/embed-' + video_id + '-540x304.html'
         elif re.search('(youtube|u|yt)(\d*).php', video_url, flags=re.I):
             new_video_url = 'http://www.youtube.com/watch?v=' + video_id + '&'
         elif re.search('mega.co.nz', video_url, flags=re.I):

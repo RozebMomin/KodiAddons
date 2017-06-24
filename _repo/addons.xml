@@ -603,7 +603,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
   </extension>
 </addon>
 
-<addon id="plugin.video.tvondesizonexl" name="TV on DESI ZONE" version="2.8.23"
+<addon id="plugin.video.tvondesizonexl" name="TV on DESI ZONE" version="2.8.26"
 	provider-name="ajdeveloped/jchirag">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0" />
