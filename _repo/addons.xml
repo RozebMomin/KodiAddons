@@ -248,6 +248,26 @@
   </extension>
 </addon>
 
+<addon id="plugin.video.DTVShows" name="DesiTV Shows" version="0.0.1" provider-name="Rozeb Momin">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0" />
+    <import addon="script.module.requests" />
+    <import addon="script.module.beautifulsoup" />
+    <import addon="script.module.elementtree" />
+    <import addon="script.module.urlresolver" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">DesiTV Shows</summary>
+    <description lang="en">Brings you on-demand and live channels for the DesiTV!</description>
+    <platform>all</platform>
+    <language>en</language>
+    <email>...</email>
+  </extension>
+</addon>
+
 <addon id="plugin.video.ESPNLive"
        name="ESPN Live"
        version="3.0.0"
@@ -369,6 +389,22 @@ and basketball events. NOT SUPPORTED BY ESPN OR DISNEY OR ANYONE ELSE
     <description lang="en">Full length gujarati nataks.</description>
     <platform>all</platform>
     <website>...</website>
+  </extension>
+</addon>
+
+<addon id="plugin.video.HindiOnDemand" name="Hindi On Demand" version="0.0.1" provider-name="Rozeb Momin">
+  <requires>
+   <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Hindi Shows On Demand</summary>
+    <description lang="en">Watch all your hindi shows here!</description>
+    <platform>all</platform>
+    <language>en</language>
+    <email>...</email>
   </extension>
 </addon>
 

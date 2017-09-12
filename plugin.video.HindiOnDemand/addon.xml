@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.HindiOnDemand" name="Hindi On Demand" version="0.0.1" provider-name="Rozeb Momin">
+  <requires>
+   <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Hindi Shows On Demand</summary>
+    <description lang="en">Watch all your hindi shows here!</description>
+    <platform>all</platform>
+    <language>en</language>
+    <email>...</email>
+  </extension>
+</addon>
