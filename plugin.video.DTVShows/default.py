@@ -185,49 +185,50 @@ def load_ep_links():
 				print "### VIDWATCH ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===VIDWATCH"})
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif "watchvideo.php" in linkUrl:
 				print "### WATCHVIDEO ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===WATCHVIDEO"})
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif "vidoza.php" in linkUrl:
 				print "### VIDOZA ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: VIDOZA[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===VIDOZA"})
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif "openload.php" in linkUrl:
 				print "### OPENLOAD ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: OPENLOAD[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===OPENLOAD"})
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif "embedupload.com" in linkUrl:
 				print "### EMBEDUPLOAD ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: EMBEDUPLOAD[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===EMBEDUPLOAD"})
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif len(linkID) == 7 and linkID.isdigit():
 				print "### TUNEPK ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: TUNEPK[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===TUNEPK"})
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif len(linkID) == 19:
 				print "### DAILYMOTION ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: DAILYMOTION[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===DAILYMOTION"})
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
-			elif len(linkID) == 7:
+			elif len(linkID) == 7 and "reviewtv.in" in linkUrl:
 				print "### TVLOGY ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===TVLOGY"})
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				linkUrl = linkUrl + "===TVLOGY"
+				resultingLink = resolve_link(linkUrl)
+				addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
 			elif len(linkID) == 12:
 				print "### SPEEDWATCH ### " + linkUrl
@@ -238,13 +239,13 @@ def load_ep_links():
 			else:
 				print linkUrl
 				linkName = "[COLOR yellow]"+linkName+"[/COLOR]"
-				addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
-def resolve_link():
-	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
-	main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=")
-	link_url = main_url.split("=", 1)[1].split("===")[0]
-	link_host = main_url.split("===")[1]
+def resolve_link(link_url):
+	# main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
+	# main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=")
+	# link_url = main_url.split("=", 1)[1].split("===")[0]
+	link_host = link_url.split("===")[1]
 	# print "########### " + link_url
 	# print "########### " + link_host
 	if link_host == "TVLOGY":
@@ -266,8 +267,9 @@ def resolve_link():
 		            value = getattr(node.right, 'value', '')
 		            if text_to_find in value:
 		                value = value[1:-1]
-		                # fileArray = showName + ' == ' + episodeName + ' == ' + 'Part-' + str(linkNumber) + ' == ' + value
-		                print "########### " + value
+		                return value
+		                # print "##########" + value
+
 ## END LINK DEFINITIONS ##
 
 
@@ -279,6 +281,7 @@ if len(args) > 0:
 	mode = args.split('mode=')
 	mode = mode[1].split('&')
 	mode = mode[0]
+
 
 if mode == None 			:		Main_Menu()
 elif mode == 'load_channels': 		load_shows()
