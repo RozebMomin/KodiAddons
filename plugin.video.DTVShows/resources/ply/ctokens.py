@@ -9,10 +9,10 @@
 
 tokens = [
     # Literals (identifier, integer constant, float constant, string constant, char const)
-    'ID', 'TYPEID', 'INTEGER', 'FLOAT', 'STRING', 'CHARACTER',
+    'ID', 'TYPEID', 'ICONST', 'FCONST', 'SCONST', 'CCONST',
 
     # Operators (+,-,*,/,%,|,&,~,^,<<,>>, ||, &&, !, <, <=, >, >=, ==, !=)
-    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODULO',
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MOD',
     'OR', 'AND', 'NOT', 'XOR', 'LSHIFT', 'RSHIFT',
     'LOR', 'LAND', 'LNOT',
     'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',
@@ -22,7 +22,7 @@ tokens = [
     'LSHIFTEQUAL','RSHIFTEQUAL', 'ANDEQUAL', 'XOREQUAL', 'OREQUAL',
 
     # Increment/decrement (++,--)
-    'INCREMENT', 'DECREMENT',
+    'PLUSPLUS', 'MINUSMINUS',
 
     # Structure dereference (->)
     'ARROW',
@@ -74,7 +74,7 @@ t_LSHIFTEQUAL      = r'<<='
 t_RSHIFTEQUAL      = r'>>='
 t_ANDEQUAL         = r'&='
 t_OREQUAL          = r'\|='
-t_XOREQUAL         = r'\^='
+t_XOREQUAL         = r'^='
 
 # Increment/decrement
 t_INCREMENT        = r'\+\+'
