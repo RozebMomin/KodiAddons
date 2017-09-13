@@ -99,7 +99,7 @@ class Lexer(object):
 
     def build(self, **kwargs):
         """Build the lexer."""
-        self.lexer = ply.lex.lex(object=self, **kwargs)
+        self.lexer = resources.ply.lex.lex(object=self, **kwargs)
 
     def input(self, text):
         self.lexer.input(text)
@@ -177,7 +177,7 @@ class Lexer(object):
         return self.cur_token
 
     def _create_semi_token(self, orig_token):
-        token = ply.lex.LexToken()
+        token = resources.ply.lex.LexToken()
         token.type = 'SEMI'
         token.value = ';'
         if orig_token is not None:

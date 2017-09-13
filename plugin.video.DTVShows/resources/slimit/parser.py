@@ -56,7 +56,7 @@ class Parser(object):
         self.lexer.build(optimize=lex_optimize, lextab=lextab)
         self.tokens = self.lexer.tokens
 
-        self.parser = ply.yacc.yacc(
+        self.parser = resources.ply.yacc.yacc(
             module=self, optimize=yacc_optimize,
             debug=yacc_debug, tabmodule=yacctab, start='program')
 
