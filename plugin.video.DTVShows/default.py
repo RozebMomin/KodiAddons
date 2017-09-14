@@ -22,7 +22,7 @@ addon_handle = int(sys.argv[1])
 xbmcplugin.setContent(addon_handle, 'movies')
 
 def build_url(query):
-    return base_url + '?' + urllib.urlencode(query)
+	return base_url + '?' + urllib.urlencode(query)
 
 #################################
 #  START OF DIRECTORY LISTINGS  #
@@ -182,7 +182,7 @@ def load_ep_links():
 			else:
 				linkID = linkUrl
 			if "vidwatch.php" in linkUrl:
-				print "### VIDWATCH ### " + linkUrl
+				# print "### VIDWATCH ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===VIDWATCH"})
 				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
@@ -190,35 +190,37 @@ def load_ep_links():
 			elif "watchvideo.php" in linkUrl:
 				print "### WATCHVIDEO ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===WATCHVIDEO"})
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				linkUrl = linkUrl + "===WATCHVIDEO"
+				resultingLink = resolve_link(linkUrl)
+				addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
 			elif "vidoza.php" in linkUrl:
 				print "### VIDOZA ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: VIDOZA[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===VIDOZA"})
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				linkUrl = linkUrl + "===VIDOZA"
+				# resultingLink = resolve_link(linkUrl)
+				# addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
 			elif "openload.php" in linkUrl:
-				print "### OPENLOAD ### " + linkUrl
+				# print "### OPENLOAD ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: OPENLOAD[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===OPENLOAD"})
 				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif "embedupload.com" in linkUrl:
-				print "### EMBEDUPLOAD ### " + linkUrl
+				# print "### EMBEDUPLOAD ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: EMBEDUPLOAD[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===EMBEDUPLOAD"})
 				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif len(linkID) == 7 and linkID.isdigit():
-				print "### TUNEPK ### " + linkUrl
+				# print "### TUNEPK ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: TUNEPK[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===TUNEPK"})
 				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif len(linkID) == 19:
-				print "### DAILYMOTION ### " + linkUrl
+				# print "### DAILYMOTION ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: DAILYMOTION[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===DAILYMOTION"})
 				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
@@ -240,7 +242,7 @@ def load_ep_links():
 					print "No Links Found"
 
 			elif len(linkID) == 12:
-				print "### SPEEDWATCH ### " + linkUrl
+				# print "### SPEEDWATCH ### " + linkUrl
 				linkName = linkName + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
 				linkUrl = build_url({'resolveLink': linkUrl + "===SPEEDWATCH"})
 				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
@@ -258,26 +260,66 @@ def resolve_link(link_url):
 	# print "########### " + link_url
 	# print "########### " + link_host
 	if link_host == "TVLOGY":
-		videoId = link_url.split("=")[1]
-		url = "http://tvlogy.to/watch.php?v=" + videoId
-		r = requests.get(url)
-		data = r.text
-		soup = BeautifulSoup(data)
+		try:
+			if link_host == "TVLOGY":
+				videoId = link_url.split("=")[1]
+				url = "http://tvlogy.to/watch.php?v=" + videoId
+			elif link_host == "VIDOZA":
+				videoId = link_url.split("=")[1]
+				url = "http://vidoza.net/embed-" + videoId + ".html"
+			
+			r = requests.get(url)
+			data = r.text
+			soup = BeautifulSoup(data)
 
-		text_to_find = '.m3u8'
+			# print soup.prettify()
 
-		soup = BeautifulSoup(data)
+			text_to_find = '.m3u8'
 
-		for script in soup.findAll('script'):
-		    parser = Parser()
-		    tree = parser.parse(script.text)
-		    for node in nodevisitor.visit(tree):
-		        if isinstance(node, ast.Assign):
-		            value = getattr(node.right, 'value', '')
-		            if text_to_find in value:
-		                value = value[1:-1]
-		                return value
-		                # print "##########" + value
+			soup = BeautifulSoup(data)
+
+			for script in soup.findAll('script'):
+				parser = Parser()
+				tree = parser.parse(script.text)
+				for node in nodevisitor.visit(tree):
+					if isinstance(node, ast.Assign):
+						value = getattr(node.right, 'value', '')
+						if text_to_find in value:
+							value = value[1:-1]
+							print "########### " + value
+							return value
+		except:
+			print "An Error Occurred"
+			
+	elif link_host == "WATCHVIDEO":
+		try:
+			videoId = link_url.split("=")[1]
+			url = "http://watchvideo18.us/embed-" + videoId + "-540x304.html"
+			r = requests.get(url)
+			data = r.text
+			soup = BeautifulSoup(data)
+
+			text_to_find = '.m3u8'
+
+			soup = BeautifulSoup(data)
+
+			if (len(soup.findAll('script')) >= 10):
+				for script in soup.findAll('script')[9]:
+					paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
+					if len(paramSet) > 0:
+						video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+						# print video_info_link
+						img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+						value = img_data[0]
+						# print value
+						return value
+					else:
+						print 'None'
+			else:
+				print "No Links Found"
+		except:
+			print "An Error Occurred"
+
 
 ## END LINK DEFINITIONS ##
 
