@@ -224,20 +224,20 @@ def load_ep_links():
 				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 			elif len(linkID) == 7:
-                if "reviewtv.in" in linkUrl:
-                    print "### TVLOGY ### " + linkUrl
-                    linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-                    linkUrl = linkUrl + "===TVLOGY"
-                    resultingLink = resolve_link(linkUrl)
-                    addDir('', 'resolve_link', resultingLink, linkName, '', '')
-                elif "tellysony.com" in linkUrl:
-                    print "### TVLOGY ### " + linkUrl
-                    linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-                    linkUrl = linkUrl + "===TVLOGY"
-                    resultingLink = resolve_link(linkUrl)
-                    addDir('', 'resolve_link', resultingLink, linkName, '', '')
-                else:
-                	print "No Links Found"
+				if "reviewtv.in" in linkUrl:
+					print "### TVLOGY ### " + linkUrl
+					linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
+					linkUrl = linkUrl + "===TVLOGY"
+					resultingLink = resolve_link(linkUrl)
+					addDir('', 'resolve_link', resultingLink, linkName, '', '')
+				elif "tellysony.com" in linkUrl:
+					print "### TVLOGY ### " + linkUrl
+					linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
+					linkUrl = linkUrl + "===TVLOGY"
+					resultingLink = resolve_link(linkUrl)
+					addDir('', 'resolve_link', resultingLink, linkName, '', '')
+				else:
+					print "No Links Found"
 
 			elif len(linkID) == 12:
 				print "### SPEEDWATCH ### " + linkUrl
