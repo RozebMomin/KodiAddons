@@ -312,7 +312,10 @@ def resolve_link(link_url):
 						img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
 						value = img_data[0]
 						# print value
-						return value
+						value = value.split(",")
+						finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+						# print "########### " + finalValue
+						return finalValue
 					else:
 						print 'None'
 			else:
