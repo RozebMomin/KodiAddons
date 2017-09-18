@@ -121,7 +121,7 @@ def load_shows():
 		showLink = row.find('a')
 		finalShowLink = showLink.get('href')
 		finalShowLink = finalShowLink.replace("forums/", "").replace("bfont-colorred", "").replace("fontb", "")
-		show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "")
+		show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
 		showLink = showLink.get('href')
 		showURL = "http://www.desirulez.me/" + showLink
 		showURL = build_url({'linkName': showURL})
@@ -144,7 +144,7 @@ def load_episodes():
 	for row in videoTitle:
 		episodeLink = row.find('a').get('href')
 		episodeName = row.find('a').text
-		episodeName = episodeName.replace("Watch Online", "").replace(showName + " ", "")
+		episodeName = episodeName.replace("Watch Online", "").replace(",","").replace(showName + " ", "").encode('ascii', 'ignore').decode('ascii')
 		linksURL = build_url({'linkName': episodeLink + "===" + showName})
 		addDir('folder', 'load_ep_links', linksURL, episodeName, '', '')
 
@@ -168,89 +168,98 @@ def load_ep_links():
 	for row in videoTitle:
 		showLink = row.findAll('a')
 		for link in showLink:
-			linkName = link.text
-			linkName = linkName.replace(showName, "").replace(" Watch Online Video-", "").replace(" Watch Online Video -", "").replace(" ", "-").rsplit("-", 2)
-			linkName = linkName[1] + "-" + linkName[2]
-			if linkName == "Watch-Online":
-				linkName = "Full-Episode"
+			print "############"
+			print link
+			if "http://www.desirulez.us" in link.get('href'):
+				print "No LINK"
+			elif "http://www.desirulez.net/register.php" in link.get('href'):
+				print "No LINk"
 			else:
-				linkName = linkName
-			# print "############# " + linkName
-			linkUrl = link.get('href')
-			if "=" in linkUrl:
-				linkID = linkUrl.split("=")[1]
-			else:
-				linkID = linkUrl
-			if "vidwatch.php" in linkUrl:
-				# print "### VIDWATCH ### " + linkUrl
-				linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===VIDWATCH"})
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-			elif "watchvideo.php" in linkUrl:
-				print "### WATCHVIDEO ### " + linkUrl
-				linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-				linkUrl = linkUrl + "===WATCHVIDEO"
-				resultingLink = resolve_link(linkUrl)
-				addDir('', 'resolve_link', resultingLink, linkName, '', '')
-
-			elif "vidoza.php" in linkUrl:
-				print "### VIDOZA ### " + linkUrl
-				linkName = linkName + "[COLOR yellow]: VIDOZA[/COLOR]"
-				linkUrl = linkUrl + "===VIDOZA"
-				# resultingLink = resolve_link(linkUrl)
-				# addDir('', 'resolve_link', resultingLink, linkName, '', '')
-
-			elif "openload.php" in linkUrl:
-				# print "### OPENLOAD ### " + linkUrl
-				linkName = linkName + "[COLOR yellow]: OPENLOAD[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===OPENLOAD"})
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-			elif "embedupload.com" in linkUrl:
-				# print "### EMBEDUPLOAD ### " + linkUrl
-				linkName = linkName + "[COLOR yellow]: EMBEDUPLOAD[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===EMBEDUPLOAD"})
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-			elif len(linkID) == 7 and linkID.isdigit():
-				# print "### TUNEPK ### " + linkUrl
-				linkName = linkName + "[COLOR yellow]: TUNEPK[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===TUNEPK"})
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-			elif len(linkID) == 19:
-				# print "### DAILYMOTION ### " + linkUrl
-				linkName = linkName + "[COLOR yellow]: DAILYMOTION[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===DAILYMOTION"})
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-			elif len(linkID) == 7:
-				if "reviewtv.in" in linkUrl:
-					print "### TVLOGY ### " + linkUrl
-					linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-					linkUrl = linkUrl + "===TVLOGY"
-					resultingLink = resolve_link(linkUrl)
-					addDir('', 'resolve_link', resultingLink, linkName, '', '')
-				elif "tellysony.com" in linkUrl:
-					print "### TVLOGY ### " + linkUrl
-					linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-					linkUrl = linkUrl + "===TVLOGY"
-					resultingLink = resolve_link(linkUrl)
-					addDir('', 'resolve_link', resultingLink, linkName, '', '')
+				linkName = link.text
+				linkName = linkName.replace(showName, "").replace(" Watch Online Video-", "").replace(" Watch Online Video -", "").replace(" ", "-")
+				linkName = linkName.rsplit("-", 2)
+				# print linkName
+				linkName = linkName[1] + "-" + linkName[2]
+				if linkName == "Watch-Online":
+					linkName = "Full-Episode"
 				else:
-					print "No Links Found"
+					linkName = linkName
+				# print "############# " + linkName
+				linkUrl = link.get('href')
+				if "=" in linkUrl:
+					linkID = linkUrl.split("=")[1]
+				else:
+					linkID = linkUrl
+				if "vidwatch.php" in linkUrl:
+					print "### VIDWATCH ### " + linkUrl
+					# linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
+					# linkUrl = build_url({'resolveLink': linkUrl + "===VIDWATCH"})
+					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
-			elif len(linkID) == 12:
-				# print "### SPEEDWATCH ### " + linkUrl
-				linkName = linkName + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
-				linkUrl = build_url({'resolveLink': linkUrl + "===SPEEDWATCH"})
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				elif "watchvideo.php" in linkUrl:
+					print "### WATCHVIDEO ### " + linkUrl
+					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+					linkUrl = linkUrl + "===WATCHVIDEO"
+					resultingLink = resolve_link(linkUrl)
+					addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
-			else:
-				print linkUrl
-				linkName = "[COLOR yellow]"+linkName+"[/COLOR]"
-				# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+				elif "vidoza.php" in linkUrl:
+					print "### VIDOZA ### " + linkUrl
+					# linkName = linkName + "[COLOR yellow]: VIDOZA[/COLOR]"
+					# linkUrl = linkUrl + "===VIDOZA"
+					# resultingLink = resolve_link(linkUrl)
+					# addDir('', 'resolve_link', resultingLink, linkName, '', '')
+
+				elif "openload.php" in linkUrl:
+					print "### OPENLOAD ### " + linkUrl
+					# linkName = linkName + "[COLOR yellow]: OPENLOAD[/COLOR]"
+					# linkUrl = build_url({'resolveLink': linkUrl + "===OPENLOAD"})
+					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+
+				elif "embedupload.com" in linkUrl:
+					print "### EMBEDUPLOAD ### " + linkUrl
+					# linkName = linkName + "[COLOR yellow]: EMBEDUPLOAD[/COLOR]"
+					# linkUrl = build_url({'resolveLink': linkUrl + "===EMBEDUPLOAD"})
+					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+
+				elif len(linkID) == 7 and linkID.isdigit():
+					print "### TUNEPK ### " + linkUrl
+					# linkName = linkName + "[COLOR yellow]: TUNEPK[/COLOR]"
+					# linkUrl = build_url({'resolveLink': linkUrl + "===TUNEPK"})
+					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+
+				elif len(linkID) == 19:
+					print "### DAILYMOTION ### " + linkUrl
+					# linkName = linkName + "[COLOR yellow]: DAILYMOTION[/COLOR]"
+					# linkUrl = build_url({'resolveLink': linkUrl + "===DAILYMOTION"})
+					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+
+				elif len(linkID) == 7:
+					if "reviewtv.in" in linkUrl:
+						print "### TVLOGY ### " + linkUrl
+						linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
+						linkUrl = linkUrl + "===TVLOGY"
+						resultingLink = resolve_link(linkUrl)
+						addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					elif "tellysony.com" in linkUrl:
+						print "### TVLOGY ### " + linkUrl
+						linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
+						linkUrl = linkUrl + "===TVLOGY"
+						resultingLink = resolve_link(linkUrl)
+						addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					else:
+						print "No Links Found"
+
+				elif len(linkID) == 12:
+					print "### SPEEDWATCH ### " + linkUrl
+					# linkName = linkName + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
+					# linkUrl = build_url({'resolveLink': linkUrl + "===SPEEDWATCH"})
+					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+
+				else:
+					print linkUrl
+					# linkName = "[COLOR yellow]"+linkName+"[/COLOR]"
+					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 def resolve_link(link_url):
 	# main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
@@ -295,6 +304,7 @@ def resolve_link(link_url):
 		try:
 			videoId = link_url.split("=")[1]
 			url = "http://watchvideo18.us/embed-" + videoId + "-540x304.html"
+			print "################ " + url
 			r = requests.get(url)
 			data = r.text
 			soup = BeautifulSoup(data)
@@ -323,6 +333,9 @@ def resolve_link(link_url):
 		except:
 			print "An Error Occurred"
 
+
+def filter_non_links():
+	print "############ NON LINKS ###"
 
 ## END LINK DEFINITIONS ##
 
