@@ -254,11 +254,14 @@ def load_ep_links():
 					print "### UNFILTERED ### " + linkID
 					# resolve_unfiltered(linkID)
 					# + linkUrl
-					resultingLink = resolve_unfiltered(linkID)
+					# resolve_unfiltered(linkID)
+					print resolve_unfiltered(linkID)
+					# print resultingLink
 					if resultingLink == "#### NO FILE":
 						print "## NOTHING"
 					else:
 						linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+						print resultingLink
 						addDir('', 'resolve_link', resultingLink, linkName, '', '')
 					# linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
 					# linkUrl = build_url({'resolveLink': linkUrl + "===SPEEDWATCH"})
@@ -280,14 +283,15 @@ def resolve_unfiltered(linkID):
 	text_to_find = 'File was deleted'
 
 	if text_to_find in soup:
-		return "#### NO FILE"
+		print "#### NO FILE"
 	else:
-		return "############ FILE FOUND"
-		resolve_watchvideo(linkID)
+		print "############ FILE FOUND"
+		return resolve_watchvideo(linkID)
 
 def resolve_watchvideo(linkID):
+	url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
+	# print url
 	try:
-		url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
 		# print "################ " + url
 		r = requests.get(url)
 		data = r.text
