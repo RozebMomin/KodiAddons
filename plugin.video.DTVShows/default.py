@@ -197,7 +197,7 @@ def load_ep_links():
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 				elif "watchvideo.php" in linkUrl:
-					print "### WATCHVIDEO ### " + linkUrl
+					# print "### WATCHVIDEO ### " + linkUrl
 					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
 					linkUrl = linkUrl + "===WATCHVIDEO"
 					resultingLink = resolve_link(linkUrl)
@@ -236,13 +236,13 @@ def load_ep_links():
 
 				elif len(linkID) == 7:
 					if "reviewtv.in" in linkUrl:
-						print "### TVLOGY ### " + linkUrl
+						# print "### TVLOGY ### " + linkUrl
 						linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
 						linkUrl = linkUrl + "===TVLOGY"
 						resultingLink = resolve_link(linkUrl)
 						addDir('', 'resolve_link', resultingLink, linkName, '', '')
 					elif "tellysony.com" in linkUrl:
-						print "### TVLOGY ### " + linkUrl
+						# print "### TVLOGY ### " + linkUrl
 						linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
 						linkUrl = linkUrl + "===TVLOGY"
 						resultingLink = resolve_link(linkUrl)
@@ -251,15 +251,72 @@ def load_ep_links():
 						print "No Links Found"
 
 				elif len(linkID) == 12:
-					print "### SPEEDWATCH ### " + linkUrl
-					# linkName = linkName + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
+					print "### UNFILTERED ### " + linkID
+					# resolve_unfiltered(linkID)
+					# + linkUrl
+					resultingLink = resolve_unfiltered(linkID)
+					if resultingLink == "#### NO FILE":
+						print "## NOTHING"
+					else:
+						linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+						addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					# linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
 					# linkUrl = build_url({'resolveLink': linkUrl + "===SPEEDWATCH"})
-					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+					# print resultingLink
+					# addDir('folder', 'resolve_link', resultingLink, linkName, '', '')
 
 				else:
 					print linkUrl
 					# linkName = "[COLOR yellow]"+linkName+"[/COLOR]"
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
+
+def resolve_unfiltered(linkID):
+	# link_host = link_url.split("===")[1]
+	url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
+	r = requests.get(url)
+	data = r.text
+	soup = BeautifulSoup(data)
+
+	text_to_find = 'File was deleted'
+
+	if text_to_find in soup:
+		return "#### NO FILE"
+	else:
+		return "############ FILE FOUND"
+		resolve_watchvideo(linkID)
+
+def resolve_watchvideo(linkID):
+	try:
+		url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
+		# print "################ " + url
+		r = requests.get(url)
+		data = r.text
+		soup = BeautifulSoup(data)
+
+		text_to_find = '.m3u8'
+
+		soup = BeautifulSoup(data)
+
+		if (len(soup.findAll('script')) >= 10):
+			for script in soup.findAll('script')[9]:
+				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
+				if len(paramSet) > 0:
+					video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+					# print video_info_link
+					img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+					value = img_data[0]
+					# print value
+					value = value.split(",")
+					finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+					# print "########### " + finalValue
+					return finalValue
+				else:
+					print 'Nooone'
+		else:
+			print "No Links Found"
+	except:
+		print "An Error Occurred"
+
 
 def resolve_link(link_url):
 	# main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
@@ -327,7 +384,7 @@ def resolve_link(link_url):
 						# print "########### " + finalValue
 						return finalValue
 					else:
-						print 'None'
+						print 'None Here'
 			else:
 				print "No Links Found"
 		except:
