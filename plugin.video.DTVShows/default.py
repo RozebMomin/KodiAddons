@@ -255,7 +255,7 @@ def load_ep_links():
 					# resolve_unfiltered(linkID)
 					# + linkUrl
 					# resolve_unfiltered(linkID)
-					print resolve_unfiltered(linkID)
+					resultingLink = resolve_unfiltered(linkID)
 					# print resultingLink
 					if resultingLink == "#### NO FILE":
 						print "## NOTHING"
@@ -283,6 +283,7 @@ def resolve_unfiltered(linkID):
 	text_to_find = 'File was deleted'
 
 	if text_to_find in soup:
+		return "#### NO FILE"
 		print "#### NO FILE"
 	else:
 		print "############ FILE FOUND"
