@@ -197,11 +197,16 @@ def load_ep_links():
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 				elif "watchvideo.php" in linkUrl:
-					# print "### WATCHVIDEO ### " + linkUrl
+					print "### WATCHVIDEO ### " + linkUrl
 					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
 					linkUrl = linkUrl + "===WATCHVIDEO"
 					resultingLink = resolve_link(linkUrl)
-					addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					if resultingLink == 'None':
+						print "None"
+					elif resultingLink == 'No Links Found':
+						print "None"
+					else:
+						addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
 				elif "vidoza.php" in linkUrl:
 					print "### VIDOZA ### " + linkUrl
@@ -256,17 +261,28 @@ def load_ep_links():
 					# + linkUrl
 					# resolve_unfiltered(linkID)
 					resultingLink = resolve_unfiltered(linkID)
+					playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
 					# print resultingLink
 					if resultingLink == "#### NO FILE":
 						print "## NOTHING"
 					else:
+						print "#########" + linkName
 						linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
 						print resultingLink
 						addDir('', 'resolve_link', resultingLink, linkName, '', '')
-					# linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-					# linkUrl = build_url({'resolveLink': linkUrl + "===SPEEDWATCH"})
-					# print resultingLink
-					# addDir('folder', 'resolve_link', resultingLink, linkName, '', '')
+						if 'Part-1' in linkName:
+							video = resultingLink
+							listitem = xbmcgui.ListItem(linkName)
+							listitem.setInfo('video', {'Title': linkName})
+							playlist.add(url=video, listitem=listitem)
+							# addDir('', 'resolve_link', resultingLink, 'Part 1', '', '')
+						else:
+							video = resultingLink
+							listitem = xbmcgui.ListItem(linkName)
+							listitem.setInfo('video', {'Title': linkName})
+							playlist.add(url=video, listitem=listitem)
+							print playlist
+							# addDir('', 'resolve_link', '', 'Continuous Play[COLOR yellow]: WATCHVIDEO[/COLOR]', '', '')
 
 				else:
 					print linkUrl
@@ -389,11 +405,14 @@ def resolve_link(link_url):
 						# print "########### " + finalValue
 						return finalValue
 					else:
-						print 'None Here'
+						print 'None'
+						return 'None'
 			else:
 				print "No Links Found"
+				return 'No Links Found'
 		except:
 			print "An Error Occurred"
+			return 'An Error Occurred'
 
 
 def filter_non_links():
