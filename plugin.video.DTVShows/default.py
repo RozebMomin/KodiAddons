@@ -64,6 +64,12 @@ def Open_URL(url):
 ## Get Online Data ##
 
 def Main_Menu():
+	## Movies ##
+	movies_fanart = "http://www.techicy.com/wp-content/uploads/2015/01/Indian-Flag-Wallpapers-HD-Images-Free-Download-2-1024x576.jpg"
+	movies_icon = "http://www.owensvalleyhistory.com/at_the_movies22/themovies01.png"
+	addDir('folder', 'load_movies', "[COLOR blue]MOVIES[/COLOR]", "[COLOR blue]LATEST MOVIES[/COLOR]", movies_icon, movies_fanart)
+
+	## On Demand Shows ##
 	channelsOnlineURL = "http://sonaled.com/dtvmc/channels/index.php"
 	content = Open_URL(channelsOnlineURL)
 	# xbmc.log('### CONTENTS: %s' % content)
@@ -76,6 +82,69 @@ def Main_Menu():
 		addDir('folder', 'load_channels', channel_name, channel_name, channel_icon, channel_fanart)
 
 ## Finish Online Data ##
+
+## MOVIE Definitions ##
+
+def movie_menu():
+	movieListURL = "http://www.desirulez.me/forums/20-Latest-Exclusive-Movie-HQ"
+	## Get Movie Links & Names
+	r = requests.get(movieListURL)
+	data = r.text
+	soup = BeautifulSoup(data)
+	videoTitle = soup.findAll('h3', {'class':'threadtitle'})
+	for row in videoTitle:
+		showLink = row.find('a', {'class':'title'})
+		movieLink = showLink.get('href')
+		movieLink = "http://www.desirulez.me/" + movieLink.rsplit('?')[0]
+
+		movieName = showLink.text
+		movieName = movieName.encode('ascii', 'ignore').decode('ascii').replace("'","")
+		movieName = movieName.replace(" Watch Online / Download", "").replace(" Watch Online / Download (Lollywood Movie)","").replace(" Watch Online / Download - DVD RIP","").replace(" - DVD RIP", "").replace(" (Lollywood Movie)","")
+		linksURL = build_url({'linkName': movieLink + "===" + movieName})
+		addDir('folder', 'load_movie_links', linksURL, movieName, '', '')
+
+		# finalShowLink = finalShowLink.replace("forums/", "").replace("bfont-colorred", "").replace("fontb", "")
+		# show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
+		# showLink = showLink.get('href')
+		# showURL = "http://www.desirulez.me/" + showLink
+		# showURL = build_url({'linkName': showURL})
+		# addDir('folder', 'load_episodes', showURL, show_name, '', '')
+
+def load_movie_links():
+	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
+	main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=").replace("%28", "(").replace("%29", ")")
+	split_url = main_url.split("===")
+	movieURL = split_url[0].replace("plugin://plugin.video.DTVShows/?linkName=","")
+	movieName = split_url[1].replace("+", " ")
+	r = requests.get(movieURL)
+	data = r.text
+	soup = BeautifulSoup(data)
+	videoTitle = soup.findAll('blockquote', {"class": "postcontent restore "})
+	for row in videoTitle:
+		showLink = row.findAll('a')
+		for link in showLink:
+			linkName = link.text
+			linkName = linkName.replace(" Watch Online Pre Dvd Rip", "").replace(movieName, "").replace(" - ", "")
+			
+			linkUrl = link.get("href")
+			if "watchvideo.php" in linkUrl:
+					print "### WATCHVIDEO ### " + linkUrl
+					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+					linkUrl = linkUrl + "===WATCHVIDEO"
+					resultingLink = resolve_link(linkUrl)
+					print resultingLink
+					if resultingLink == 'None':
+						print "None"
+					elif resultingLink == 'No Links Found':
+						print "None"
+					else:
+						addDir('', 'resolve_link', resultingLink, linkName, '', '')
+			else:
+				print linkUrl
+				print "######"
+
+
+## End MOVIE Definitions ##
 
 ## Channel Definitions ##
 
@@ -144,7 +213,7 @@ def load_episodes():
 	for row in videoTitle:
 		episodeLink = row.find('a').get('href')
 		episodeName = row.find('a').text
-		episodeName = episodeName.replace("Watch Online", "").replace(",","").replace(showName + " ", "").encode('ascii', 'ignore').decode('ascii')
+		episodeName = episodeName.replace("Watch Online", "").replace(",","").replace(showName + " ", "").encode('ascii', 'ignore').decode('ascii').replace("by Ary Digital -","")
 		linksURL = build_url({'linkName': episodeLink + "===" + showName})
 		addDir('folder', 'load_ep_links', linksURL, episodeName, '', '')
 
@@ -166,6 +235,17 @@ def load_ep_links():
 	soup = BeautifulSoup(data)
 	videoTitle = soup.findAll('blockquote', {"class": "postcontent restore "})
 	for row in videoTitle:
+		youtubeLink = row.findAll({'iframe':'src'})
+		for link in youtubeLink:
+			print "############"
+			link_clean = re.compile('src="(.+?)"').findall(str(link))
+			for item in link_clean:
+				finalLink = item.replace("//www.youtube.com/embed/", "").replace("?wmode=opaque", "")
+				print finalLink
+				url = "plugin://plugin.video.youtube/play/?video_id=" + finalLink
+		        li = xbmcgui.ListItem('YouTube Link', iconImage='http://i.ytimg.com/vi/'+finalLink+'/maxresdefault.jpg')
+		        li.setProperty('IsPlayable', 'true')
+		        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
 		showLink = row.findAll('a')
 		for link in showLink:
 			print "############"
@@ -436,6 +516,8 @@ elif mode == 'load_channels': 		load_shows()
 elif mode == 'load_episodes': 		load_episodes()
 elif mode == 'load_ep_links': 		load_ep_links()
 elif mode == 'resolve_link':		resolve_link()
+elif mode == 'load_movies':			movie_menu()
+elif mode == 'load_movie_links':	load_movie_links()
 
 #################################
 #   END OF DIRECTORY LISTINGS   #
