@@ -399,7 +399,7 @@ def resolve_watchvideo(linkID):
 		soup = BeautifulSoup(data)
 
 		if (len(soup.findAll('script')) >= 10):
-			for script in soup.findAll('script')[9]:
+			for script in soup.findAll('script')[11]:
 				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
 				if len(paramSet) > 0:
 					video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
@@ -472,7 +472,7 @@ def resolve_link(link_url):
 			soup = BeautifulSoup(data)
 
 			if (len(soup.findAll('script')) >= 10):
-				for script in soup.findAll('script')[9]:
+				for script in soup.findAll('script')[11]:
 					paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
 					if len(paramSet) > 0:
 						video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
