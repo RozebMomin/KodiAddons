@@ -190,9 +190,11 @@ def load_shows():
 		showLink = row.find('a')
 		finalShowLink = showLink.get('href')
 		finalShowLink = finalShowLink.replace("forums/", "").replace("bfont-colorred", "").replace("fontb", "")
-		show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
+		# show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
+		# show_name = finalShowLink.split("?s=", 1)[0]
+		show_name = row.text.encode('ascii', 'ignore').decode('ascii')
 		showLink = showLink.get('href')
-		showURL = "http://www.desirulez.me/" + showLink
+		showURL = showLink + "=SNAME=" + show_name
 		showURL = build_url({'linkName': showURL})
 		addDir('folder', 'load_episodes', showURL, show_name, '', '')
 
@@ -203,7 +205,10 @@ def load_shows():
 def load_episodes():
 	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
 	base_url = main_url.replace("plugin://plugin.video.DTVShows/?linkName=","").replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=").split("?s=")[0]
-	showName = base_url.replace("http://www.desirulez.me/forums/", "").split("-", 1)[1].replace("-", " ")
+	showName = base_url.split("=SNAME=")[1].replace("+", " ")
+	base_url = base_url.split("=SNAME=")[0]
+	print base_url
+	# print showName + " ####"
 
 	r = requests.get(base_url)
 	data = r.text
@@ -213,7 +218,7 @@ def load_episodes():
 	for row in videoTitle:
 		episodeLink = row.find('a').get('href')
 		episodeName = row.find('a').text
-		episodeName = episodeName.replace("Watch Online", "").replace(",","").replace(showName + " ", "").encode('ascii', 'ignore').decode('ascii').replace("by Ary Digital -","")
+		episodeName = episodeName.replace("Watch Online", "").replace("Watch Onlin","").replace(",","").replace(showName + " ", "").encode('ascii', 'ignore').decode('ascii').replace("by Ary Digital -","")
 		linksURL = build_url({'linkName': episodeLink + "===" + showName})
 		addDir('folder', 'load_ep_links', linksURL, episodeName, '', '')
 
@@ -228,7 +233,8 @@ def load_ep_links():
 	main_url = split_url[0]
 	showName = split_url[1].replace("+", " ")
 	episode_url = main_url.replace("plugin://plugin.video.DTVShows/?linkName=","").split("?s=")[0]
-	episode_url = "http://www.desirulez.me/" + episode_url
+	print episode_url
+	# episode_url = "http://www.desirulez.me/" + episode_url
 	# print "############# " + episode_url
 	r = requests.get(episode_url)
 	data = r.text
