@@ -95,7 +95,8 @@ def movie_menu():
 	for row in videoTitle:
 		showLink = row.find('a', {'class':'title'})
 		movieLink = showLink.get('href')
-		movieLink = "http://www.desirulez.me/" + movieLink.rsplit('?')[0]
+		# print movieLink
+		movieLink = movieLink.rsplit('?')[0]
 
 		movieName = showLink.text
 		movieName = movieName.encode('ascii', 'ignore').decode('ascii').replace("'","")
@@ -116,6 +117,8 @@ def load_movie_links():
 	split_url = main_url.split("===")
 	movieURL = split_url[0].replace("plugin://plugin.video.DTVShows/?linkName=","")
 	movieName = split_url[1].replace("+", " ")
+	print "### " + movieName
+	print "### " + movieURL
 	r = requests.get(movieURL)
 	data = r.text
 	soup = BeautifulSoup(data)
