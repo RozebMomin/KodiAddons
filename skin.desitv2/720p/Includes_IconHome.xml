@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<includes>
+	<include name="IconHomeMenu">
+		<control type="group">
+			<visible>[Container(9000).Row(0) | Container(9000).Row(1)] + !Container(9000).HasPrevious()</visible>
+			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+			<control type="group">
+				<visible>![Window.IsActive(videolibrary) | Window.IsActive(musiclibrary) | Window.IsActive(musicfiles)]</visible>
+				<control type="image"><!-- Use solid background image -->
+					<include>fullscreenimage</include>
+					<texture>colours/black.png</texture>
+				</control>
+				<control type="image"><!-- Build up home menu shelf image -->
+					<left>0</left>
+					<top>0</top>
+					<width>1280</width>
+					<height>192</height>
+					<texture>colours/midgrey.png</texture>
+				</control>
+				<control type="image">
+					<left>0</left>
+					<top>192</top>
+					<width>1280</width>
+					<height>102</height>
+					<texture>colours/darkgrey.png</texture>
+				</control>
+				<control type="image">
+					<left>0</left>
+					<top>0</top>
+					<width>1280</width>
+					<height>294</height>
+					<texture>menu-mask.png</texture>
+				</control>
+			</control>
+
+			<include condition="!Skin.HasSetting(home-time)" file="Includes_Shelf.xml">homeshelf-time</include><!-- Show time on home screen -->
+
+			<control type="group" id="9800"><!-- Shelf icons-->
+				<control type="group" id="9155"><!-- Movie icons -->
+					<visible>StringCompare(Container(9000).ListItem.Label2,$LOCALIZE[31026])</visible>
+					<control type="group">
+						<visible>StringCompare(Skin.String(shelf-movieimages),$LOCALIZE[31953]) | !IntegerGreaterThan(Container(9160).NumItems,0)</visible>
+						<control type="image">
+							<left>552</left>
+							<top>38</top>
+							<width>176</width>
+							<height>176</height>
+							<texture>DefaultVideo.png</texture>
+						</control>
+						<control type="image">
+							<left>552</left>
+							<top>214</top>
+							<width>176</width>
+							<height>176</height>
+							<texture flipy="true" diffuse="mask-fade.png">DefaultVideo.png</texture>
+						</control>
+					</control>
+					<control type="group">
+						<visible>!StringCompare(Skin.String(shelf-movieimages),$LOCALIZE[31953])</visible>
+						<include file="Includes_Shelf.xml">movie-shelficons</include>
+					</control>
+				</control>
+				<control type="group" id="9205"><!-- TV Shows icons -->
+					<visible>StringCompare(Container(9000).ListItem.Label2,$LOCALIZE[20343])</visible>
+					<control type="group">
+						<visible>StringCompare(Skin.String(shelf-tvshowimages),$LOCALIZE[31953]) | !IntegerGreaterThan(Container(9210).NumItems,0)</visible>
+						<control type="image">
+							<left>552</left>
+							<top>38</top>
+							<width>176</width>
+							<height>176</height>
+							<texture>DefaultTvshows.png</texture>
+						</control>
+						<control type="image">
+							<left>552</left>
+							<top>214</top>
+							<width>176</width>
+							<height>176</height>
+							<texture flipy="true" diffuse="mask-fade.png">DefaultTvshows.png</texture>
+						</control>
+					</control>
+					<control type="group">
+						<visible>![StringCompare(Skin.String(shelf-tvshowimages),$LOCALIZE[31953])]</visible>
+						<include file="Includes_Shelf.xml">tvshow-shelficons</include>
+					</control>
+				</control>
+				<control type="group" id="9255"><!-- Music icons -->
+					<visible>StringCompare(Container(9000).ListItem.Label2,$LOCALIZE[2])</visible>
+					<control type="group">
+						<visible>StringCompare(Skin.String(shelf-musicimages),$LOCALIZE[31953]) | !IntegerGreaterThan(Container(9260).NumItems,0)</visible>
+						<control type="image">
+							<left>552</left>
+							<top>38</top>
+							<width>176</width>
+							<height>176</height>
+							<texture>DefaultAudio.png</texture>
+						</control>
+						<control type="image">
+							<left>552</left>
+							<top>214</top>
+							<width>176</width>
+							<height>176</height>
+							<texture flipy="true" diffuse="mask-fade.png">DefaultAudio.png</texture>
+						</control>
+					</control>
+					<control type="group">
+						<visible>!StringCompare(Skin.String(shelf-musicimages),$LOCALIZE[31953])</visible>
+						<include file="Includes_Shelf.xml">music-shelficons</include>
+					</control>
+				</control>
+				<control type="group" id="9801"><!-- Weather icons -->
+					<visible>StringCompare(Container(9000).ListItem.Label2,$LOCALIZE[8])</visible>
+					<control type="group">
+						<visible>!Weather.IsFetched</visible>
+						<control type="image">
+							<left>552</left>
+							<top>38</top>
+							<width>176</width>
+							<height>176</height>
+							<texture>icon-weather.png</texture>
+						</control>
+						<control type="image">
+							<left>552</left>
+							<top>214</top>
+							<width>176</width>
+							<height>176</height>
+							<texture flipy="true" diffuse="mask-fade.png">icon-weather.png</texture>
+						</control>
+					</control>
+					<control type="group">
+						<visible>Weather.IsFetched</visible>
+						<include condition="!IsEmpty(Weather.plugin) + [Skin.HasSetting(home-weather) | Skin.HasSetting(home-currentweather)]" file="Includes_Shelf.xml">ShelfWeather</include>
+					</control>
+				</control>
+				<control type="group" id="9802"><!-- Default Shelf image -->
+					<visible>StringCompare(Container(9000).ListItem.Label2,$LOCALIZE[571])</visible>
+					<control type="group">
+						<control type="image">
+							<left>464</left>
+							<top>38</top>
+							<width>352</width>
+							<height>176</height>
+							<aspectratio>keep</aspectratio>
+							<texture background="true">skin-logo-big.png</texture>
+						</control>
+						<control type="image">
+							<left>464</left>
+							<top>214</top>
+							<width>352</width>
+							<height>176</height>
+							<aspectratio scalediffuse="true">keep</aspectratio>
+							<texture flipy="true" diffuse="mask-fade.png">skin-logo-big.png</texture>
+						</control>
+					</control>
+				</control>
+			</control>
+		</control>
+
+		<control type="button" id="9005"><!-- Play bump sound if user tries to leave menu by undefined direction -->
+			<left>-30</left>
+			<top>-30</top>
+			<width>1</width>
+			<height>1</height>
+			<onfocus>SetFocus(9000)</onfocus>
+			<onfocus>ActivateWindow(1157)</onfocus>
+		</control>
+		<control type="button" id="9050"><!-- Play bump sound if user tries to leave Movie shelf by undefined direction -->
+			<left>-40</left>
+			<top>-40</top>
+			<width>1</width>
+			<height>1</height>
+			<onfocus>SetFocus(9160)</onfocus>
+			<onfocus>ActivateWindow(1157)</onfocus>
+		</control>
+		<control type="button" id="9052"><!-- Play bump sound if user tries to leave TV shelf by undefined direction -->
+			<left>-50</left>
+			<top>-50</top>
+			<width>1</width>
+			<height>1</height>
+			<onfocus>SetFocus(9210)</onfocus>
+			<onfocus>ActivateWindow(1157)</onfocus>
+		</control>
+		<control type="button" id="9054"><!-- Play bump sound if user tries to leave Music shelf by undefined direction -->
+			<left>-60</left>
+			<top>-60</top>
+			<width>1</width>
+			<height>1</height>
+			<onfocus>SetFocus(9260)</onfocus>
+			<onfocus>ActivateWindow(1157)</onfocus>
+		</control>
+		<control type="button" id="9056"><!-- Play bump sound if user tries to leave Addons shelf by undefined direction -->
+			<left>-70</left>
+			<top>-70</top>
+			<width>1</width>
+			<height>1</height>
+			<onfocus>SetFocus(9360)</onfocus>
+			<onfocus>ActivateWindow(1157)</onfocus>
+		</control>
+
+		<control type="panel" id="9000"><!-- Home menu icon panel -->
+			<animation condition="![Container(9000).Row(0) | Container(9000).Row(1)] | Container(9000).HasPrevious()" effect="slide" start="0,0" end="0,-260" time="100">Conditonal</animation>
+			<width>1260</width>
+			<height>640</height>
+			<top>300</top>
+			<left>10</left>
+			<onleft>9005</onleft>
+			<onright>9005</onright>
+			<onup condition="![Control.IsVisible(9801) | Control.IsVisible(9802)]">9800</onup>
+			<onup condition="Control.IsVisible(9801) | Control.IsVisible(9802)">9005</onup>
+			<ondown>9005</ondown>
+			<itemlayout height="160" width="252">
+				<control type="image"><!-- Icon image -->
+					<left>28</left>
+					<top>10</top>
+					<width>195</width>
+					<height>110</height>
+					<aspectratio>stretch</aspectratio>
+					<texture diffuse="homeiconmask.png">$INFO[ListItem.thumb]</texture>
+				</control>
+				<control type="label"><!-- Icon label -->
+					<left>0</left>
+					<top>128</top>
+					<width>250</width>
+					<height>20</height>
+					<textcolor>disabled-text</textcolor>
+					<font>font11</font>
+					<align>center</align>
+					<label>$INFO[ListItem.label]</label>
+				</control>
+			</itemlayout>
+			<focusedlayout height="160" width="252">
+				<control type="image"><!-- Focused icon image -->
+					<left>28</left>
+					<top>10</top>
+					<width>195</width>
+					<height>110</height>
+					<aspectratio>stretch</aspectratio>
+					<texture diffuse="homeiconmask.png">$INFO[ListItem.thumb]</texture>
+				</control>
+				<control type="image"><!-- Hilite focused image -->
+					<left>20</left>
+					<top>2</top>
+					<width>210</width>
+					<height>126</height>
+					<texture>homeiconhilite.png</texture>
+				</control>
+				<control type="label"><!-- Focused icons label -->
+					<left>0</left>
+					<top>127</top>
+					<width>250</width>
+					<height>23</height>
+					<align>center</align>
+					<label>$INFO[ListItem.label]</label>
+					<font>font12</font>
+				</control>
+			</focusedlayout>
+			<content>
+				<item><!-- Weather -->
+					<thumb>special://skin/extras/homeicons/weather.png</thumb>
+					<label>$LOCALIZE[8]</label>
+					<label2>$LOCALIZE[8]</label2>
+					<onclick>ActivateWindow(Weather,,return)</onclick>
+				</item>
+				<item><!-- Favourites -->
+					<thumb>special://skin/extras/homeicons/Favourites.png</thumb>
+					<label>$LOCALIZE[31652]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(Favourites)</onclick>
+				</item>
+				<item><!-- Music -->
+					<thumb>special://skin/extras/homeicons/music.png</thumb>
+					<label>$LOCALIZE[2]</label>
+					<label2>$LOCALIZE[2]</label2>
+					<onclick>$VAR[MusicLibEntry]</onclick>
+				</item>
+				<item><!-- Videos -->
+					<thumb>special://skin/extras/homeicons/Vids.png</thumb>
+					<label>$LOCALIZE[3]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(Videolibrary,root,return)</onclick>
+				</item>
+				<item><!-- Pictures -->
+					<thumb>special://skin/extras/homeicons/pics.png</thumb>
+					<label>$LOCALIZE[1]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(MyPictures,,return)</onclick>
+				</item>
+				<item><!-- Local News -->
+					<thumb>special://skin/extras/homeicons/LocalNews.png</thumb>
+					<label>Local News</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.LocalNews)</onclick>
+				</item>
+				<item><!-- YouTube -->
+					<thumb>special://skin/extras/homeicons/youtube.png</thumb>
+					<label>YouTube</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.youtube)</onclick>
+				</item>
+				<item><!-- WorldNews -->
+					<thumb>special://skin/extras/homeicons/NewsStand.png</thumb>
+					<label>World News</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.world.news.live)</onclick>
+				</item>
+				<item><!-- LIVE TV Basic -->
+					<thumb>special://skin/extras/homeicons/tv.png</thumb>
+					<label>Live TV Basic</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.ustvnow.tva)</onclick>
+				</item>
+				<item><!-- Sports -->
+					<thumb>special://skin/extras/homeicons/Sports.png</thumb>
+					<label>Sports</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.SportsDevil)</onclick>
+				</item>
+				<item><!-- Desi TV -->
+					<thumb>special://skin/extras/homeicons/desitv_icon.png</thumb>
+					<label>Desi TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.tvondesizonexl)</onclick>
+				</item>
+				<item><!-- New On Demand -->
+					<thumb>special://skin/extras/homeicons/HindiOnDemand.png</thumb>
+					<label>Desi On Demand</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.DTVShows)</onclick>
+				</item>
+				<item><!-- Pakistani TV -->
+					<thumb>special://skin/extras/homeicons/PakistaniTV.png</thumb>
+					<label>Pakistani TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.PakistaniTV)</onclick>
+				</item>
+				<item><!-- South Indian TV -->
+					<thumb>special://skin/extras/homeicons/TamilKodi.png</thumb>
+					<label>South Indian TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.tamilkodi)</onclick>
+				</item>
+				<item><!-- Gujarati Natak -->
+					<thumb>special://skin/extras/homeicons/GujaratiNatak.png</thumb>
+					<label>Gujarati Natak</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.GujaratiNatak)</onclick>
+				</item>
+				<item><!-- Aaj Tak News -->
+					<thumb>special://skin/extras/homeicons/AajTak.png</thumb>
+					<label>Aaj Tak News</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.AajTak)</onclick>
+				</item>
+				<item><!-- TV9 Gujarat News -->
+					<thumb>special://skin/extras/homeicons/TV9Gujarat.png</thumb>
+					<label>TV9 Gujarat News</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.TV9Gujarat)</onclick>
+				</item>
+				<item><!-- Aastha TV -->
+					<thumb>special://skin/extras/homeicons/AasthaTV.png</thumb>
+					<label>Aastha TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.AasthaTV)</onclick>
+				</item>
+				<item><!-- Live TV Zem -->
+					<thumb>special://skin/extras/homeicons/LiveTVHI.png</thumb>
+					<label>Live TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.ZemTV-shani)</onclick>
+				</item>
+				<!-- <item>
+					<thumb>special://skin/extras/homeicons/HDMovies.png</thumb>
+					<label>HD Indian Movies</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.AIN)</onclick>
+				</item> -->
+				<item><!-- Bangla TV -->
+					<thumb>special://skin/extras/homeicons/BanglaTV.png</thumb>
+					<label>Bangla TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.BanglaTVLive)</onclick>
+				</item>
+				<item><!-- Cartoon Network -->
+					<thumb>special://skin/extras/homeicons/CartoonNetwork.png</thumb>
+					<label>Cartoon Network</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.CartoonNetwork)</onclick>
+				</item>
+				<item><!-- ESPN LIVE -->
+					<thumb>special://skin/extras/homeicons/espnlive.png</thumb>
+					<label>ESPN Live</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.ESPNLive)</onclick>
+				</item>
+				<item><!-- EnglishTV YODA -->
+					<thumb>special://skin/extras/homeicons/movie.png</thumb>
+					<label>English TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.Yoda)</onclick>
+				</item>
+				<item><!-- Ahlulbayt TV -->
+					<thumb>special://skin/extras/homeicons/AhlulbaytTV.png</thumb>
+					<label>Ahlulbayt TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.AhlulbaytTV.en)</onclick>
+				</item>
+				<item><!-- Karbala TV -->
+					<thumb>special://skin/extras/homeicons/KarbalaLive.png</thumb>
+					<label>Karbala TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.KarbalaTVLive)</onclick>
+				</item>
+				<item><!-- Makkah TV -->
+					<thumb>special://skin/extras/homeicons/MakkahLive.png</thumb>
+					<label>Makkah TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.MakkahTVLive)</onclick>
+				</item>
+				<item><!-- Velayat TV -->
+					<thumb>special://skin/extras/homeicons/VelayatTV.png</thumb>
+					<label>Velayat TV</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.VelayatTV)</onclick>
+				</item>
+				<item><!-- WIN Islamic Channel -->
+					<thumb>special://skin/extras/homeicons/WINChannel.png</thumb>
+					<label>WIN Channel</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.WorldIslamicNetwork)</onclick>
+				</item>
+				<item><!-- Jaffari Center of Atlanta Channel -->
+					<thumb>special://skin/extras/homeicons/JaffariCenter.png</thumb>
+					<label>Jaffari Center</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(plugin.video.JaffariCenterATL)</onclick>
+				</item>
+				<item><!-- Addons menu -->
+					<visible>!Skin.HasSetting(home-programs)</visible>
+					<thumb>special://skin/extras/homeicons/addons.png</thumb>
+					<label>$LOCALIZE[24001]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(1155,,return)</onclick>
+				</item>
+				<item><!-- Package Manager -->
+					<thumb>special://skin/extras/homeicons/packagemanager.png</thumb>
+					<label>Package Manager</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(addonbrowser,addons://repository.DesiTVMC/xbmc.addon.video,return)</onclick>
+				</item>
+				<item><!-- System menu -->
+					<thumb>special://skin/extras/homeicons/setting.png</thumb>
+					<label>$LOCALIZE[13000]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>ActivateWindow(Settings,,return)</onclick>
+				</item>
+				<item><!-- Network Tools -->
+					<thumb>special://skin/extras/homeicons/NetworkManager.png</thumb>
+					<label>Network Tools</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>RunAddon(service.openelec.settings)</onclick>
+				</item>
+				<item><!-- Updater -->
+					<thumb>special://skin/extras/homeicons/UpdateIcon.png</thumb>
+					<label>Update</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>UpdateAddonRepos</onclick>
+				</item>
+				<item><!-- HELP -->
+					<thumb>special://skin/extras/homeicons/Help.png</thumb>
+					<label>Help</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>Notification(WWW.DESITVMC.COM/SUPPORT,OR WWW.DESITVMC.COM/BLOG OR CALL 4045005791.,20000,/script.hellow.world.png)</onclick>
+				</item>
+				<item><!-- Quit -->
+					<visible>!Skin.HasSetting(home-shutdown)</visible>
+					<thumb>special://skin/extras/homeicons/quit.png</thumb>
+					<label>$LOCALIZE[13009]</label>
+					<label2>$LOCALIZE[571]</label2>
+					<onclick>$VAR[QuitAction]</onclick>
+				</item>
+			</content>
+		</control>
+		<control type="image"><!-- Hide third row of icons if still in the first two rows of panel -->
+			<left>0</left>
+			<top>620</top>
+			<width>1280</width>
+			<height>100</height>
+			<texture>colours/black.png</texture>
+			<visible>[Container(9000).Row(0) | Container(9000).Row(1)] + !Container(9000).HasPrevious()</visible>
+		</control>
+		<!-- RSS info -->
+		<control type="group" id="9940"><!-- Don't show RSS if Video or Music overlay showing -->
+			<visible>![Skin.HasSetting(media-overlay) + [Player.HasAudio | Player.HasVideo]]</visible>
+			<include condition="system.getbool(lookandfeel.enablerssfeeds)">page-info</include>
+		</control>
+		<control type="group">
+			<visible>[Container(9000).Row(0) | Container(9000).Row(1)] + !Container(9000).HasPrevious()</visible>
+		<!-- Home media overlay -->
+			<include>home-mediaoverlay</include>
+		</control>
+	</include>
+</includes>
