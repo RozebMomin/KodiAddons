@@ -438,38 +438,38 @@ def resolve_watchvideo(linkID):
 		data = r.text
 		soup = BeautifulSoup(data)
 
-		parseWatchVideo(data)
+		# parseWatchVideo(data)
 
-		# text_to_find = 'm3u8|master'
+		text_to_find = 'm3u8|master'
 
-		# soup = BeautifulSoup(data)
+		soup = BeautifulSoup(data)
 
-		# pageScripts = soup.findAll('script')
+		pageScripts = soup.findAll('script')
 
-		# resultingScript = []
+		resultingScript = []
 
-		# for script in pageScripts:
-		# 	searchableString = str(script)
-		# 	if "m3u8|master" in searchableString:
-		# 		print "SUCCESS!! ####"
-		# 		resultingScript.append(searchableString)
-		# 	else:
-		# 		print "--------------"
+		for script in pageScripts:
+			searchableString = str(script)
+			if "m3u8|master" in searchableString:
+				print "SUCCESS!! ####"
+				resultingScript.append(searchableString)
+			else:
+				print "--------------"
 
-		# paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(resultingScript[0])
+		paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(resultingScript[0])
 
-		# if len(paramSet) > 0:
-		# 	video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-		# 	# print video_info_link
-		# 	img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-		# 	value = img_data[0]
-		# 	# print value
-		# 	value = value.split(",")
-		# 	finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-		# 	# print "########### " + finalValue
-		# 	return finalValue
-		# else:
-		# 	print "None Found Here Buddy"
+		if len(paramSet) > 0:
+			video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+			# print video_info_link
+			img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+			value = img_data[0]
+			# print value
+			value = value.split(",")
+			finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+			# print "########### " + finalValue
+			return finalValue
+		else:
+			print "None Found Here Buddy"
 
 
 		# for script in pageScripts:
@@ -545,7 +545,36 @@ def resolve_link(link_url):
 			data = r.text
 			soup = BeautifulSoup(data)
 
-			parseWatchVideo(data)
+			text_to_find = 'm3u8|master'
+
+			soup = BeautifulSoup(data)
+
+			pageScripts = soup.findAll('script')
+
+			resultingScript = []
+
+			for script in pageScripts:
+				searchableString = str(script)
+				if "m3u8|master" in searchableString:
+					print "SUCCESS!! ####"
+					resultingScript.append(searchableString)
+				else:
+					print "--------------"
+
+			paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(resultingScript[0])
+
+			if len(paramSet) > 0:
+				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+				# print video_info_link
+				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+				value = img_data[0]
+				# print value
+				value = value.split(",")
+				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				# print "########### " + finalValue
+				return finalValue
+			else:
+				print "None Found Here Buddy"
 			
 		except:
 			print "An Error Occurred"
