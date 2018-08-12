@@ -410,17 +410,17 @@ def load_ep_links():
 
 				## WATCH --------
 
-				# elif "watchvideo.php" in linkUrl:
-				# 	print "### WATCHVIDEO ### " + linkUrl
-				# 	linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-				# 	linkUrl = linkUrl + "===WATCHVIDEO"
-				# 	resultingLink = resolve_link(linkUrl)
-				# 	if resultingLink == 'None':
-				# 		print "None"
-				# 	elif resultingLink == 'No Links Found':
-				# 		print "None"
-				# 	else:
-				# 		addDir('', 'resolve_link', resultingLink, linkName, '', '')
+				elif "watchvideo.php" in linkUrl:
+					print "### WATCHVIDEO ### " + linkUrl
+					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+					linkUrl = linkUrl + "===WATCHVIDEO"
+					resultingLink = scrape_watchvideo(linkID)
+					if resultingLink == 'None':
+						print "None"
+					elif resultingLink == 'No Links Found':
+						print "None"
+					else:
+						addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
 
 				elif len(linkID) == 12 and "?si=" in linkUrl:
