@@ -21,6 +21,86 @@ base_url = sys.argv[0]
 addon_handle = int(sys.argv[1])
 xbmcplugin.setContent(addon_handle, 'movies')
 
+text_to_find_parsing = "sources:"
+
+def find_jw_source(url, vidID):
+	print url + " " + vidID
+	regex = r"sources: \".*.mp4\""
+	r = requests.get(url)
+	results = []
+	for line in r.text.splitlines():
+		if text_to_find_parsing in line:
+			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+			# line = rtrim(line, ',')
+			line = line[0].replace("{file:", "").replace("\"","")
+			results.append(line)
+			# print len(results)
+		else:
+			pass
+	if len(results) == 0:
+		#Vidwatch
+		return scrape_vidwatch(vidID)
+	else:
+		# print "STREAMING LINK -> "+ str(results[0])
+		return str(results[0])
+
+def scrape_watchvideo(vidID):
+	try:
+		#WatchVideo
+		url = "https://watchvideo.us/embed-"+vidID+"-540x304.html"
+		return find_jw_source(url, vidID)
+	except Exception as e:
+		raise
+	else:
+		pass
+
+def scrape_vidwatch(vidID):
+	try:
+		#VidWatch
+		url = "https://vidwatch.me/embed-"+vidID+".html"
+		return find_jw_source(url, vidID)
+	except Exception as e:
+		raise
+	else:
+		pass
+
+#### END 8/12/2018
+
+def scrape_watchvideo_movies(url):
+	vidID = url.split("?url=")[1]
+	vidID = vidID.split("===")[0]
+	print vidID
+	newUrl = "https://watchvideo.us/embed-"+vidID+"-540x304.html"
+	print newUrl
+	regex = r"sources: \".*.mp4\""
+	r = requests.get(newUrl)
+	results = []
+	for line in r.text.splitlines():
+		if "sources:" in line:
+			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+			# line = rtrim(line, ',')
+			line = line[0].replace("{file:", "").replace("\"","")
+			results.append(line)
+			# print len(results)
+		else:
+			pass
+	if len(results) == 0:
+		#Vidwatch
+		pass
+	else:
+		print results[0]
+		return results[0]
+
+def resolveVidoza(linkUrl):
+	vidozaID = linkUrl.split("url=")[1]
+	vidozaLink = "http://www.vidoza.net/embed-" + vidozaID + ".html"
+
+	r = requests.get(vidozaLink, verify=False)
+	# data = r.text
+	# soup = BeautifulSoup(data)
+	# videoDirectLink = soup.findAll('source', {'type':'video/mp4'})
+	# print len(videoDirectLink)
+
 def parseWatchVideo(data):
 
 	text_to_find = 'm3u8|master'
@@ -163,18 +243,25 @@ def load_movie_links():
 			linkName = linkName.replace(" Watch Online Pre Dvd Rip", "").replace(movieName, "").replace(" - ", "")
 			
 			linkUrl = link.get("href")
+
+			# ## Vidoza Parse
+			# if "vidoza.php" in linkUrl:
+			# 	resolveVidoza(linkUrl)
+			# else:
+			# 	pass
+
 			if "watchvideo.php" in linkUrl:
 					print "### WATCHVIDEO ### " + linkUrl
 					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
 					linkUrl = linkUrl + "===WATCHVIDEO"
-					resultingLink = resolve_link(linkUrl)
+					resultingLink = scrape_watchvideo_movies(linkUrl)
 					print resultingLink
 					if resultingLink == 'None':
 						print "None"
 					elif resultingLink == 'No Links Found':
 						print "None"
 					else:
-						addDir('', 'resolve_link', resultingLink, linkName, '', '')
+						addDir('', '', resultingLink, linkName, '', '')
 			else:
 				print linkUrl
 				print "######"
@@ -285,13 +372,13 @@ def load_ep_links():
 				finalLink = item.replace("//www.youtube.com/embed/", "").replace("?wmode=opaque", "")
 				print finalLink
 				url = "plugin://plugin.video.youtube/play/?video_id=" + finalLink
-		        li = xbmcgui.ListItem('YouTube Link', iconImage='http://i.ytimg.com/vi/'+finalLink+'/maxresdefault.jpg')
-		        li.setProperty('IsPlayable', 'true')
-		        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
+				li = xbmcgui.ListItem('YouTube Link', iconImage='http://i.ytimg.com/vi/'+finalLink+'/maxresdefault.jpg')
+				li.setProperty('IsPlayable', 'true')
+				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
 		showLink = row.findAll('a')
 		for link in showLink:
 			print "############"
-			print link
+			# print link
 			if "http://www.desirulez.us" in link.get('href'):
 				print "No LINK"
 			elif "http://www.desirulez.net/register.php" in link.get('href'):
@@ -315,101 +402,120 @@ def load_ep_links():
 				else:
 					linkID = linkUrl
 				if "vidwatch.php" in linkUrl:
-					print "### VIDWATCH ### " + linkUrl
+					pass
+					# print "### VIDWATCH ### " + linkUrl
 					# linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
 					# linkUrl = build_url({'resolveLink': linkUrl + "===VIDWATCH"})
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
-				elif "watchvideo.php" in linkUrl:
-					print "### WATCHVIDEO ### " + linkUrl
-					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-					linkUrl = linkUrl + "===WATCHVIDEO"
-					resultingLink = resolve_link(linkUrl)
-					if resultingLink == 'None':
-						print "None"
-					elif resultingLink == 'No Links Found':
-						print "None"
-					else:
-						addDir('', 'resolve_link', resultingLink, linkName, '', '')
+				## WATCH --------
+
+				# elif "watchvideo.php" in linkUrl:
+				# 	print "### WATCHVIDEO ### " + linkUrl
+				# 	linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+				# 	linkUrl = linkUrl + "===WATCHVIDEO"
+				# 	resultingLink = resolve_link(linkUrl)
+				# 	if resultingLink == 'None':
+				# 		print "None"
+				# 	elif resultingLink == 'No Links Found':
+				# 		print "None"
+				# 	else:
+				# 		addDir('', 'resolve_link', resultingLink, linkName, '', '')
+
+
+				elif len(linkID) == 12 and "?si=" in linkUrl:
+					# print linkID
+					resultingLink = scrape_watchvideo(linkID)
+					linkName = linkName + "[COLOR yellow]: WV | VW[/COLOR]"
+					print "RESULTING LINK -> "+ str(resultingLink)
+					addDir('', '', resultingLink, linkName, '', '')
+
 
 				elif "vidoza.php" in linkUrl:
-					print "### VIDOZA ### " + linkUrl
+					pass
+					# print "### VIDOZA ### " + linkUrl
 					# linkName = linkName + "[COLOR yellow]: VIDOZA[/COLOR]"
 					# linkUrl = linkUrl + "===VIDOZA"
 					# resultingLink = resolve_link(linkUrl)
 					# addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
 				elif "openload.php" in linkUrl:
-					print "### OPENLOAD ### " + linkUrl
+					pass
+					# print "### OPENLOAD ### " + linkUrl
 					# linkName = linkName + "[COLOR yellow]: OPENLOAD[/COLOR]"
 					# linkUrl = build_url({'resolveLink': linkUrl + "===OPENLOAD"})
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 				elif "embedupload.com" in linkUrl:
-					print "### EMBEDUPLOAD ### " + linkUrl
+					pass
+					# print "### EMBEDUPLOAD ### " + linkUrl
 					# linkName = linkName + "[COLOR yellow]: EMBEDUPLOAD[/COLOR]"
 					# linkUrl = build_url({'resolveLink': linkUrl + "===EMBEDUPLOAD"})
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 				elif len(linkID) == 7 and linkID.isdigit():
-					print "### TUNEPK ### " + linkUrl
+					pass
+					# print "### TUNEPK ### " + linkUrl
 					# linkName = linkName + "[COLOR yellow]: TUNEPK[/COLOR]"
 					# linkUrl = build_url({'resolveLink': linkUrl + "===TUNEPK"})
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 				elif len(linkID) == 19:
-					print "### DAILYMOTION ### " + linkUrl
+					pass
+					# print "### DAILYMOTION ### " + linkUrl
 					# linkName = linkName + "[COLOR yellow]: DAILYMOTION[/COLOR]"
 					# linkUrl = build_url({'resolveLink': linkUrl + "===DAILYMOTION"})
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
 				elif len(linkID) == 7:
-					if "reviewtv.in" in linkUrl:
-						# print "### TVLOGY ### " + linkUrl
-						linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-						linkUrl = linkUrl + "===TVLOGY"
-						resultingLink = resolve_link(linkUrl)
-						addDir('', 'resolve_link', resultingLink, linkName, '', '')
-					elif "tellysony.com" in linkUrl:
-						# print "### TVLOGY ### " + linkUrl
-						linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-						linkUrl = linkUrl + "===TVLOGY"
-						resultingLink = resolve_link(linkUrl)
-						addDir('', 'resolve_link', resultingLink, linkName, '', '')
-					else:
-						print "No Links Found"
+					pass
+					# if "reviewtv.in" in linkUrl:
+					# 	# print "### TVLOGY ### " + linkUrl
+					# 	linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
+					# 	linkUrl = linkUrl + "===TVLOGY"
+					# 	resultingLink = resolve_link(linkUrl)
+					# 	addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					# elif "tellysony.com" in linkUrl:
+					# 	# print "### TVLOGY ### " + linkUrl
+					# 	linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
+					# 	linkUrl = linkUrl + "===TVLOGY"
+					# 	resultingLink = resolve_link(linkUrl)
+					# 	addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					# else:
+					# 	print "No Links Found"
 
-				elif len(linkID) == 12:
-					print "### UNFILTERED ### " + linkID
-					# resolve_unfiltered(linkID)
-					# + linkUrl
-					# resolve_unfiltered(linkID)
-					resultingLink = resolve_unfiltered(linkID)
-					playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-					# print resultingLink
-					if resultingLink == "#### NO FILE":
-						print "## NOTHING"
-					else:
-						print "#########" + linkName
-						linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-						print resultingLink
-						addDir('', 'resolve_link', resultingLink, linkName, '', '')
-						if 'Part-1' in linkName:
-							video = resultingLink
-							listitem = xbmcgui.ListItem(linkName)
-							listitem.setInfo('video', {'Title': linkName})
-							playlist.add(url=video, listitem=listitem)
-							# addDir('', 'resolve_link', resultingLink, 'Part 1', '', '')
-						else:
-							video = resultingLink
-							listitem = xbmcgui.ListItem(linkName)
-							listitem.setInfo('video', {'Title': linkName})
-							playlist.add(url=video, listitem=listitem)
-							print playlist
-							# addDir('', 'resolve_link', '', 'Continuous Play[COLOR yellow]: WATCHVIDEO[/COLOR]', '', '')
+				# elif len(linkID) == 12:
+				# 	print "### UNFILTERED ### " + linkID
+				# 	# resolve_unfiltered(linkID)
+				# 	# + linkUrl
+				# 	# resolve_unfiltered(linkID)
+				# 	resultingLink = resolve_unfiltered(linkID)
+				# 	playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+				# 	# print resultingLink
+				# 	if resultingLink == "#### NO FILE":
+				# 		print "## NOTHING"
+				# 	else:
+				# 		print "#########" + linkName
+				# 		linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+				# 		print resultingLink
+				# 		addDir('', 'resolve_link', resultingLink, linkName, '', '')
+				# 		if 'Part-1' in linkName:
+				# 			video = resultingLink
+				# 			listitem = xbmcgui.ListItem(linkName)
+				# 			listitem.setInfo('video', {'Title': linkName})
+				# 			playlist.add(url=video, listitem=listitem)
+				# 			# addDir('', 'resolve_link', resultingLink, 'Part 1', '', '')
+				# 		else:
+				# 			video = resultingLink
+				# 			listitem = xbmcgui.ListItem(linkName)
+				# 			listitem.setInfo('video', {'Title': linkName})
+				# 			playlist.add(url=video, listitem=listitem)
+				# 			print playlist
+				# 			# addDir('', 'resolve_link', '', 'Continuous Play[COLOR yellow]: WATCHVIDEO[/COLOR]', '', '')
 
 				else:
-					print linkUrl
+					pass
+					# print linkUrl
 					# linkName = "[COLOR yellow]"+linkName+"[/COLOR]"
 					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
 
