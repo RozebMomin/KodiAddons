@@ -21,6 +21,24 @@ base_url = sys.argv[0]
 addon_handle = int(sys.argv[1])
 xbmcplugin.setContent(addon_handle, 'movies')
 
+def determine_iframe_source(url):
+	text_to_find = '<IFRAME'
+	print "Determining IFRAME Source ......."
+	regex = r"file: \".*.mp4\""
+	r = requests.get(url)
+	results = []
+	for line in r.text.splitlines():
+		if text_to_find in line:
+			iframe_source = line.split("\"http")
+			iframe_source = iframe_source[1].replace("://", "http://").split("ml\"")
+			iframe_source = iframe_source[0].replace(".ht", ".html")
+			results.append(iframe_source)
+		# if re.findall(regex, line):
+		#     line = 'http:' + line[9:-2]
+		#     results.append(str(line))
+	# print results[0]
+	return results[0]
+
 text_to_find_parsing = "sources:"
 
 def find_jw_source(url, vidID):
@@ -410,25 +428,85 @@ def load_ep_links():
 
 				## WATCH --------
 
-				elif "watchvideo.php" in linkUrl:
-					print "### WATCHVIDEO ### " + linkUrl
-					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-					linkUrl = linkUrl + "===WATCHVIDEO"
-					resultingLink = scrape_watchvideo(linkID)
-					if resultingLink == 'None':
-						print "None"
-					elif resultingLink == 'No Links Found':
-						print "None"
+				# elif "watchvideo.php" in linkUrl:
+				# 	print "### WATCHVIDEO ### " + linkUrl
+				# 	linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+				# 	linkUrl = linkUrl + "===WATCHVIDEO"
+				# 	resultingLink = resolve_link(linkUrl)
+				# 	if resultingLink == 'None':
+				# 		print "None"
+				# 	elif resultingLink == 'No Links Found':
+				# 		print "None"
+				# 	else:
+				# 		addDir('', 'resolve_link', resultingLink, linkName, '', '')
+
+
+				elif len(linkID) == 12 and "?si=" in linkUrl or "?sim=" in linkUrl:
+					print linkUrl
+					iframeLink = determine_iframe_source(linkUrl)
+					# print iframeLink
+					if "watchvideo" in iframeLink:
+						print "** WATCHVIDEO **"
+						regex = r"sources: \".*.mp4\""
+						r = requests.get(iframeLink)
+						results = []
+						for line in r.text.splitlines():
+							if text_to_find_parsing in line:
+								# print line
+								line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+								# line = rtrim(line, ',')
+								line = line[0].replace("{file:", "").replace("\"","")
+								results.append(line)
+								watchvideoLink = results[0]
+								linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+								addDir('', '', watchvideoLink, linkName, '', '')
+								# print len(results)
+							else:
+								pass
+					elif "vidwatch" in iframeLink:
+						print "** VIDWATCH **"
+						regex = r"sources: \".*.mp4\""
+						r = requests.get(iframeLink)
+						results = []
+						for line in r.text.splitlines():
+							if text_to_find_parsing in line:
+								# print line
+								line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+								# line = rtrim(line, ',')
+								line = line[0].replace("{file:", "").replace("\"","")
+								results.append(line)
+								watchvideoLink = results[0]
+								linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
+								addDir('', '', watchvideoLink, linkName, '', '')
+								# print len(results)
+							else:
+								pass
+
+					elif "speedwatch" in iframeLink:
+						print "** VIDWATCH **"
+						regex = r"sources: \".*.mp4\""
+						r = requests.get(iframeLink)
+						results = []
+						for line in r.text.splitlines():
+							if text_to_find_parsing in line:
+								# print line
+								line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+								# line = rtrim(line, ',')
+								line = line[0].replace("{file:", "").replace("\"","")
+								results.append(line)
+								watchvideoLink = results[0]
+								linkName = linkName + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
+								addDir('', '', watchvideoLink, linkName, '', '')
+								# print len(results)
+							else:
+								pass
 					else:
-						addDir('', 'resolve_link', resultingLink, linkName, '', '')
-
-
-				elif len(linkID) == 12 and "?si=" in linkUrl:
+						pass
 					# print linkID
-					resultingLink = scrape_watchvideo(linkID)
-					linkName = linkName + "[COLOR yellow]: WV | VW[/COLOR]"
-					print "RESULTING LINK -> "+ str(resultingLink)
-					addDir('', '', resultingLink, linkName, '', '')
+					# resultingLink = scrape_watchvideo(linkID)
+					# linkName = linkName + "[COLOR yellow]: WV | VW[/COLOR]"
+					# print "RESULTING LINK -> "+ str(resultingLink)
+					# addDir('', '', resultingLink, linkName, '', '')
 
 
 				elif "vidoza.php" in linkUrl:
