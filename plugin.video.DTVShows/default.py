@@ -22,7 +22,6 @@ addon_handle = int(sys.argv[1])
 xbmcplugin.setContent(addon_handle, 'movies')
 
 def determine_iframe_source(url):
-	text_to_find = '<IFRAME'
 	print "Determining IFRAME Source ......."
 	regex = r"file: \".*.mp4\""
 	r = requests.get(url)
@@ -33,11 +32,29 @@ def determine_iframe_source(url):
 			iframe_source = iframe_source[1].replace("://", "http://").split("ml\"")
 			iframe_source = iframe_source[0].replace(".ht", ".html")
 			results.append(iframe_source)
+		else:
+			if "eval(function(p,a,c,k,e,d)" in line:
+				print "Evaluating PACKED function ..."
+				line = line.replace("<script type='text/javascript'>", "")
+				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
+				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+				value = img_data[0]
+				# print value
+				value = value.split(",")
+				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				print "########### " + finalValue
+				return finalValue
+			else:
+				pass
 		# if re.findall(regex, line):
 		#     line = 'http:' + line[9:-2]
 		#     results.append(str(line))
-	# print results[0]
-	return results[0]
+	if not results:
+		print "Array Empty"
+	else:
+		print results[0]
+		return results[0]
 
 text_to_find_parsing = "sources:"
 
@@ -152,12 +169,10 @@ def parseWatchVideo(data):
 	else:
 		print "None Found Here Buddy"
 
-def build_url(query):
-	return base_url + '?' + urllib.urlencode(query)
-
-#################################
-#  START OF DIRECTORY LISTINGS  #
-#################################
+##########################################################################################################################################################
+# NECESSARY KODI FUNCTIONS
+# FILE SYSTEM, DIRECTORY, & BUILDING URL FUNCTIONS 
+##########################################################################################################################################################
 
 def addDir(dir_type, mode, url, name, iconimage, fanart):
 	base_url = sys.argv[0]
@@ -192,7 +207,340 @@ def Open_URL(url):
 	response.close()
 	return link.replace('\n','').replace('\t','').replace('\r','')
 
-## Get Online Data ##
+def build_url(query):
+	return base_url + '?' + urllib.urlencode(query)
+
+##########################################################################################################################################################
+# LATEST PARSING AS OF 08/19/2018
+# SIMPLIFIED PARSING
+##########################################################################################################################################################
+
+def load_episode_links():
+	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
+	main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=")
+	split_url = main_url.split("===")
+	main_url = split_url[0]
+	showName = split_url[1].replace("+", " ")
+	episode_url = main_url.replace("plugin://plugin.video.DTVShows/?linkName=","").split("?s=")[0]
+	print "EPISODE URL -->" + episode_url
+
+	r = requests.get(episode_url)
+	linksArray = []
+	for line in r.text.splitlines():
+		if "<a rel=\"nofollow\"" in line and "style=\"" not in line and "<li" not in line and "twitter" not in line and "<p" not in line and "Powered" not in line and "dragonbyte" not in line:
+			line = line.strip()
+			line = line.replace("<a rel=\"nofollow\" href=\"", "")
+			line = line.replace("\" target=\"_blank\">", "- ")
+			line = line.replace("</a><br />", "")
+			line = line.split("- ")
+
+			if len(line) == 2:
+				ep_sourceLink = line[0]
+				ep_sourcePart = "Full Episode"
+			else:
+				ep_sourceLink = line[0]
+				ep_sourcePart = line[2]
+
+			arrayValue = ep_sourceLink + " -- " + ep_sourcePart
+
+			linksArray.append(arrayValue)
+		else:
+			pass
+
+	## Split out Each Array
+
+	for arrayValue in linksArray:
+		## PARSE WATCHVIDEO WITH 'WATCHVIDEO' IN LINK
+		if "watchvideo.php" in arrayValue:
+			fetch_obvious_watchvideo(arrayValue)
+		elif "vidwatch.php" in arrayValue:
+			fetch_obvious_vidwatch(arrayValue)
+		else:
+			## PARSING HIDDEN LINKS
+			## MUST DETERMINE ID & PARSE FURTHER
+
+			## STEPS TO GET ID VALUE
+			arrayValueID = arrayValue.split("=")[1].split(" -- ")[0]
+
+			## WATCHVIDEO & VIDWATCH IDs ARE 12 IN COUNT
+			## SEPARATE 12 & NON-12 IDs
+
+			if len(arrayValueID) == 12:
+
+				# PARSE THE DIFFERENT IDs & DETERMINE WHICH IS WATCHVIDEO & VIDWATCH
+				## THERE ARE 3 DIFFERENT SPLITS --> '?sim=' | '?si=' | '?id='
+				
+				## NEED TO SPLIT ARRAYVALUE INTO URL & PART NUMBER
+				parseableLink = arrayValue.split(" -- ")[0]
+
+				## ITERATE THROUGH SPLITS
+				if "?si=" in parseableLink:
+					fetch_hidden_watchvideo(arrayValue)
+				else:
+					pass
+
+				# print "ARRAY VALUE --> " + arrayValue
+				# print "ARRAY VALUE ID --> " + arrayValueID
+			else:
+				pass
+
+			# print "ARRAY VALUE --> " + arrayValue
+			# print "ARRAY VALUE ID --> " + arrayValueID
+			pass
+
+##########################################################################################################################################################
+# LATEST FUNCTIONS AS OF 08/19/2018
+# SOURCE PARSING BY INDIVIDUAL WEBSITE
+##########################################################################################################################################################
+### HIDDEN PARSERS BELOW
+##########################################################################################################################################################
+
+def fetch_hidden_watchvideo(value):
+	# NEED TO SPLIT INCOMING VALUE
+	value = value.split(" -- ")
+	sourceLink = value[0]
+	sourcePart = value[1]
+
+	videoID = sourceLink.split("=")[1]
+
+	print videoID
+
+	embeddedLink = "http://watchvideo.us/embed-"+videoID+"-540x304.html"
+
+	regex = r"sources: \".*.mp4\""
+	r = requests.get(embeddedLink)
+	results = []
+	for line in r.text.splitlines():
+		if "sources:" in line:
+			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+			# line = rtrim(line, ',')
+			line = line[0].replace("{file:", "").replace("\"","")
+			print line
+			results.append(line)
+			# print len(results)
+		elif "File was deleted" in line:
+			print "SOURCE FILE DELETED"
+		else:
+			pass
+			
+	if len(results) == 0:
+
+		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
+		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
+		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
+		for line in r.text.splitlines():
+			if "eval(function(p,a,c,k,e,d)" in line:
+				print "Evaluating PACKED function ..."
+				line = line.replace("<script type='text/javascript'>", "")
+				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
+				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+				value = img_data[0]
+				# print value
+				value = value.split(",")
+				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				print "########### " + finalValue
+				streamingName = sourcePart + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+				addDir('', '', finalValue, streamingName, '', '')
+				return finalValue
+			else:
+				pass
+				
+		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
+	else:
+		streamingLink = results[0]
+		streamingName = sourcePart + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+		addDir('', '', streamingLink, streamingName, '', '')
+
+##########################################################################################################################################################
+### OBVIOUS PARSERS BELOW
+##########################################################################################################################################################
+
+def fetch_obvious_watchvideo(value):
+	print value
+	# NEED TO SPLIT INCOMING VALUE
+	value = value.split(" -- ")
+	sourceLink = value[0]
+	sourcePart = value[1]
+	
+	# if "Part" not in value[1]:
+	# 	sourcePart = "Full Episode"
+	# else:
+	# 	sourcePart = value[1]
+
+	videoID = sourceLink.split("?id=")[1]
+
+	embeddedLink = "http://watchvideo.us/embed-"+videoID+"-540x304.html"
+
+	regex = r"sources: \".*.mp4\""
+	r = requests.get(embeddedLink)
+	results = []
+	for line in r.text.splitlines():
+		if "sources:" in line:
+			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+			# line = rtrim(line, ',')
+			line = line[0].replace("{file:", "").replace("\"","")
+			# print line
+			results.append(line)
+			# print len(results)
+		elif "File was deleted" in line:
+			print "SOURCE FILE DELETED"
+		else:
+			pass
+			
+	if len(results) == 0:
+
+		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
+		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
+		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
+		for line in r.text.splitlines():
+			if "eval(function(p,a,c,k,e,d)" in line:
+				print "Evaluating PACKED function ..."
+				line = line.replace("<script type='text/javascript'>", "")
+				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
+				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+				value = img_data[0]
+				# print value
+				value = value.split(",")
+				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				print "########### " + finalValue
+				streamingName = sourcePart + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+				addDir('', '', finalValue, streamingName, '', '')
+				return finalValue
+			else:
+				pass
+				
+		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
+	else:
+		streamingLink = results[0]
+		streamingName = sourcePart + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+		addDir('', '', streamingLink, streamingName, '', '')
+
+
+def fetch_obvious_vidwatch(value):
+	# NEED TO SPLIT INCOMING VALUE
+	value = value.split(" -- ")
+	sourceLink = value[0]
+	sourcePart = value[1]
+
+	# if "Part" not in value[1]:
+	# 	sourcePart = "Full Episode"
+	# else:
+	# 	sourcePart = value[1]
+
+	print sourceLink
+
+	videoID = sourceLink.split("?id=")[1]
+
+	embeddedLink = "http://vidwatch.me/embed-"+videoID+"-540x304.html"
+
+	regex = r"sources: \".*.mp4\""
+	r = requests.get(embeddedLink)
+	results = []
+	for line in r.text.splitlines():
+		if "sources:" in line:
+			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+			# line = rtrim(line, ',')
+			line = line[0].replace("{file:", "").replace("\"","")
+			# print line
+			results.append(line)
+			# print len(results)
+		elif "File was deleted" in line:
+			print "SOURCE FILE DELETED"
+		else:
+			pass
+			
+	if len(results) == 0:
+
+		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT VIDWATCH
+		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
+		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
+		for line in r.text.splitlines():
+			if "eval(function(p,a,c,k,e,d)" in line:
+				print "Evaluating PACKED function ..."
+				line = line.replace("<script type='text/javascript'>", "")
+				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
+				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+				value = img_data[0]
+				# print value
+				value = value.split(",")
+				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				print "########### " + finalValue
+				streamingName = sourcePart + "[COLOR yellow]: VIDWATCH[/COLOR]"
+				addDir('', '', finalValue, streamingName, '', '')
+				return finalValue
+			else:
+				pass
+
+		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
+	else:
+		streamingLink = results[0]
+		streamingName = sourcePart + "[COLOR yellow]: VIDWATCH[/COLOR]"
+		addDir('', '', streamingLink, streamingName, '', '')
+
+
+
+##########################################################################################################################################################
+# LATEST FUNCTIONS AS OF 08/19/2018
+# PULLS LINES OF HTML & PARSES EACH INSTEAD OF ITERATING OVER ENTIRE HTML CODE FOR EACH LINE
+##########################################################################################################################################################
+
+def fetch_show_names(url):
+	r = requests.get(url)
+	showNames = []
+	linksArray = []
+	for line in r.text.splitlines():
+		if "<h2 class=\"forumtitle\">" in line:
+			line = line.strip()
+			line = line.replace("<h2 class=\"forumtitle\"><a href=\"", "").replace("</a></h2>", "").replace("<b><font color=\"blue\">", "").replace("</font></b>","").replace("&amp;", "&")
+			showLink = line.split("\">")[0]
+			linksArray.append(showLink)
+			line = line.split("\">")[1]
+			showNames.append(line)
+		else:
+			pass
+	del showNames[-1]
+	outputArray = zip(showNames, linksArray)
+	return outputArray
+
+
+def fetch_show_episodes():
+	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
+	base_url = main_url.replace("plugin://plugin.video.DTVShows/?linkName=","").replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=").split("?s=")[0]
+	showName = base_url.split("=SNAME=")[1].replace("+", " ")
+	base_url = base_url.split("=SNAME=")[0]
+
+	r = requests.get(base_url)
+	episodeNames = []
+	linksArray = []
+	for line in r.text.splitlines():
+		if "<a class=\"title\"" in line:
+			line = line.strip()
+			line = line.replace("<a class=\"title\" href=\"", "")
+			dateLink = line.split("?s=")[0]
+			print "LINK:" + dateLink
+			linksArray.append(dateLink)
+			dateTitle = line.split("?s=")[1].split("\">")[1].replace("</a>", "")
+			#PARSE TITLES TO REMOVE EXCESS VERBAGE
+			dateTitle = dateTitle.replace("Watch Online", "").replace("Watch Onlin","").replace(",","").replace(showName + " ", "").encode('ascii', 'ignore').decode('ascii').replace("by Ary Digital -","")
+			dateTitle = dateTitle.replace("&amp;", "&")
+			#END PARSING & RETURN FINAL CLEANED UP TITLE
+			print "TITLE:" + dateTitle
+			episodeNames.append(dateTitle)
+		else:
+			pass
+
+	parentChannelShowArray = zip(episodeNames, linksArray)
+	zippedArray = parentChannelShowArray
+	for (episodeName, episodeLink) in zippedArray:
+		linksURL = build_url({'linkName': episodeLink + "===" + episodeName})
+		addDir('folder', 'load_ep_links', linksURL, episodeName, '', '')
+
+##########################################################################################################################################################
+# MAIN MENU & MOVIE MENU
+##########################################################################################################################################################
 
 def Main_Menu():
 	## Movies ##
@@ -211,10 +559,6 @@ def Main_Menu():
 		channel_icon = 		item[2]
 		channel_fanart = 	item[3]
 		addDir('folder', 'load_channels', channel_name, channel_name, channel_icon, channel_fanart)
-
-## Finish Online Data ##
-
-## MOVIE Definitions ##
 
 def movie_menu():
 	movieListURL = "http://www.desirulez.me/forums/20-Latest-Exclusive-Movie-HQ"
@@ -241,6 +585,68 @@ def movie_menu():
 		# showURL = "http://www.desirulez.me/" + showLink
 		# showURL = build_url({'linkName': showURL})
 		# addDir('folder', 'load_episodes', showURL, show_name, '', '')
+
+##########################################################################################################################################################
+# LOAD SHOWS ONCE CHANNEL IS SELECTED 
+##########################################################################################################################################################
+
+def load_shows():
+	base_url = sys.argv[2]
+	base_url = base_url.split('load_channels')[1].split('&', 2)
+	base_url = base_url[1].replace('name=', '').replace('%20', '')
+	channelName = base_url
+	print base_url
+	if base_url == 'StarPlus': fetchUrl = 'http://www.desirulez.me/forums/42-Star-Plus'
+	elif base_url == 'AndTV': fetchUrl = 'http://www.desirulez.me/forums/3138-Tv'
+	elif base_url == 'ZeeTV': fetchUrl = 'http://www.desirulez.me/forums/73-Zee-Tv'
+	elif base_url == 'SonyTV': fetchUrl = 'http://www.desirulez.me/forums/63-Sony-Tv'
+	elif base_url == 'StarBharat': fetchUrl = 'http://www.desirulez.me/forums/4856-Star-Bharat'
+	elif base_url == 'ColorsTV': fetchUrl = 'http://www.desirulez.me/forums/176-Colors-Channel'
+	elif base_url == 'SabTV': fetchUrl = 'http://www.desirulez.me/forums/254-Sab-TV'
+	elif base_url == 'StarJalsha': fetchUrl = 'http://www.desirulez.me/forums/667-Star-Jalsha'
+	elif base_url == 'SaharaOne': fetchUrl = 'http://www.desirulez.me/forums/134-Sahara-One'
+	elif base_url == 'SonyPal': fetchUrl = 'http://www.desirulez.me/forums/2757-Sony-Pal'
+	elif base_url == 'StarPravah': fetchUrl = 'http://www.desirulez.me/forums/1138-Star-Pravah'
+	elif base_url == 'ZindagiTV': fetchUrl = 'http://www.desirulez.me/forums/2679-Zindagi-Tv'
+	elif base_url == 'MTV': fetchUrl = 'http://www.desirulez.me/forums/339-MTV-IndiaPakistan'
+	elif base_url == 'BindassTV': fetchUrl = 'http://www.desirulez.me/forums/504-Bindass-TV'
+	elif base_url == 'ChannelV': fetchUrl = 'http://www.desirulez.me/forums/633-Channel-V'
+	elif base_url == 'ARYDigital': fetchUrl = 'http://www.desirulez.me/forums/384-ARY-Digital'
+	elif base_url == 'ColorsMarathi': fetchUrl = 'http://www.desirulez.me/forums/2369-Colors-Marathi'
+	elif base_url == 'GEOTV': fetchUrl = 'http://www.desirulez.me/forums/413-Geo-Tv'
+	elif base_url == 'HUMTV': fetchUrl = 'http://www.desirulez.me/forums/448-Hum-TV'
+	elif base_url == 'MaaTV': fetchUrl = 'http://www.desirulez.me/forums/3165-Star-Maa'
+	elif base_url == 'StarVijay': fetchUrl = 'http://www.desirulez.me/forums/1609-Star-Vijay'
+	elif base_url == 'WWE': fetchUrl = 'http://www.desirulez.me/forums/1609-Star-Vijay'
+	elif base_url == 'ZeeBangla': fetchUrl = 'http://www.desirulez.me/forums/676-Zee-Bangla'
+	elif base_url == 'ZeeMarathi': fetchUrl = 'http://www.desirulez.me/forums/1299-Zee-Marathi'
+	elif base_url == 'ZingTV': fetchUrl = 'http://www.desirulez.me/forums/2624-Zing-Tv'
+	else: fetchUrl = 'NONE'
+	# Get Shows Code 
+	# 8/19/2018
+	parentChannelShowArray = fetch_show_names(fetchUrl)
+	zippedArray = parentChannelShowArray
+	for (showName, showLink) in zippedArray:
+		showURL = showLink + "=SNAME=" + showName
+		showURL = build_url({'linkName': showURL})
+		addDir('folder', 'load_episodes', showURL, showName, '', '')
+	# r = requests.get(fetchUrl)
+	# data = r.text
+	# soup = BeautifulSoup(data)
+	# videoTitle = soup.findAll('h2', {'class':'forumtitle'})
+	# for row in videoTitle:
+	# 	showLink = row.find('a')
+	# 	finalShowLink = showLink.get('href')
+	# 	finalShowLink = finalShowLink.replace("forums/", "").replace("bfont-colorred", "").replace("fontb", "")
+	# 	# show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
+	# 	# show_name = finalShowLink.split("?s=", 1)[0]
+	# 	show_name = row.text.encode('ascii', 'ignore').decode('ascii')
+	# 	showLink = showLink.get('href')
+		# showURL = showLink + "=SNAME=" + show_name
+		# showURL = build_url({'linkName': showURL})
+		# addDir('folder', 'load_episodes', showURL, show_name, '', '')
+
+############################################################################################################################################################
 
 def load_movie_links():
 	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
@@ -286,62 +692,6 @@ def load_movie_links():
 
 
 ## End MOVIE Definitions ##
-
-## Channel Definitions ##
-
-def load_shows():
-	base_url = sys.argv[2]
-	base_url = base_url.split('load_channels')[1].split('&', 2)
-	base_url = base_url[1].replace('name=', '').replace('%20', '')
-	channelName = base_url
-	print base_url
-	if base_url == 'StarPlus': fetchUrl = 'http://www.desirulez.me/forums/42-Star-Plus'
-	elif base_url == 'AndTV': fetchUrl = 'http://www.desirulez.me/forums/3138-Tv'
-	elif base_url == 'ZeeTV': fetchUrl = 'http://www.desirulez.me/forums/73-Zee-Tv'
-	elif base_url == 'SonyTV': fetchUrl = 'http://www.desirulez.me/forums/63-Sony-Tv'
-	elif base_url == 'LifeOK': fetchUrl = 'http://www.desirulez.me/forums/1375-Life-OK'
-	elif base_url == 'StarBharat': fetchUrl = 'http://www.desirulez.me/forums/4856-Star-Bharat'
-	elif base_url == 'ColorsTV': fetchUrl = 'http://www.desirulez.me/forums/176-Colors-Channel'
-	elif base_url == 'SabTV': fetchUrl = 'http://www.desirulez.me/forums/254-Sab-TV'
-	elif base_url == 'StarJalsha': fetchUrl = 'http://www.desirulez.me/forums/667-Star-Jalsha'
-	elif base_url == 'SaharaOne': fetchUrl = 'http://www.desirulez.me/forums/134-Sahara-One'
-	elif base_url == 'SonyPal': fetchUrl = 'http://www.desirulez.me/forums/2757-Sony-Pal'
-	elif base_url == 'StarPravah': fetchUrl = 'http://www.desirulez.me/forums/1138-Star-Pravah'
-	elif base_url == 'ZindagiTV': fetchUrl = 'http://www.desirulez.me/forums/2679-Zindagi-Tv'
-	elif base_url == 'MTV': fetchUrl = 'http://www.desirulez.me/forums/339-MTV-IndiaPakistan'
-	elif base_url == 'BindassTV': fetchUrl = 'http://www.desirulez.me/forums/504-Bindass-TV'
-	elif base_url == 'ChannelV': fetchUrl = 'http://www.desirulez.me/forums/633-Channel-V'
-	elif base_url == 'ARYDigital': fetchUrl = 'http://www.desirulez.me/forums/384-ARY-Digital'
-	elif base_url == 'ColorsMarathi': fetchUrl = 'http://www.desirulez.me/forums/2369-Colors-Marathi'
-	elif base_url == 'GEOTV': fetchUrl = 'http://www.desirulez.me/forums/413-Geo-Tv'
-	elif base_url == 'HUMTV': fetchUrl = 'http://www.desirulez.me/forums/448-Hum-TV'
-	elif base_url == 'MaaTV': fetchUrl = 'http://www.desirulez.me/forums/3165-Star-Maa'
-	elif base_url == 'StarVijay': fetchUrl = 'http://www.desirulez.me/forums/1609-Star-Vijay'
-	elif base_url == 'WWE': fetchUrl = 'http://www.desirulez.me/forums/1609-Star-Vijay'
-	elif base_url == 'ZeeBangla': fetchUrl = 'http://www.desirulez.me/forums/676-Zee-Bangla'
-	elif base_url == 'ZeeMarathi': fetchUrl = 'http://www.desirulez.me/forums/1299-Zee-Marathi'
-	elif base_url == 'ZingTV': fetchUrl = 'http://www.desirulez.me/forums/2624-Zing-Tv'
-	else: fetchUrl = 'NONE'
-	# Get Shows Code
-	r = requests.get(fetchUrl)
-	data = r.text
-	soup = BeautifulSoup(data)
-	videoTitle = soup.findAll('h2', {'class':'forumtitle'})
-	for row in videoTitle:
-		showLink = row.find('a')
-		finalShowLink = showLink.get('href')
-		finalShowLink = finalShowLink.replace("forums/", "").replace("bfont-colorred", "").replace("fontb", "")
-		# show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
-		# show_name = finalShowLink.split("?s=", 1)[0]
-		show_name = row.text.encode('ascii', 'ignore').decode('ascii')
-		showLink = showLink.get('href')
-		showURL = showLink + "=SNAME=" + show_name
-		showURL = build_url({'linkName': showURL})
-		addDir('folder', 'load_episodes', showURL, show_name, '', '')
-
-## END CHANNEL DEFINITIONS ##
-
-## Episode Definitions ##
 
 def load_episodes():
 	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
@@ -430,21 +780,21 @@ def load_ep_links():
 
 				# elif "watchvideo.php" in linkUrl:
 				# 	print "### WATCHVIDEO ### " + linkUrl
-				# 	linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-				# 	linkUrl = linkUrl + "===WATCHVIDEO"
-				# 	resultingLink = resolve_link(linkUrl)
-				# 	if resultingLink == 'None':
-				# 		print "None"
-				# 	elif resultingLink == 'No Links Found':
-				# 		print "None"
-				# 	else:
-				# 		addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					# linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+					# linkUrl = linkUrl + "===WATCHVIDEO"
+					# resultingLink = resolve_link(linkUrl)
+					# if resultingLink == 'None':
+					# 	print "None"
+					# elif resultingLink == 'No Links Found':
+					# 	print "None"
+					# else:
+					# 	addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
 
 				elif len(linkID) == 12 and "?si=" in linkUrl or "?sim=" in linkUrl:
 					print linkUrl
 					iframeLink = determine_iframe_source(linkUrl)
-					# print iframeLink
+					print iframeLink
 					if "watchvideo" in iframeLink:
 						print "** WATCHVIDEO **"
 						regex = r"sources: \".*.mp4\""
@@ -452,7 +802,7 @@ def load_ep_links():
 						results = []
 						for line in r.text.splitlines():
 							if text_to_find_parsing in line:
-								# print line
+								print line
 								line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
 								# line = rtrim(line, ',')
 								line = line[0].replace("{file:", "").replace("\"","")
@@ -463,27 +813,27 @@ def load_ep_links():
 								# print len(results)
 							else:
 								pass
-					elif "vidwatch" in iframeLink:
-						print "** VIDWATCH **"
-						regex = r"sources: \".*.mp4\""
-						r = requests.get(iframeLink)
-						results = []
-						for line in r.text.splitlines():
-							if text_to_find_parsing in line:
-								# print line
-								line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-								# line = rtrim(line, ',')
-								line = line[0].replace("{file:", "").replace("\"","")
-								results.append(line)
-								watchvideoLink = results[0]
-								linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
-								addDir('', '', watchvideoLink, linkName, '', '')
-								# print len(results)
-							else:
-								pass
+					# if "vidwatch" in iframeLink:
+					# 	print "** VIDWATCH **"
+					# 	regex = r"sources: \".*.mp4\""
+					# 	r = requests.get(iframeLink)
+					# 	results = []
+					# 	for line in r.text.splitlines():
+					# 		if text_to_find_parsing in line:
+					# 			print line
+					# 			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+					# 			# line = rtrim(line, ',')
+					# 			line = line[0].replace("{file:", "").replace("\"","")
+					# 			results.append(line)
+					# 			watchvideoLink = results[0]
+					# 			linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
+					# 			addDir('', '', watchvideoLink, linkName, '', '')
+					# 			# print len(results)
+					# 		else:
+					# 			pass
 
 					elif "speedwatch" in iframeLink:
-						print "** VIDWATCH **"
+						print "** SPEEDWATCH **"
 						regex = r"sources: \".*.mp4\""
 						r = requests.get(iframeLink)
 						results = []
@@ -495,11 +845,12 @@ def load_ep_links():
 								line = line[0].replace("{file:", "").replace("\"","")
 								results.append(line)
 								watchvideoLink = results[0]
+								print watchvideoLink
 								linkName = linkName + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
 								addDir('', '', watchvideoLink, linkName, '', '')
 								# print len(results)
 							else:
-								pass
+								print resolve_packed_function(iframeLink)
 					else:
 						pass
 					# print linkID
@@ -612,6 +963,75 @@ def resolve_unfiltered(linkID):
 	else:
 		print "############ FILE FOUND"
 		return resolve_watchvideo(linkID)
+
+
+def resolve_packed_function(url):
+	# url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
+	print url
+	try:
+		# print "################ " + url
+		r = requests.get(url)
+		data = r.text
+		soup = BeautifulSoup(data)
+
+		# parseWatchVideo(data)
+
+		text_to_find = 'm3u8|master'
+
+		soup = BeautifulSoup(data)
+
+		pageScripts = soup.findAll('script')
+
+		resultingScript = []
+
+		for script in pageScripts:
+			searchableString = str(script)
+			if "m3u8|master" in searchableString:
+				print "SUCCESS!! ####"
+				resultingScript.append(searchableString)
+			else:
+				print "--------------"
+
+		paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(resultingScript[0])
+
+		if len(paramSet) > 0:
+			video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+			# print video_info_link
+			img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+			value = img_data[0]
+			# print value
+			value = value.split(",")
+			finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+			# print "########### " + finalValue
+			return finalValue
+		else:
+			print "None Found Here Buddy"
+
+
+		# for script in pageScripts:
+		# 	print script
+		# 	print "---------"
+
+		# if (len(pageScripts) >= 1):
+		# 	for script in [pageScripts][12]:
+		# 		paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
+		# 		if len(paramSet) > 0:
+		# 			video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+		# 			# print video_info_link
+		# 			img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+		# 			value = img_data[0]
+		# 			# print value
+		# 			value = value.split(",")
+		# 			finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+		# 			# print "########### " + finalValue
+		# 			return finalValue
+		# 		else:
+		# 			print 'Nooone'
+		# else:
+		# 	print "No Links Found"
+	except:
+		print "An Error Occurred"
+
 
 def resolve_watchvideo(linkID):
 	url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
@@ -783,8 +1203,8 @@ if len(args) > 0:
 
 if mode == None 			:		Main_Menu()
 elif mode == 'load_channels': 		load_shows()
-elif mode == 'load_episodes': 		load_episodes()
-elif mode == 'load_ep_links': 		load_ep_links()
+elif mode == 'load_episodes': 		fetch_show_episodes()
+elif mode == 'load_ep_links': 		load_episode_links()
 elif mode == 'resolve_link':		resolve_link()
 elif mode == 'load_movies':			movie_menu()
 elif mode == 'load_movie_links':	load_movie_links()
