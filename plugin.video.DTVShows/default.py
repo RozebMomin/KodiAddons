@@ -259,6 +259,9 @@ def load_episode_links():
 			fetch_obvious_vidoza(arrayValue)
 		elif "speed" in arrayValue:
 			fetch_obvious_speedwatch(arrayValue)
+		elif "http://www.desirulez.net/register.php" in arrayValue:
+			print "Bypassing Registration Link"
+			pass
 		else:
 			## PARSING HIDDEN LINKS
 			## MUST DETERMINE ID & PARSE FURTHER
