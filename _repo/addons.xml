@@ -877,7 +877,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
        provider-name="Leonard Richardson (leonardr@segfault.org)">
   <requires>
     <import addon="xbmc.python"
-             version="2.25.0"/>
+             version="2.1.0"/>
   </requires>
   <extension point="xbmc.python.module"
              library="lib" />
