@@ -5,8 +5,10 @@ import time
 import random
 import re
 import urllib
+import urlparse
 import string
 import xbmc
+import json
 from string import lower
 
 from entities.CList import CList
@@ -21,10 +23,11 @@ import customConversions as cc
 from utils import decryptionUtils as crypt
 from utils import datetimeUtils as dt
 from utils import rowbalance as rb
+#from utils import wasteg as getsaw
 
 from utils.fileUtils import findInSubdirectory, getFileContent, getFileExtension
 from utils.scrapingUtils import findVideoFrameLink, findContentRefreshLink, findRTMP, findJS, findPHP, getHostName, findEmbedPHPLink
-from common import getHTML
+from common import getHTML, getLocation
 
 
 class ParsingResult(object):
@@ -145,7 +148,6 @@ class Parser(object):
             msg += ' with Parameter(s): '
             msg += ",".join(params)
         common.log(msg)
-
         outputList = self.__parseCfg(filename, data, lItem)
 
         return outputList
@@ -157,12 +159,21 @@ class Parser(object):
     def __loadRemote(self, inputList, lItem):
 
         try:
+            
+            form_data = None
+            postData = ''
+            if re.compile(r'\|[\w&=]+').findall(lItem['url']): #jairox: added for post in menu cfgs
+                parts = lItem['url'].split('|') 
+                url = parts[0]
+                lItem['url'] = url
+                if len(parts) > 1:
+                    postData = parts[1]
+                    form_data = urlparse.parse_qsl(postData)
             inputList.curr_url = lItem['url']
-
             count = 0
             i = 1
             maxits = 2      # 1 optimistic + 1 demystified
-            ignoreCache = False
+            ignoreCache = False if postData == '' else True
             demystify = False
             back = ''
             startUrl = inputList.curr_url
@@ -183,11 +194,13 @@ class Parser(object):
                     referer = ''
                     if lItem['referer']:
                         referer = lItem['referer']
-                    data = common.getHTML(inputList.curr_url, None, referer, False, False, ignoreCache, demystify)
+                    data = common.getHTML(inputList.curr_url, form_data, referer, False, False, ignoreCache, demystify)
                     if data == '':
                         return False
 
                     msg = 'Remote URL ' + inputList.curr_url + ' opened'
+                    #common.log("JairoXparserPY: " + data)
+                    
                     if demystify:
                         msg += ' (demystified)'
                     common.log(msg)
@@ -205,6 +218,11 @@ class Parser(object):
                     items = self.__parseHtml(inputList.curr_url, data, inputList.rules, inputList.skill, inputList.cfg, lItem)
                     count = len(items)
                     common.log('    -> ' + str(count) + ' item(s) found')
+                    # for item in items:
+                    #     common.log("JairoXparserPY: " + str(items[0]))
+                    
+                    
+                    
 
                 # find rtmp stream
                 #common.log('Find rtmp stream')
@@ -258,6 +276,7 @@ class Parser(object):
                     if startUrl == red:
                         common.log('    -> No redirect found')
                     else:
+                        #red = getLocation(red) #for tinyurl etc redirects
                         common.log('    -> Redirect: ' + red)
                         if back == red:
                             break
@@ -312,7 +331,8 @@ class Parser(object):
             return findVideoFrameLink(page, data)
         elif findEmbedPHPLink(data):
             return findEmbedPHPLink(data)
-            
+
+                  
         if not demystify:
             return self.__findRedirect(page, referer, True)
 
@@ -437,14 +457,19 @@ class Parser(object):
 
     def __parseHtml(self, url, data, rules, skills, definedIn, lItem):          
 
-        #common.log('_parseHtml called' + url)
+        common.log('_parseHtml called: ')
         items = []
 
-        for item_rule in rules:
-            #common.log('rule: ' + item_rule.infos)
-      
+        for item_rule in rules:            
+            
+            #precheck attribute is used to filter correct rule from _streams.cfg
             if not hasattr(item_rule, 'precheck') or (item_rule.precheck in data):
-      
+                #common.log('Parser rule: ' + str(item_rule.infos))
+                try:
+                    common.log('Parser rule precheck: %s'%str(item_rule.precheck))
+                except:
+                    pass
+
                 revid = re.compile(item_rule.infos, re.IGNORECASE + re.DOTALL + re.MULTILINE + re.UNICODE)
                 for reinfos in revid.findall(data):
                     tmp = CListItem()
@@ -462,7 +487,7 @@ class Parser(object):
                     else:
                         tmp[item_rule.order] = reinfos
 
-                    for info in item_rule.info_list:
+                    for info in item_rule.info_list:                                             
                         info_value = tmp[info.name]
                         if info_value:
                             if info.build.find('%s') != -1:
@@ -480,9 +505,11 @@ class Parser(object):
                                         src = src + t.strip('\'')
                                     else:
                                         src = src + (tmp[t] or '')
+                                        
                             elif info.src.__contains__('||'):
                                 variables = info.src.split('||')
                                 src = firstNonEmpty(tmp, variables)
+                                
                             else:
                                 src = tmp[info.src]
 
@@ -516,13 +543,14 @@ class Parser(object):
                         tmp['videoTitle'] = tmp['title']
 
                     tmp['definedIn'] = definedIn
+                    #common.log('JairoXYZParserPy: ' + str(tmp))
                     items.append(tmp)
 
         return items
 
 
     def __parseCommands(self, item, src, convCommands):
-        common.log('_parseCommands called')
+        common.log('_parseCommands called ')
         # helping function
         def parseCommand(txt):
             command = {"command": txt, "params": ""}
@@ -557,7 +585,10 @@ class Parser(object):
                     continue
 
             elif command == 'unicode_escape':
-                src = src.decode('unicode-escape')
+                try:
+                    src = src.decode('unicode-escape')
+                except:
+                    src = src
 
             elif command == 'replaceFromDict':
                 dictName = str(params.strip('\''))
@@ -604,13 +635,19 @@ class Parser(object):
 
             elif command == 'decodeBase64':
                 src = cc.decodeBase64(src)
+
+            elif command == 'decodeBase64Special':
+                src = cc.decodeBase64Special(params, src)
             
             elif command == 'encodeBase64':
                 src = cc.encodeBase64(src)
 
             elif command == 'decodeRawUnicode':
                 src = cc.decodeRawUnicode(src)
-                
+
+            elif command == 'decodeHex':
+                src = cc.hex2ascii(src)
+                                
             elif command == 'resolve':
                 src = cc.resolve(src)
             
@@ -621,12 +658,18 @@ class Parser(object):
                 if 'stkey' in item.infos:
                     src = src.replace(item.infos['stkey'],'')
                 src = cc.decodeXppod_hls(src)
+            
+            elif command == 'decodeBCast':
+                src = cc.bcast64(src)
 
             elif command == 'replace':
-                src = cc.replace(params, src)
+                src = cc.replace(item, params, src)
 
             elif command == 'replaceRegex':
-                src = cc.replaceRegex(params, src)
+                src = cc.replaceRegex(item, params, src)
+            
+            elif command == 'subRegex':
+                src = cc.subRegex(item, params, src)
 
             elif command == 'ifEmpty':
                 src = cc.ifEmpty(item, params, src)
@@ -648,16 +691,22 @@ class Parser(object):
                 
             elif command == 'cjsAesDec':
                 src = crypt.cjsAesDec(src,item.infos[params])
+
+            elif command == 'jsCryptoAESDec':
+                src = crypt.jsCryptoAESDec(src, item.infos[params])
+            
+            elif command == 'decryptMarioCS':
+                src = crypt.decryptMarioCS(src, item.infos[params])
                 
             elif command == 'm3u8AesDec':
                 src = crypt.m3u8AesDec(src,item.infos[params])
-
+            
             elif command == 'drenchDec':
                 src = crypt.drenchDec(src,item.infos[params])
                 
             elif command == 'onetv':
                 src = crypt.onetv(src)
-
+            
             elif command == 'getCookies':
                 src = cc.getCookies(params, src)
 
@@ -669,9 +718,17 @@ class Parser(object):
                 
             elif command == 'rowbalance':
                 src = rb.get(src)
-                
+
             elif command == 'simpleToken':
                 src = cc.simpleToken(src)
+
+            #elif command == 'wasteg':
+            #    paramArr = params.split(',')
+            #    ref = str(paramArr[1])
+            #    src = getsaw.compose(ref, src)
+
+            elif command == 'saurusDec':
+                src = crypt.decryptSaurus(src)
 
             elif command == 'urlMerge':
                 src = cc.urlMerge(params, src)
@@ -700,21 +757,41 @@ class Parser(object):
                 maximum = int(paramArr[1])
                 src = str(random.randrange(minimum,maximum))
 
+            elif command == 'randomfloat':
+                paramArr = params.split(',')
+                minimum = float(paramArr[0])
+                maximum = float(paramArr[1])
+                src = str(random.uniform(minimum,maximum))
+
             elif command == 'debug':
                 common.log('Debug from cfg file: ' + src)
                 
-            elif command == 'startLivestreamerProxy':
-                libPath = os.path.join(common.Paths.rootDir, 'lib')
-                serverPath = os.path.join(libPath, 'livestreamerXBMCLocalProxy.py')
-                try:
-                    import requests
-                    requests.get('http://127.0.0.1:19000/version')
-                    proxyIsRunning = True
-                except:
-                    proxyIsRunning = False
-                if not proxyIsRunning:
-                    xbmc.executebuiltin('RunScript(' + serverPath + ')')
-                
+            # elif command == 'startLivestreamerProxy':                  
+            #     libPath = os.path.join(common.Paths.rootDir, 'lib')
+            #     serverPath = os.path.join(libPath, 'livestreamerXBMCLocalProxy.py')
+            #     try:
+            #         import requests
+            #         requests.get('http://127.0.0.1:19000/version')
+            #         proxyIsRunning = True
+            #     except:
+            #         proxyIsRunning = False
+            #     if not proxyIsRunning:
+            #         xbmc.executebuiltin('RunScript(' + serverPath + ')')
+
+            # elif command == 'startLivestreamerProxy':
+            #     libPath = os.path.join(common.Paths.rootDir, 'service')
+            #     serverPath = os.path.join(libPath, 'livestreamerXBMCLocalProxy.py')
+            #     try:
+            #         import requests
+            #         requests.get('http://127.0.0.1:19000/version')
+            #         proxyIsRunning = True
+            #     except:
+            #         proxyIsRunning = False
+            #     if not proxyIsRunning:
+            #         xbmc.executebuiltin('RunScript(' + serverPath + ')')
+                    #xbmc.sleep(500)                
+            #     common.log('Debug from cfg file: ' + requests.get('http://127.0.0.1:19001/version').text)      
+
             elif command == 'divide':
                 paramArr = params.split(',')
                 a = paramArr[0].strip().strip("'").replace('%s', src)
@@ -744,6 +821,7 @@ def resolveVariable(varStr, item):
 
 
 def firstNonEmpty(tmp, variables):
+    
     for v in variables:
         vClean = v.strip()
         if vClean.find("'") != -1:
@@ -751,7 +829,7 @@ def firstNonEmpty(tmp, variables):
         else:
             vClean = tmp.getInfo(vClean)
 
-        if vClean != '':
+        if vClean is not None and vClean != '':
             return vClean
 
     return ''

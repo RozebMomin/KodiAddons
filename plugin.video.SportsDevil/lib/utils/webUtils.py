@@ -5,10 +5,14 @@ import re
 import urllib
 import urlparse
 import requests
-import cookielib
+
 import socket
+import time
+from cookielib import LWPCookieJar
 from HTMLParser import HTMLParser
 from fileUtils import fileExists, setFileContent, getFileContent
+
+import lib.common
 
 #------------------------------------------------------------------------------
 socket.setdefaulttimeout(30)
@@ -21,6 +25,8 @@ def getAddrInfoWrapper(host, port, family=0, socktype=0, proto=0, flags=0):
 
 # replace the original socket.getaddrinfo by our version
 socket.getaddrinfo = getAddrInfoWrapper
+
+
 #------------------------------------------------------------------------------
 
 '''
@@ -32,29 +38,33 @@ class BaseRequest(object):
     def __init__(self, cookie_file=None):
         self.cookie_file = cookie_file
         self.s = requests.Session()
+        self.s.cookies = LWPCookieJar(self.cookie_file)
         if fileExists(self.cookie_file):
-            self.s.cookies = self.load_cookies_from_lwp(self.cookie_file)
-        self.s.headers.update({'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.100 Safari/537.36'})
-        self.s.headers.update({'Accept-Language' : 'en-US,en;q=0.5'})
+            self.s.cookies.load(ignore_discard=True)
+        self.s.headers.update({'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'})
+        self.s.headers.update({'Accept-Language' : 'en-US,en;q=0.8,de;q=0.6,es;q=0.4'})
+        self.s.headers.update({'Upgrade-Insecure-Requests': '1'})
+        
+
         self.url = ''
     
-    def save_cookies_lwp(self, cookiejar, filename):
-        lwp_cookiejar = cookielib.LWPCookieJar()
-        for c in cookiejar:
-            args = dict(vars(c).items())
-            args['rest'] = args['_rest']
-            del args['_rest']
-            c = cookielib.Cookie(**args)
-            lwp_cookiejar.set_cookie(c)
-        lwp_cookiejar.save(filename, ignore_discard=True)
+    # def save_cookies_lwp(self, cookiejar, filename):
+    #     lwp_cookiejar = cookielib.LWPCookieJar()
+    #     for c in cookiejar:
+    #         args = dict(vars(c).items())
+    #         args['rest'] = args['_rest']
+    #         del args['_rest']
+    #         c = cookielib.Cookie(**args)
+    #         lwp_cookiejar.set_cookie(c)
+    #     lwp_cookiejar.save(filename, ignore_discard=True)
 
-    def load_cookies_from_lwp(self, filename):
-        lwp_cookiejar = cookielib.LWPCookieJar()
-        try:
-            lwp_cookiejar.load(filename, ignore_discard=True)
-        except:
-            pass
-        return lwp_cookiejar
+    # def load_cookies_from_lwp(self, filename):
+    #     lwp_cookiejar = cookielib.LWPCookieJar()
+    #     try:
+    #         lwp_cookiejar.load(filename, ignore_discard=True)
+    #     except:
+    #         pass
+    #     return lwp_cookiejar
     
     def fixurl(self, url):
         #url is unicode (quoted or unquoted)
@@ -71,6 +81,15 @@ class BaseRequest(object):
             url = parsed_link.geturl().encode('ascii')
         #url is str (quoted)
         return url
+    
+    #302 response redirect location
+    def getLocation(self, url):
+        r = self.s.get(url, allow_redirects=False, timeout=20)
+        if 'Location' in r.headers:
+             rloc = r.headers['Location']
+        else:
+            rloc = url        
+        return rloc
 
     def getSource(self, url, form_data, referer, xml=False, mobile=False):
         url = self.fixurl(url)
@@ -78,22 +97,19 @@ class BaseRequest(object):
         if not referer:
             referer = url
         else:
-            referer = self.fixurl(referer.replace('wizhdsports.be','wizhdsports.to').replace('ibrod.tv','www.ibrod.tv').replace('livetv123.net','livetv.sx'))
+            referer = self.fixurl(referer.replace('wizhdsports.be','wizhdsports.is').replace('ibrod.tv','www.ibrod.tv').replace('livetv123.net','livetv.sx'))
         
         headers = {'Referer': referer}
+        
+        if 'liveonlinetv247' in urlparse.urlsplit(url).netloc: mobile = True
+
         if mobile:
-            self.s.headers.update({'User-Agent' : 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13E238 Safari/601.1'})
+            self.s.headers.update({'User-Agent' : 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1'})
             
         if xml:
             headers['X-Requested-With'] = 'XMLHttpRequest'
             
-        if 'dinozap.info' in urlparse.urlsplit(url).netloc:
-            headers['X-Forwarded-For'] = '178.162.222.111'
-        if 'playerhd2.pw' in urlparse.urlsplit(url).netloc:
-            headers['X-Forwarded-For'] = '178.162.222.121'
-        if 'playerapp1.pw' in urlparse.urlsplit(url).netloc:
-            headers['X-Forwarded-For'] = '178.162.222.122'
-        
+              
         if 'cndhlsstream.pw' in urlparse.urlsplit(url).netloc:
             del self.s.headers['Accept-Encoding']
         if 'skstream.tv' in urlparse.urlsplit(url).netloc:
@@ -102,16 +118,77 @@ class BaseRequest(object):
             del self.s.headers['Accept-Encoding']
         if 'bcast.site' in urlparse.urlsplit(url).netloc:
             del self.s.headers['Accept-Encoding']
+        if 'bcast.pw' in urlparse.urlsplit(url).netloc:
+            del self.s.headers['Accept-Encoding']
+        if 'live247.online' in urlparse.urlsplit(url).netloc:
+            del self.s.headers['Accept-Encoding']
+        if 'indexstream.tv' in urlparse.urlsplit(url).netloc:
+            del self.s.headers['Accept-Encoding']
         
+        if 'streamlive.to' in urlparse.urlsplit(url).netloc:
+            self.s.verify = False
+
+        if 'vipleague' in url or 'strikeout' in url or 'homerun' or 'nbastream' in url:
+            self.s.verify = False
+        
+        if 'bypassed' in url or 'livecamtv' in url:
+            self.s.verify = False
+
+        if 'firstonetv' in url: 
+            self.s.verify = False
+
+        if 'vaughnlive.tv' in url:
+            self.s.verify = False
+        
+        if 'ustreamix' in url:
+            self.s.verify = False
+
+        
+        #if 'strikeout' in urlparse.urlsplit(url).netloc:
+            #self.s.headers.update({'Upgrade-Insecure-Requests': '1'})
+            #self.s.headers.update({'Host': 'zoomtv.me'})
+            # self.s.headers.update({'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'})
+            # self.s.headers.update({'Accept-Language' : 'en-US,en;q=0.8,de;q=0.6,es;q=0.4'})
+            #self.s.headers.update({'Accept-Encoding': 'gzip, deflate'})
+            #self.s.headers.update({'Connection' : 'keep-alive'})
+            # self.s.headers.update({'Origin': 'http://www.strikeout.co'})
+            # self.s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
+            
+        
+
         if form_data:
             #zo**tv
-            if 'uagent' in form_data[0]:
-                form_data[0] = ('uagent',self.s.headers['User-Agent'])
+            #if 'uagent' in form_data[0]:
+               #form_data[0] = ('uagent',urllib.quote(self.s.headers['User-Agent']))
+                #if len(form_data) > 4 and 'Cookie' in form_data[4]:
+                    #headers['Cookie'] = form_data[4][1]
+                    #del form_data[4]
+                   
+                #headers['Content-Type'] = 'application/x-www-form-urlencoded'
+                #headers['User-Agent'] = self.s.headers['User-Agent']
+                #lib.common.log("JairoX10:" + form_data[0][1])
+            if 'firstonetv' in url and len(form_data) > 0:    
+                # tmp_data = dict(form_data)
+                # cookies = str(tmp_data['cookie'])
+                # cookies = cookies.replace('___', ';')
+                cookies = requests.utils.dict_from_cookiejar(self.s.cookies)
+                evercookie = {'evercookie_cache': '', 'evercookie_etag': '', 'evercookie_png': '', 'f1tvuvid': ''}
+                cookies.update(evercookie)
+                cookiestr = "; ".join(["=".join([key, str(val)]) for key, val in cookies.items()])
+                headers['cookie'] = cookiestr
+                # tmp_data.pop('cookie')
+                # form_data = tmp_data.items()
 
             r = self.s.post(url, headers=headers, data=form_data, timeout=20)
+            
         else:
             try:
                 r = self.s.get(url, headers=headers, timeout=20)
+                if r.status_code == 503:
+                    import cfscrape
+                    scraper = cfscrape.create_scraper(sess=self.s)
+                    r = scraper.get(url, headers=headers)
+                    #lib.common.log("JairoWebUtils:    %d"%r.status_code)
             except (requests.exceptions.MissingSchema):
                 return 'pass'
         
@@ -128,33 +205,28 @@ class BaseRequest(object):
             r.encoding = 'windows-1251'
             
         response  = r.text
-        
-        while ('answer this question' in response and 'streamlive.to' in urlparse.urlsplit(url).netloc):
-            import xbmcgui
-            dialog = xbmcgui.Dialog()
-            r = re.compile("Question:\s*([^<]+)<")
-            q_regex = r.findall(response)
-            if q_regex:
-                q_resp = dialog.input(q_regex[0])
-                if q_resp:
-                    form_data = 'captcha={0}'.format(q_resp)
-                    headers['Referer'] = url
-                    headers['Content-Type'] = 'application/x-www-form-urlencoded'
-                    headers['Content-Length'] = str(len(form_data))
-                    r = self.s.post(url, headers=headers, data=form_data, timeout=20)
-                    response  = r.text
-                else:
-                    break
-            else:
-                break
+
+       
+
+        if 'beget=begetok' in response: # av
+            _cookie = requests.cookies.create_cookie('beget','begetok',domain=urlparse.urlsplit(url).netloc,path='/')
+            self.s.cookies.set_cookie(_cookie)
+            r = self.s.get(url, headers=headers, timeout=20)
+            response  = r.text
+
+        if 'fromCharCode,sucuri_cloudproxy_js' in response: # sebn
+            from sucuri import sucuri_decode
+            sucuri_name, sucuri_value = sucuri_decode(response)
+            sucuri_cookie = requests.cookies.create_cookie(sucuri_name,sucuri_value,domain=urlparse.urlsplit(url).netloc,path='/',
+                                                           discard=False,expires=(time.time() + 86400))
+            self.s.cookies.set_cookie(sucuri_cookie)
+            r = self.s.get(url, headers=headers, timeout=20)
+            response  = r.text
         
         if len(response) > 10:
-            if self.cookie_file:
-                self.save_cookies_lwp(self.s.cookies, self.cookie_file)
-        
-        if '"zmbtn"' in response:
-            response = response.replace("""' + '""",'').replace('"("+','').replace("""'+'""",'')
+            self.s.cookies.save(ignore_discard=True)
 
+        self.s.close()
         return HTMLParser().unescape(response)
 
 

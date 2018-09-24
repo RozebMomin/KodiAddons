@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
+import os, json
 
 
 #------------------------------------------------------------------------------
@@ -13,12 +13,20 @@ __icon__ = xbmcaddon.Addon(id='plugin.video.SportsDevil').getAddonInfo('icon')
 translate = __settings__.getLocalizedString
 enable_debug = True
 language = xbmc.getLanguage
+xbmcVersion = float(xbmc.getInfoLabel('System.BuildVersion')[0:4])
 
 def log(msg, level=xbmc.LOGDEBUG):
     plugin = "SportsDevil"
     msg = msg.encode('utf-8')
 
     xbmc.log("[%s] %s" % (plugin, msg.__str__()), level)
+
+def json_rpc_request(payload):
+        """Kodi JSON-RPC request. Return the response in a dictionary."""
+        xbmc.log('jsonrpc payload: {0}'.format(payload))
+        response = xbmc.executeJSONRPC(json.dumps(payload))
+        xbmc.log('jsonrpc response: {0}'.format(response))
+        return json.loads(response)
 
 def getSetting(name):
     return __settings__.getSetting(name)
@@ -87,6 +95,16 @@ def getHTML(url, form_data='', referer='', xml=False, mobile=False, ignoreCache=
     request = CachedWebRequest(cookiePath, Paths.cacheDir)
     return request.getSource(url, form_data, referer, xml, mobile, ignoreCache, demystify)
 
+def getLocation(url): #get 302 response location    
+    if 'tinyurl' in url:
+        cookiePath = xbmc.translatePath(os.path.join(Paths.cacheDir, 'cookies.lwp'))
+        request = CachedWebRequest(cookiePath, Paths.cacheDir)
+        return request.getLocation(url)
+
+    return url
+    
+    
+
 def getCookies(cookieName, domain):
     cookiePath = xbmc.translatePath(os.path.join(Paths.cacheDir, 'cookies.lwp'))
     
@@ -96,7 +114,7 @@ def getCookies(cookieName, domain):
         return lwp_cookiejar
     
     for cookie in load_cookies_from_lwp(cookiePath):
-        if domain in cookie.domain and cookieName in cookie.name:
+        if domain in cookie.domain or cookie.domain in domain and cookieName in cookie.name:
             return cookie.value
 
 def parseWebsite(source, regex, referer='', variables=[]):
@@ -154,3 +172,4 @@ class Paths:
     customModulesRepo = ''
     
     xbmcFavouritesFile = xbmc.translatePath( 'special://profile/favourites.xml' )
+    

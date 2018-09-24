@@ -82,7 +82,7 @@ class CustomReplacements(object):
                     jsName = param1
                     idName = param2
                     varName = param3
-                    regex = "(?:java)?scr(?:'\+')?ipt[^<]+" + idName + "\s*=\s*[\"'](?!http://)([^\"']+)[\"'](?!;\s*width='0')[^<]*</scr(?:'\+')?ipt\s*>[^<]*<scr(?:'\+')?ipt[^<]*src=[\"']" + jsName + "[\"'](?!></script></textarea>)"
+                    regex = "(?:java)?scr(?:'\+')?ipt[^<]+" + idName + "\s*=\s*[\"'](?!http://)([^\"']+)[\"'](?!;\s*width='0')[^<]*</scr(?:'\+')?ipt\s*>[^<]*<scr(?:'\+')?ipt[^<]*src=[\"']" + jsName + "[\"']"
                     lines = "item_infos=" + regex + "\nitem_order=" + varName
                     data = data.replace(idat, lines)
         return data
@@ -102,6 +102,7 @@ class CustomReplacements(object):
                     common.log('Skipped Catcher: ' + catcherName)
                     continue
                 dataImp = fu.getFileContent(pathImp)
+                
                 for i in range(len(ps)):
                     dataImp = dataImp.replace('@PARAM' + str(i+1) + '@',ps.pop(i).strip())
 
