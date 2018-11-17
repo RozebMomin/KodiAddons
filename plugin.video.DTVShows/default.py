@@ -618,6 +618,7 @@ def fetch_obvious_speedwatch(value):
 	
 	#REMOVE MUMBLE SCRIPTS
 	sourceLink = sourceLink.replace("<font size=\"4\"><b>", "")
+	print sourceLink + "********"
 	# if "Part" not in value[1]:
 	# 	sourcePart = "Full Episode"
 	# else:
