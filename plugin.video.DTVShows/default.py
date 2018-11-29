@@ -434,9 +434,9 @@ def fetch_obvious_watchvideo(value):
 	sourcePart = value[1]
 	
 	# if "Part" not in value[1]:
-	# 	sourcePart = "Full Episode"
+	#   sourcePart = "Full Episode"
 	# else:
-	# 	sourcePart = value[1]
+	#   sourcePart = value[1]
 
 	videoID = sourceLink.split("?id=")[1]
 
@@ -495,9 +495,9 @@ def fetch_obvious_vidwatch(value):
 	sourcePart = value[1]
 
 	# if "Part" not in value[1]:
-	# 	sourcePart = "Full Episode"
+	#   sourcePart = "Full Episode"
 	# else:
-	# 	sourcePart = value[1]
+	#   sourcePart = value[1]
 
 	print sourceLink
 
@@ -558,9 +558,9 @@ def fetch_obvious_vidoza(value):
 	sourcePart = value[1]
 
 	# if "Part" not in value[1]:
-	# 	sourcePart = "Full Episode"
+	#   sourcePart = "Full Episode"
 	# else:
-	# 	sourcePart = value[1]
+	#   sourcePart = value[1]
 
 	print sourceLink
 
@@ -620,11 +620,17 @@ def fetch_obvious_speedwatch(value):
 	sourceLink = sourceLink.replace("<font size=\"4\"><b>", "")
 	print sourceLink + "********"
 	# if "Part" not in value[1]:
-	# 	sourcePart = "Full Episode"
+	#   sourcePart = "Full Episode"
 	# else:
-	# 	sourcePart = value[1]
+	#   sourcePart = value[1]
 
-	videoID = sourceLink.split("?url=")[1]
+	# videoID = sourceLink.split("?url=")[1]
+
+	try:
+			videoID = sourceLink.split("?url=")[1]
+	except:
+			videoID = sourceLink.split("?id=")[1]
+
 	embeddedLink = "http://speedwatch.us/embed-"+videoID+"-520x400.html"
 
 	regex = r"sources: \".*.mp4\""
@@ -653,15 +659,24 @@ def fetch_obvious_speedwatch(value):
 				print "Evaluating PACKED function ..."
 				line = line.replace("<script type='text/javascript'>", "")
 				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').$
 				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
 				value = img_data[0]
-				# print value
+				#print value
 				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				try:
+						finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				except:
+						pass
+				try:
+						higherQualityValue = value[0] + value[2] + "/index-v1-a1.m3u8"
+				except:
+						pass
 				print "########### " + finalValue
 				streamingName = sourcePart + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
+				HighStreamingName = sourcePart + "[COLOR red]: SPEEDWATCH HD[/COLOR]"
 				addDir('', '', finalValue, streamingName, '', '')
+				addDir('', '', higherQualityValue, HighStreamingName, '', '')
 				return finalValue
 			else:
 				pass
@@ -746,10 +761,10 @@ def Main_Menu():
 	# xbmc.log('### CONTENTS: %s' % content)
 	matches = re.compile('name="(.+?)"mode="(.+?)"icon="(.+?)"fanart="(.+?)"').findall(content)
 	for item in matches:
-		channel_name = 		item[0]
-		dir_mode = 			item[1]
-		channel_icon = 		item[2]
-		channel_fanart = 	item[3]
+		channel_name =      item[0]
+		dir_mode =          item[1]
+		channel_icon =      item[2]
+		channel_fanart =    item[3]
 		addDir('folder', 'load_channels', channel_name, channel_name, channel_icon, channel_fanart)
 
 def movie_menu():
@@ -827,13 +842,13 @@ def load_shows():
 	# soup = BeautifulSoup(data)
 	# videoTitle = soup.findAll('h2', {'class':'forumtitle'})
 	# for row in videoTitle:
-	# 	showLink = row.find('a')
-	# 	finalShowLink = showLink.get('href')
-	# 	finalShowLink = finalShowLink.replace("forums/", "").replace("bfont-colorred", "").replace("fontb", "")
-	# 	# show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
-	# 	# show_name = finalShowLink.split("?s=", 1)[0]
-	# 	show_name = row.text.encode('ascii', 'ignore').decode('ascii')
-	# 	showLink = showLink.get('href')
+	#   showLink = row.find('a')
+	#   finalShowLink = showLink.get('href')
+	#   finalShowLink = finalShowLink.replace("forums/", "").replace("bfont-colorred", "").replace("fontb", "")
+	#   # show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
+	#   # show_name = finalShowLink.split("?s=", 1)[0]
+	#   show_name = row.text.encode('ascii', 'ignore').decode('ascii')
+	#   showLink = showLink.get('href')
 		# showURL = showLink + "=SNAME=" + show_name
 		# showURL = build_url({'linkName': showURL})
 		# addDir('folder', 'load_episodes', showURL, show_name, '', '')
@@ -842,6 +857,7 @@ def load_shows():
 
 def load_movie_links():
 	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
+	print main_url
 	main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=").replace("%28", "(").replace("%29", ")")
 	split_url = main_url.split("===")
 	movieURL = split_url[0].replace("plugin://plugin.video.DTVShows/?linkName=","")
@@ -862,22 +878,26 @@ def load_movie_links():
 
 			# ## Vidoza Parse
 			# if "vidoza.php" in linkUrl:
-			# 	resolveVidoza(linkUrl)
+			#   resolveVidoza(linkUrl)
 			# else:
-			# 	pass
+			#   pass
 
 			if "watchvideo.php" in linkUrl:
-					print "### WATCHVIDEO ### " + linkUrl
-					linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-					linkUrl = linkUrl + "===WATCHVIDEO"
-					resultingLink = scrape_watchvideo_movies(linkUrl)
-					print resultingLink
-					if resultingLink == 'None':
-						print "None"
-					elif resultingLink == 'No Links Found':
-						print "None"
-					else:
-						addDir('', '', resultingLink, linkName, '', '')
+				print "### WATCHVIDEO ### " + linkUrl
+				linkName2 = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+				print "#### - " + linkName
+				#linkUrl = linkUrl + "===WATCHVIDEO"
+				linkUrl = linkUrl.replace("?url","?id")
+				passAlongURL = linkUrl + " -- " + linkName
+				fetch_obvious_watchvideo(passAlongURL)
+				#resultingLink = scrape_watchvideo_movies(linkUrl)
+				#print resultingLink
+				#if resultingLink == 'None':
+				#       print "None"
+				#elif resultingLink == 'No Links Found':
+				#       print "None"
+				#else:
+				#       addDir('', '', resultingLink, linkName, '', '')
 			else:
 				print linkUrl
 				print "######"
@@ -971,16 +991,16 @@ def load_ep_links():
 				## WATCH --------
 
 				# elif "watchvideo.php" in linkUrl:
-				# 	print "### WATCHVIDEO ### " + linkUrl
+				#   print "### WATCHVIDEO ### " + linkUrl
 					# linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
 					# linkUrl = linkUrl + "===WATCHVIDEO"
 					# resultingLink = resolve_link(linkUrl)
 					# if resultingLink == 'None':
-					# 	print "None"
+					#   print "None"
 					# elif resultingLink == 'No Links Found':
-					# 	print "None"
+					#   print "None"
 					# else:
-					# 	addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					#   addDir('', 'resolve_link', resultingLink, linkName, '', '')
 
 
 				elif len(linkID) == 12 and "?si=" in linkUrl or "?sim=" in linkUrl:
@@ -1006,23 +1026,23 @@ def load_ep_links():
 							else:
 								pass
 					# if "vidwatch" in iframeLink:
-					# 	print "** VIDWATCH **"
-					# 	regex = r"sources: \".*.mp4\""
-					# 	r = requests.get(iframeLink)
-					# 	results = []
-					# 	for line in r.text.splitlines():
-					# 		if text_to_find_parsing in line:
-					# 			print line
-					# 			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-					# 			# line = rtrim(line, ',')
-					# 			line = line[0].replace("{file:", "").replace("\"","")
-					# 			results.append(line)
-					# 			watchvideoLink = results[0]
-					# 			linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
-					# 			addDir('', '', watchvideoLink, linkName, '', '')
-					# 			# print len(results)
-					# 		else:
-					# 			pass
+					#   print "** VIDWATCH **"
+					#   regex = r"sources: \".*.mp4\""
+					#   r = requests.get(iframeLink)
+					#   results = []
+					#   for line in r.text.splitlines():
+					#       if text_to_find_parsing in line:
+					#           print line
+					#           line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+					#           # line = rtrim(line, ',')
+					#           line = line[0].replace("{file:", "").replace("\"","")
+					#           results.append(line)
+					#           watchvideoLink = results[0]
+					#           linkName = linkName + "[COLOR yellow]: VIDWATCH[/COLOR]"
+					#           addDir('', '', watchvideoLink, linkName, '', '')
+					#           # print len(results)
+					#       else:
+					#           pass
 
 					elif "speedwatch" in iframeLink:
 						print "** SPEEDWATCH **"
@@ -1091,48 +1111,48 @@ def load_ep_links():
 				elif len(linkID) == 7:
 					pass
 					# if "reviewtv.in" in linkUrl:
-					# 	# print "### TVLOGY ### " + linkUrl
-					# 	linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-					# 	linkUrl = linkUrl + "===TVLOGY"
-					# 	resultingLink = resolve_link(linkUrl)
-					# 	addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					#   # print "### TVLOGY ### " + linkUrl
+					#   linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
+					#   linkUrl = linkUrl + "===TVLOGY"
+					#   resultingLink = resolve_link(linkUrl)
+					#   addDir('', 'resolve_link', resultingLink, linkName, '', '')
 					# elif "tellysony.com" in linkUrl:
-					# 	# print "### TVLOGY ### " + linkUrl
-					# 	linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-					# 	linkUrl = linkUrl + "===TVLOGY"
-					# 	resultingLink = resolve_link(linkUrl)
-					# 	addDir('', 'resolve_link', resultingLink, linkName, '', '')
+					#   # print "### TVLOGY ### " + linkUrl
+					#   linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
+					#   linkUrl = linkUrl + "===TVLOGY"
+					#   resultingLink = resolve_link(linkUrl)
+					#   addDir('', 'resolve_link', resultingLink, linkName, '', '')
 					# else:
-					# 	print "No Links Found"
+					#   print "No Links Found"
 
 				# elif len(linkID) == 12:
-				# 	print "### UNFILTERED ### " + linkID
-				# 	# resolve_unfiltered(linkID)
-				# 	# + linkUrl
-				# 	# resolve_unfiltered(linkID)
-				# 	resultingLink = resolve_unfiltered(linkID)
-				# 	playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-				# 	# print resultingLink
-				# 	if resultingLink == "#### NO FILE":
-				# 		print "## NOTHING"
-				# 	else:
-				# 		print "#########" + linkName
-				# 		linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-				# 		print resultingLink
-				# 		addDir('', 'resolve_link', resultingLink, linkName, '', '')
-				# 		if 'Part-1' in linkName:
-				# 			video = resultingLink
-				# 			listitem = xbmcgui.ListItem(linkName)
-				# 			listitem.setInfo('video', {'Title': linkName})
-				# 			playlist.add(url=video, listitem=listitem)
-				# 			# addDir('', 'resolve_link', resultingLink, 'Part 1', '', '')
-				# 		else:
-				# 			video = resultingLink
-				# 			listitem = xbmcgui.ListItem(linkName)
-				# 			listitem.setInfo('video', {'Title': linkName})
-				# 			playlist.add(url=video, listitem=listitem)
-				# 			print playlist
-				# 			# addDir('', 'resolve_link', '', 'Continuous Play[COLOR yellow]: WATCHVIDEO[/COLOR]', '', '')
+				#   print "### UNFILTERED ### " + linkID
+				#   # resolve_unfiltered(linkID)
+				#   # + linkUrl
+				#   # resolve_unfiltered(linkID)
+				#   resultingLink = resolve_unfiltered(linkID)
+				#   playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+				#   # print resultingLink
+				#   if resultingLink == "#### NO FILE":
+				#       print "## NOTHING"
+				#   else:
+				#       print "#########" + linkName
+				#       linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
+				#       print resultingLink
+				#       addDir('', 'resolve_link', resultingLink, linkName, '', '')
+				#       if 'Part-1' in linkName:
+				#           video = resultingLink
+				#           listitem = xbmcgui.ListItem(linkName)
+				#           listitem.setInfo('video', {'Title': linkName})
+				#           playlist.add(url=video, listitem=listitem)
+				#           # addDir('', 'resolve_link', resultingLink, 'Part 1', '', '')
+				#       else:
+				#           video = resultingLink
+				#           listitem = xbmcgui.ListItem(linkName)
+				#           listitem.setInfo('video', {'Title': linkName})
+				#           playlist.add(url=video, listitem=listitem)
+				#           print playlist
+				#           # addDir('', 'resolve_link', '', 'Continuous Play[COLOR yellow]: WATCHVIDEO[/COLOR]', '', '')
 
 				else:
 					pass
@@ -1201,26 +1221,26 @@ def resolve_packed_function(url):
 
 
 		# for script in pageScripts:
-		# 	print script
-		# 	print "---------"
+		#   print script
+		#   print "---------"
 
 		# if (len(pageScripts) >= 1):
-		# 	for script in [pageScripts][12]:
-		# 		paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
-		# 		if len(paramSet) > 0:
-		# 			video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-		# 			# print video_info_link
-		# 			img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-		# 			value = img_data[0]
-		# 			# print value
-		# 			value = value.split(",")
-		# 			finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-		# 			# print "########### " + finalValue
-		# 			return finalValue
-		# 		else:
-		# 			print 'Nooone'
+		#   for script in [pageScripts][12]:
+		#       paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
+		#       if len(paramSet) > 0:
+		#           video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+		#           # print video_info_link
+		#           img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+		#           value = img_data[0]
+		#           # print value
+		#           value = value.split(",")
+		#           finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+		#           # print "########### " + finalValue
+		#           return finalValue
+		#       else:
+		#           print 'Nooone'
 		# else:
-		# 	print "No Links Found"
+		#   print "No Links Found"
 	except:
 		print "An Error Occurred"
 
@@ -1269,26 +1289,26 @@ def resolve_watchvideo(linkID):
 
 
 		# for script in pageScripts:
-		# 	print script
-		# 	print "---------"
+		#   print script
+		#   print "---------"
 
 		# if (len(pageScripts) >= 1):
-		# 	for script in [pageScripts][12]:
-		# 		paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
-		# 		if len(paramSet) > 0:
-		# 			video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-		# 			# print video_info_link
-		# 			img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-		# 			value = img_data[0]
-		# 			# print value
-		# 			value = value.split(",")
-		# 			finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-		# 			# print "########### " + finalValue
-		# 			return finalValue
-		# 		else:
-		# 			print 'Nooone'
+		#   for script in [pageScripts][12]:
+		#       paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
+		#       if len(paramSet) > 0:
+		#           video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+		#           # print video_info_link
+		#           img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+		#           value = img_data[0]
+		#           # print value
+		#           value = value.split(",")
+		#           finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+		#           # print "########### " + finalValue
+		#           return finalValue
+		#       else:
+		#           print 'Nooone'
 		# else:
-		# 	print "No Links Found"
+		#   print "No Links Found"
 	except:
 		print "An Error Occurred"
 
@@ -1393,13 +1413,13 @@ if len(args) > 0:
 	mode = mode[0]
 
 
-if mode == None 			:		Main_Menu()
-elif mode == 'load_channels': 		load_shows()
-elif mode == 'load_episodes': 		fetch_show_episodes()
-elif mode == 'load_ep_links': 		load_episode_links()
-elif mode == 'resolve_link':		resolve_link()
-elif mode == 'load_movies':			movie_menu()
-elif mode == 'load_movie_links':	load_movie_links()
+if mode == None             :       Main_Menu()
+elif mode == 'load_channels':       load_shows()
+elif mode == 'load_episodes':       fetch_show_episodes()
+elif mode == 'load_ep_links':       load_episode_links()
+elif mode == 'resolve_link':        resolve_link()
+elif mode == 'load_movies':         movie_menu()
+elif mode == 'load_movie_links':    load_movie_links()
 
 #################################
 #   END OF DIRECTORY LISTINGS   #
