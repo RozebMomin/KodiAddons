@@ -659,7 +659,7 @@ def fetch_obvious_speedwatch(value):
 				print "Evaluating PACKED function ..."
 				line = line.replace("<script type='text/javascript'>", "")
 				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').$
+				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
 				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
 				value = img_data[0]
 				#print value
