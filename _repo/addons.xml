@@ -339,30 +339,7 @@ and basketball events. NOT SUPPORTED BY ESPN OR DISNEY OR ANYONE ELSE
   </extension>
 </addon>
 
-<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.9.19" provider-name="Rozeb Momin">
-  <requires>
-   <import addon="xbmc.python" version="2.1.0"/>
-   <import addon="script.module.simplejson" version="3.3.0"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="main.py">
-        <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <platform>all</platform>
-    <summary lang="en">Karbala TV Livestream</summary>
-    <description lang="en">Live streaming video from the Holy City of Karbala.</description>
-    <disclaimer lang="en">Stream may not work if Karbala Channel is not streaming!</disclaimer>
-    <language>en</language>
-    <platform>all</platform>
-    <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-    <forum>...</forum>
-    <website></website>
-    <email></email>
-    <source></source>
-  </extension>
-</addon> -->
-
-<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.9.20" provider-name="Rozeb Momin">
+<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.9.21" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.addon.common" version="2.0.0"/>
