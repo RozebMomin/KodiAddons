@@ -32,7 +32,7 @@ import urllib,urllib2,re,xbmcplugin,xbmcgui
 import os
 import requests
 from bs4 import BeautifulSoup
-import rex
+import re
 import xbmcaddon, util
 
 # urllib2.disable_warnings()
