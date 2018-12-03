@@ -339,7 +339,7 @@ and basketball events. NOT SUPPORTED BY ESPN OR DISNEY OR ANYONE ELSE
   </extension>
 </addon>
 
-<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.9.22" provider-name="Rozeb Momin">
+<addon id="plugin.video.KarbalaTVLive" name="KarbalaTVLive" version="2015.9.23" provider-name="Rozeb Momin">
   <requires>
    <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.addon.common" version="2.0.0"/>
