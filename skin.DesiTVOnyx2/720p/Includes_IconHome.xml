@@ -320,12 +320,13 @@
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.SportsDevil)</onclick>
 				</item>
-				<item><!-- Desi TV -->
+				<!-- Desi TV -->
+				<!-- <item>
 					<thumb>special://skin/extras/homeicons/desitv_icon.png</thumb>
 					<label>Desi TV</label>
 					<label2>$LOCALIZE[571]</label2>
 					<onclick>RunAddon(plugin.video.tvondesizonexl)</onclick>
-				</item>
+				</item>-->
 				<item><!-- New On Demand -->
 					<thumb>special://skin/extras/homeicons/HindiOnDemand.png</thumb>
 					<label>Desi On Demand</label>

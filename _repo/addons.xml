@@ -190,7 +190,7 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.DTVShows" name="DesiTV Shows" version="0.3.1" provider-name="Rozeb Momin">
+<addon id="plugin.video.DTVShows" name="DesiTV Shows" version="0.3.2" provider-name="Rozeb Momin">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.requests" />
@@ -1243,7 +1243,7 @@ report script error to facebook.com/tamilKODITV or cyberrule.mail@gmail.com</des
 	</extension>
 </addon>
 
-<addon id="skin.DesiTVOnyx2" version="1.0.7" name="DesiTV Onyx 2"	provider-name="RozebMomin">
+<addon id="skin.DesiTVOnyx2" version="1.0.8" name="DesiTV Onyx 2"	provider-name="RozebMomin">
 	<requires>
 		<import addon="xbmc.gui" version="5.10.0"/>
 		<import addon="resource.uisounds.apptv" version="1.0.2"/>

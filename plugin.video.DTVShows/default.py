@@ -701,6 +701,7 @@ def fetch_show_names(url):
 	for line in r.text.splitlines():
 		if "<h2 class=\"forumtitle\">" in line:
 			line = line.strip()
+			line = line.encode('utf-8')
 			line = line.replace("<h2 class=\"forumtitle\"><a href=\"", "").replace("</a></h2>", "").replace("<b><font color=\"blue\">", "").replace("</font></b>","").replace("&amp;", "&")
 			showLink = line.split("\">")[0]
 			linksArray.append(showLink)
