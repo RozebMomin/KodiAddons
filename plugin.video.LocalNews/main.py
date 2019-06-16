@@ -51,7 +51,7 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                      ],
             'Cricket World Cup': [{'name': 'Watch Cricket World Cup LIVE',
                       'thumb': 'https://images.indianexpress.com/2019/06/ind-759-3.jpg?w=759',
-                      'video': 'https://p27.quest123.top:8088/live/webcric19hd/playlist.m3u8?id=109324&wowzasessionid=065135286&pk=bb78c3fb1bedf69760506413c9cf5b10daaee39eebd70f49dbf3ec05db15984f',
+                      'video': 'http://samo6.serdan.xyz/hls/skymaineventsd43/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Ni8xNi8yMDE5IDU6MjE6NTEgUE0maGFzaF92YWx1ZT1MNlo4UW1mV0Z6Qk5qWGpYdmhSbTVRPT0mdmFsaWRtaW51dGVzPTEyMA==',
                       'genre': 'Cricket'}
                      ]}
                      
