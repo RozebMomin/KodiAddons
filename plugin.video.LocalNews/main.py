@@ -49,10 +49,10 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                       'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=SouthCarolinaWCSC&event_id=3600153&owner_id=11016888&video_id=LIVE',
                       'genre': 'South Carolina'}
                      ],
-            'Republiv TV News': [{'name': 'Watch Republic TV LIVE',
-                      'thumb': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Republic_TV.jpg/220px-Republic_TV.jpg',
-                      'video': 'https://republicalive1-a.akamaihd.net/148efaf62f0441d8aeba7f156b3cb0f3/ap-southeast-1/5384493731001/profile_4/chunklist.m3u8',
-                      'genre': 'Republic TV'}
+            'Cricket World Cup': [{'name': 'Watch Cricket World Cup LIVE',
+                      'thumb': 'https://images.indianexpress.com/2019/06/ind-759-3.jpg?w=759',
+                      'video': 'https://ul.cdn946.net:8443/hls/5b7fwtwo.m3u8?s=Bvck9vV96aMnpMNvUz28Eg&e=1560702155',
+                      'genre': 'Cricket'}
                      ]}
                      
 def get_categories():
