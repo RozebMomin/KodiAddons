@@ -49,9 +49,9 @@ VIDEOS = {'Atlanta': [{'name': 'Watch My Fox Atlanta LIVE',
                       'video': 'plugin://plugin.video.livestream/?url=%2Flive_now&mode=104&name=SouthCarolinaWCSC&event_id=3600153&owner_id=11016888&video_id=LIVE',
                       'genre': 'South Carolina'}
                      ],
-            'Cricket World Cup': [{'name': 'Watch Cricket World Cup LIVE',
+            'Cricket World Cup': [{'name': 'Pakistan Vs South Africa LIVE',
                       'thumb': 'https://images.indianexpress.com/2019/06/ind-759-3.jpg?w=759',
-                      'video': 'https://ul.cdn946.net:8443/hls/2vcwg84v3c6ho.m3u8?s=0gDFud0xDBKIKCG1MX1dvA&e=1561242469',
+                      'video': 'http://185.39.10.142:8081/live/skyscrcicketlsh2.m3u8?e=1561307035&st=aKa9barRi-Hse_hXwKvIXg',
                       'genre': 'Cricket'}
                      ]}
                      
