@@ -1,2 +1,5 @@
+[B]Version 1.0.3[/B]
+Fixed the Einthusan.ca changeover
+
 [B]Version 1.0.0[/B]
 Initial Version

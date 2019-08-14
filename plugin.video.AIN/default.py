@@ -193,23 +193,23 @@ def addEmoviesFromSearch(urldata):
     urlpage=int(page)*2
     if urldata["type"]=="decade":
         decadenumber=urldata["decadenum"]
-        url1="https://einthusan.com/movie/results/?decade=%s&find=Decade&lang=%s&page=%s"%(decadenumber,lang,str(urlpage-1))
-        url2="https://einthusan.com/movie/results/?decade=%s&find=Decade&lang=%s&page=%s"%(decadenumber,lang,str(urlpage))
+        url1="https://einthusan.ca/movie/results/?decade=%s&find=Decade&lang=%s&page=%s"%(decadenumber,lang,str(urlpage-1))
+        url2="https://einthusan.ca/movie/results/?decade=%s&find=Decade&lang=%s&page=%s"%(decadenumber,lang,str(urlpage))
     elif urldata["type"]=="year":
         yearnumber=urldata["yearnum"]
-        url1="https://einthusan.com/movie/results/?year=%s&find=Year&lang=%s&page=%s"%(yearnumber,lang,str(urlpage-1))
-        url2="https://einthusan.com/movie/results/?year=%s&find=Year&lang=%s&page=%s"%(yearnumber,lang,str(urlpage))
+        url1="https://einthusan.ca/movie/results/?year=%s&find=Year&lang=%s&page=%s"%(yearnumber,lang,str(urlpage-1))
+        url2="https://einthusan.ca/movie/results/?year=%s&find=Year&lang=%s&page=%s"%(yearnumber,lang,str(urlpage))
     elif urldata["type"]=="recent":
-        url1="https://einthusan.com/movie/results/?find=Recent&lang=%s&page=%s"%(lang,str(urlpage-1))
-        url2="https://einthusan.com/movie/results/?find=Recent&lang=%s&page=%s"%(lang,str(urlpage))
+        url1="https://einthusan.ca/movie/results/?find=Recent&lang=%s&page=%s"%(lang,str(urlpage-1))
+        url2="https://einthusan.ca/movie/results/?find=Recent&lang=%s&page=%s"%(lang,str(urlpage))
     elif urldata["type"]=="search":
         searchdata=urldata["searchdata"]
-        url1="https://einthusan.com/movie/results/?query=%s&lang=%s&page=%s"%(urllib.quote_plus(searchdata),lang,str(urlpage-1))
-        url2="https://einthusan.com/movie/results/?query=%s&lang=%s&page=%s"%(urllib.quote_plus(searchdata),lang,str(urlpage))
+        url1="https://einthusan.ca/movie/results/?query=%s&lang=%s&page=%s"%(urllib.quote_plus(searchdata),lang,str(urlpage-1))
+        url2="https://einthusan.ca/movie/results/?query=%s&lang=%s&page=%s"%(urllib.quote_plus(searchdata),lang,str(urlpage))
     elif urldata["type"]=="alpha":
         searchdata=urldata["searchdata"]
-        url1="https://einthusan.com/movie/results/?alpha=%s&find=Alphabets&lang=%s&page=%s"%(urllib.quote_plus(searchdata),lang,str(urlpage-1))
-        url2="https://einthusan.com/movie/results/?alpha=%s&find=Alphabets&lang=%s&page=%s"%(urllib.quote_plus(searchdata),lang,str(urlpage))
+        url1="https://einthusan.ca/movie/results/?alpha=%s&find=Alphabets&lang=%s&page=%s"%(urllib.quote_plus(searchdata),lang,str(urlpage-1))
+        url2="https://einthusan.ca/movie/results/?alpha=%s&find=Alphabets&lang=%s&page=%s"%(urllib.quote_plus(searchdata),lang,str(urlpage))
                 
     newpage=str(int(page)+1)
     newpagedata=urldata
@@ -271,9 +271,9 @@ def encodeEInth(lnk):
 def PlayEinthusanLink(url,progress=None):
     url,lang=url.split(',')
     cookieJar = cookielib.LWPCookieJar()
-    headers=[('Origin','https://einthusan.com'),('Referer','https://einthusan.com/movie/browse/?lang=hindi'),('User-Agent',base64.b64decode('TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzU1LjAuMjg4My44NyBTYWZhcmkvNTM3LjM2'))]
-    mainurl='https://einthusan.com/movie/watch/%s/?lang=%s'%(url,lang)
-    mainurlajax='https://einthusan.com/ajax/movie/watch/%s/?lang=%s'%(url,lang)
+    headers=[('Origin','https://einthusan.ca'),('Referer','https://einthusan.ca/movie/browse/?lang=hindi'),('User-Agent',base64.b64decode('TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgNi4xOyBXT1c2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzU1LjAuMjg4My44NyBTYWZhcmkvNTM3LjM2'))]
+    mainurl='https://einthusan.ca/movie/watch/%s/?lang=%s'%(url,lang)
+    mainurlajax='https://einthusan.ca/ajax/movie/watch/%s/?lang=%s'%(url,lang)
     
     htm=getUrl(mainurl,headers=headers,cookieJar=cookieJar)
     lnk=re.findall('data-ejpingables=["\'](.*?)["\']',htm)[0]#.replace('&amp;','&')
@@ -291,7 +291,7 @@ def PlayEinthusanLink(url,progress=None):
     print r
     lnk=json.loads(decodeEInth(r).decode("base64"))["HLSLink"]
       
-    urlnew=lnk+('|https://einthusan.com&Referer=%s&User-Agent=%s'%(mainurl,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'))
+    urlnew=lnk+('|https://einthusan.ca&Referer=%s&User-Agent=%s'%(mainurl,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'))
     listitem = xbmcgui.ListItem( label = str(name), iconImage = "DefaultVideo.png", thumbnailImage = xbmc.getInfoImage( "ListItem.Thumb" ) )
     PlayGen(base64.b64encode(urlnew))
         
