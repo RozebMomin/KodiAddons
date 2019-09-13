@@ -427,40 +427,40 @@ def fetch_hidden_speedwatch(value):
 ##########################################################################################################################################################
 
 def fetch_obvious_videobee(value):
-    print value
-    # NEED TO SPLIT INCOMING VALUE
-    value = value.split(" -- ")
-    sourceLink = value[0]
-    sourcePart = value[1]
+	print value
+	# NEED TO SPLIT INCOMING VALUE
+	value = value.split(" -- ")
+	sourceLink = value[0]
+	sourcePart = value[1]
 
-    # if "Part" not in value[1]:
-    #   sourcePart = "Full Episode"
-    # else:
-    #   sourcePart = value[1]
+	# if "Part" not in value[1]:
+	#   sourcePart = "Full Episode"
+	# else:
+	#   sourcePart = value[1]
 
-    videoID = sourceLink.split("?id=")[1]
+	videoID = sourceLink.split("?id=")[1]
 
-    embeddedLink = "http://thevideobee.to/embed-"+videoID+".html"
+	embeddedLink = "http://thevideobee.to/embed-"+videoID+".html"
 
-    regex = r"sources: \".*.mp4\""
-    r = requests.get(embeddedLink)
-    results = []
-    for line in r.text.splitlines():
-            if "sources:" in line:
-                    line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-                    # line = rtrim(line, ',')
-                    line = line[0].replace("{file:", "").replace("\"","")
-                    line = line.split("u8,http")
-                    line = line[1].replace("s://","https://")
-                    print line
-                    results.append(line)
-                    # print len(results)
-            elif "File was deleted" in line:
-                    print "SOURCE FILE DELETED"
-            else:
-                    pass
+	regex = r"sources: \".*.mp4\""
+	r = requests.get(embeddedLink)
+	results = []
+	for line in r.text.splitlines():
+			if "sources:" in line:
+					line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+					# line = rtrim(line, ',')
+					line = line[0].replace("{file:", "").replace("\"","")
+					line = line.split("u8,http")
+					line = line[1].replace("s://","https://")
+					print line
+					results.append(line)
+					# print len(results)
+			elif "File was deleted" in line:
+					print "SOURCE FILE DELETED"
+			else:
+					pass
 
-    if len(results) == 0:
+	if len(results) == 0:
 
 		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
 		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
@@ -947,26 +947,26 @@ def load_movie_links():
 			#   pass
 
 			if "videobee.php" in linkUrl:
-                    ###print "### WATCHVIDEO ### " + linkUrl
-                    linkName2 = linkName + "[COLOR yellow]: VIDEOBEE[/COLOR]"
-                    ###print "#### - " + linkName
-                    #linkUrl = linkUrl + "===VIDEOBEE"
-                    linkUrl = linkUrl.replace("?url","?id")
-                    passAlongURL = linkUrl + " -- " + linkName
-                    print passAlongURL
-                    fetch_obvious_videobee(passAlongURL)
-                    #fetch_obvious_watchvideo(passAlongURL)
-                    #resultingLink = scrape_watchvideo_movies(linkUrl)
-                    #print resultingLink
-                    #if resultingLink == 'None':
-                    #       print "None"
-                    #elif resultingLink == 'No Links Found':
-                    #       print "None"
-                    #else:
-                    #       addDir('', '', resultingLink, linkName, '', '')
-            else:
-                    #print linkUrl
-                    print "######"
+					###print "### WATCHVIDEO ### " + linkUrl
+					linkName2 = linkName + "[COLOR yellow]: VIDEOBEE[/COLOR]"
+					###print "#### - " + linkName
+					#linkUrl = linkUrl + "===VIDEOBEE"
+					linkUrl = linkUrl.replace("?url","?id")
+					passAlongURL = linkUrl + " -- " + linkName
+					print passAlongURL
+					fetch_obvious_videobee(passAlongURL)
+					#fetch_obvious_watchvideo(passAlongURL)
+					#resultingLink = scrape_watchvideo_movies(linkUrl)
+					#print resultingLink
+					#if resultingLink == 'None':
+					#       print "None"
+					#elif resultingLink == 'No Links Found':
+					#       print "None"
+					#else:
+					#       addDir('', '', resultingLink, linkName, '', '')
+			else:
+					#print linkUrl
+					print "######"
 
 			# if "watchvideo.php" in linkUrl:
 			# 	print "### WATCHVIDEO ### " + linkUrl
