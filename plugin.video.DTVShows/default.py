@@ -251,8 +251,10 @@ def load_episode_links():
 
 	for arrayValue in linksArray:
 		## PARSE WATCHVIDEO WITH 'WATCHVIDEO' IN LINK
-		if "watchvideo.php" in arrayValue:
-			fetch_obvious_watchvideo(arrayValue)
+		# if "watchvideo.php" in arrayValue:
+		# 	fetch_obvious_watchvideo(arrayValue)
+		if "vkprime.php" in arrayValue:
+			fetch_obvious_vkprime(arrayValue)
 		elif "vidwatch.php" in arrayValue:
 			fetch_obvious_vidwatch(arrayValue)
 		elif "vidoza" in arrayValue:
@@ -425,6 +427,69 @@ def fetch_hidden_speedwatch(value):
 ##########################################################################################################################################################
 ### OBVIOUS PARSERS BELOW
 ##########################################################################################################################################################
+
+def fetch_obvious_vkprime(value):
+	print value
+	# NEED TO SPLIT INCOMING VALUE
+	value = value.split(" -- ")
+	sourceLink = value[0]
+	sourcePart = value[1]
+
+	# if "Part" not in value[1]:
+	#   sourcePart = "Full Episode"
+	# else:
+	#   sourcePart = value[1]
+
+	videoID = sourceLink.split("?id=")[1]
+
+	embeddedLink = "https://vkprime.com/embed-"+videoID+".html"
+
+	regex = r"sources: \".*.mp4\""
+	r = requests.get(embeddedLink)
+	results = []
+	for line in r.text.splitlines():
+			if "sources:" in line:
+					line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
+					# line = rtrim(line, ',')
+					line = line[0].replace("{file:", "").replace("\"","")
+					line = line.split("u8,http")
+					line = line[1].replace("s://","https://")
+					print line
+					results.append(line)
+					# print len(results)
+			elif "File was deleted" in line:
+					print "SOURCE FILE DELETED"
+			else:
+					pass
+
+	if len(results) == 0:
+
+		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
+		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
+		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
+		for line in r.text.splitlines():
+			if "eval(function(p,a,c,k,e,d)" in line:
+				print "Evaluating PACKED function ..."
+				line = line.replace("<script type='text/javascript'>", "")
+				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
+				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
+				value = img_data[0]
+				# print value
+				value = value.split(",")
+				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				print "########### " + finalValue
+				streamingName = sourcePart + "[COLOR yellow]: VKPRIME[/COLOR]"
+				addDir('', '', finalValue, streamingName, '', '')
+				return finalValue
+			else:
+				pass
+				
+		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
+	else:
+		streamingLink = results[0]
+		streamingName = sourcePart + "[COLOR yellow]: VKPRIME[/COLOR]"
+		addDir('', '', streamingLink, streamingName, '', '')
 
 def fetch_obvious_videobee(value):
 	print value
