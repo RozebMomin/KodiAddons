@@ -260,14 +260,14 @@ def load_episode_links():
 		elif "vidoza" in arrayValue:
 			fetch_obvious_vidoza(arrayValue)
 		elif "sim" in arrayValue:
-            print arrayValue
-            parseValue = arrayValue.split("?sim=")[1].split(" -- ")[0]
-            if len(parseValue) == 12:
-                    arrayValue = arrayValue.replace("?sim","?url")
-                    fetch_obvious_vkprime(arrayValue)
-            else:
-                    pass
-            #fetch_obvious_vkprime(arrayValue)
+			print arrayValue
+			parseValue = arrayValue.split("?sim=")[1].split(" -- ")[0]
+			if len(parseValue) == 12:
+				arrayValue = arrayValue.replace("?sim","?url")
+				fetch_obvious_vkprime(arrayValue)
+			else:
+				pass
+			#fetch_obvious_vkprime(arrayValue)
 		# elif "speed" in arrayValue:
 		# 	fetch_obvious_speedwatch(arrayValue)
 		elif "http://www.desirulez.net/register.php" in arrayValue:
