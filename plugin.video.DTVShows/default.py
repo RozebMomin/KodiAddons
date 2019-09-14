@@ -256,7 +256,8 @@ def load_episode_links():
 		if "vkprime.php" in arrayValue:
 			fetch_obvious_vkprime(arrayValue)
 		elif "vidwatch.php" in arrayValue:
-			fetch_obvious_vidwatch(arrayValue)
+			#fetch_obvious_vidwatch(arrayValue)
+			pass
 		elif "vidoza" in arrayValue:
 			fetch_obvious_vidoza(arrayValue)
 		elif "sim" in arrayValue:
