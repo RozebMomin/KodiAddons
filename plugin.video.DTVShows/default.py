@@ -259,8 +259,17 @@ def load_episode_links():
 			fetch_obvious_vidwatch(arrayValue)
 		elif "vidoza" in arrayValue:
 			fetch_obvious_vidoza(arrayValue)
-		elif "speed" in arrayValue:
-			fetch_obvious_speedwatch(arrayValue)
+		elif "sim" in arrayValue:
+            print arrayValue
+            parseValue = arrayValue.split("?sim=")[1].split(" -- ")[0]
+            if len(parseValue) == 12:
+                    arrayValue = arrayValue.replace("?sim","?url")
+                    fetch_obvious_vkprime(arrayValue)
+            else:
+                    pass
+            #fetch_obvious_vkprime(arrayValue)
+		# elif "speed" in arrayValue:
+		# 	fetch_obvious_speedwatch(arrayValue)
 		elif "http://www.desirulez.net/register.php" in arrayValue:
 			print "Bypassing Registration Link"
 			pass
@@ -440,7 +449,7 @@ def fetch_obvious_vkprime(value):
 	# else:
 	#   sourcePart = value[1]
 
-	videoID = sourceLink.split("?id=")[1]
+	videoID = sourceLink.split("?url=")[1]
 
 	embeddedLink = "https://vkprime.com/embed-"+videoID+".html"
 
@@ -477,7 +486,7 @@ def fetch_obvious_vkprime(value):
 				value = img_data[0]
 				# print value
 				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
+				finalValue = value[0] + value[-2] + "/index-v1-a1.m3u8"
 				print "########### " + finalValue
 				streamingName = sourcePart + "[COLOR yellow]: VKPRIME[/COLOR]"
 				addDir('', '', finalValue, streamingName, '', '')
