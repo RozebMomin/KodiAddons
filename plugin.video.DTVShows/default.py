@@ -21,153 +21,254 @@ base_url = sys.argv[0]
 addon_handle = int(sys.argv[1])
 xbmcplugin.setContent(addon_handle, 'movies')
 
-def determine_iframe_source(url):
-	print "Determining IFRAME Source ......."
-	regex = r"file: \".*.mp4\""
-	r = requests.get(url)
-	results = []
-	for line in r.text.splitlines():
-		if text_to_find in line:
-			iframe_source = line.split("\"http")
-			iframe_source = iframe_source[1].replace("://", "http://").split("ml\"")
-			iframe_source = iframe_source[0].replace(".ht", ".html")
-			results.append(iframe_source)
+
+#######################################################
+
+def movieUnpackerFunction(encryptedObject):
+	paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(encryptedObject)
+	video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+	video_links = re.compile(r"(file:\'(.+?)\')").findall(video_info_link)
+	for item in video_links:
+		item = str(item)
+		if "m3u8" not in item:
+			if ".vtt" not in item:
+				item = item.split('", ')[0].replace('("file:', '').replace("'", "")
+				if item is None:
+					return "Video Not Found"
+				else:
+					return item
+				# return item or "Video Not Found"
+
+#######################################################
+
+def movieDomainResolver(domain, mediaId, link, name):
+	if "watchshare" in domain:
+		# pass
+		hostUrl = "http://watchshare.net/embed/"+mediaId
+		soup = BeautifulSoup(requests.get(hostUrl).text)
+		sourceTag = soup.find("source",{"type":"video/mp4"}, src=True)
+		mediaLink = sourceTag["src"]
+		result = mediaLink
+		streamingName = name + "[COLOR green]: WatchShare[/COLOR]"
+		addDir('', '', result, streamingName, '', '')
+		# createPlayableItem(domain, name, mediaLink)
+	elif "vkprime" in domain:
+		functionsArray = []
+		hostUrl = "https://vkprime.com/embed-"+mediaId+".html"
+		soup = BeautifulSoup(requests.get(hostUrl).text)
+		fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
+		for function in fullPackedFunction:
+			functionsArray.append(function)
+		for line in functionsArray:
+			if "eval(function(p,a,c,k,e,d)" in line.text:
+				encryptedFunction = str(line).replace('<script type="text/javascript">', '').replace("</script>","").strip()
+				mediaLink = movieUnpackerFunction(encryptedFunction)
+				result = mediaLink
+				streamingName = name + "[COLOR yellow]: VK Prime[/COLOR]"
+				addDir('', '', result, streamingName, '', '')
+			elif "file:" in line.text:
+				lines = str(line).splitlines()
+				for item in lines:
+					if "/ads/" in item:
+						print "No Video Found"
+					elif "mp4" in item:
+						videoArray = item.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
+						for link in videoArray:
+							if "m3u8" not in link:
+								finalLink = link.split(",label:")[0]
+								mediaLink = finalLink
+								if finalLink is None:
+									print "Video Not Found"
+								else:
+									result = mediaLink
+									streamingName = name + "[COLOR yellow]: VK Prime[/COLOR]"
+									addDir('', '', result, streamingName, '', '')
+	elif "vidoza" in domain:
+		# pass
+		hostUrl = "https://vidoza.net/embed-"+mediaId+".html"
+		soup = BeautifulSoup(requests.get(hostUrl).text)
+		soup = soup.text.splitlines()
+		if "Full movie" in name:
+			name = "Full Movie"
+		for line in soup:
+			if "sourcesCode" in line:
+				line = line.strip().replace("sourcesCode: ", "").replace("[{", "").replace("}],", "").split(",")
+				for item in line:
+					if "src:" in item:
+						mediaLink = item.strip().replace('src: "', '').replace('mp4"', 'mp4')
+						result = mediaLink
+						streamingName = name + "[COLOR green]: Vidoza[/COLOR]"
+						addDir('', '', result, streamingName, '', '')
+	elif "vkspeed" in domain:
+		# pass
+		functionsArray = []
+		hostUrl = "http://vkspeed.com/embed-"+mediaId+".html"
+		soup = BeautifulSoup(requests.get(hostUrl).text)
+		fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
+		for function in fullPackedFunction:
+			functionsArray.append(function)
+		for line in functionsArray:
+			if "eval(function(p,a,c,k,e,d)" in line.text:
+				encryptedFunction = str(line).replace('<script type="text/javascript">', '').replace("</script>","").strip()
+				mediaLink = movieUnpackerFunction(encryptedFunction)
+				result = mediaLink
+				streamingName = name + "[COLOR yellow]: VK Speed[/COLOR]"
+				addDir('', '', result, streamingName, '', '')
+			elif "file:" in line.text:
+				lines = str(line).splitlines()
+				for item in lines:
+					if "/ads/" in item:
+						print "No Video Found"
+					elif "mp4" in item:
+						videoArray = item.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
+						for link in videoArray:
+							if "m3u8" not in link:
+								finalLink = link.split(",label:")[0]
+								mediaLink = finalLink
+								if finalLink is None:
+									print "Video Not Found"
+								else:
+									result = mediaLink
+									streamingName = name + "[COLOR yellow]: VK Speed[/COLOR]"
+									addDir('', '', result, streamingName, '', '')
+	else:
+		pass
+
+#######################################################
+#######################################################
+
+def tvUnpackerFunction(encryptedObject):
+	paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(encryptedObject)
+	video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
+	video_links = re.compile(r"(file:\'(.+?)\')").findall(video_info_link)
+	for item in video_links:
+		item = str(item)
+		if "m3u8" not in item:
+			if ".vtt" not in item:
+				item = item.split('", ')[0].replace('("file:', '').replace("'", "")
+				if item is None:
+					return "Video Not Found"
+				else:
+					return item
+				# return item or "Video Not Found"
+
+################################################
+
+def domainResolver(domain, mediaId, link, name, xbmcUrl):
+	if "watchshare" in domain:
+		# pass
+		hostUrl = "http://watchshare.net/embed/"+mediaId
+		soup = BeautifulSoup(requests.get(hostUrl).text)
+		sourceTag = soup.find("source",{"type":"video/mp4"}, src=True)
+		if sourceTag is None:
+			pass
 		else:
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				print "########### " + finalValue
-				return finalValue
-			else:
+			mediaLink = sourceTag["src"]
+			result = mediaLink
+			streamingName = name + "[COLOR yellow]: Watch Share[/COLOR]"
+			addDir('', '', result, streamingName, '', '')
+	elif "daily" in domain:
+		try:
+			hostUrl = "https://p1.tvlogy.me/hls/"+mediaId+"/"+mediaId+".m3u8"
+			soup = BeautifulSoup(requests.get(hostUrl).text)
+			if "Not ready" in soup:
 				pass
-		# if re.findall(regex, line):
-		#     line = 'http:' + line[9:-2]
-		#     results.append(str(line))
-	if not results:
-		print "Array Empty"
-	else:
-		print results[0]
-		return results[0]
-
-text_to_find_parsing = "sources:"
-
-def find_jw_source(url, vidID):
-	print url + " " + vidID
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(url)
-	results = []
-	for line in r.text.splitlines():
-		if text_to_find_parsing in line:
-			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-			# line = rtrim(line, ',')
-			line = line[0].replace("{file:", "").replace("\"","")
-			results.append(line)
-			# print len(results)
+			else:
+				result = hostUrl
+				streamingName = name + "[COLOR green]: Daily Motion[/COLOR]"
+				addDir('', '', result, streamingName, '', '')
+		except Exception as e:
+			print "Error"
 		else:
-			pass
-	if len(results) == 0:
-		#Vidwatch
-		return scrape_vidwatch(vidID)
-	else:
-		# print "STREAMING LINK -> "+ str(results[0])
-		return str(results[0])
-
-def scrape_watchvideo(vidID):
-	try:
-		#WatchVideo
-		url = "https://watchvideo.us/embed-"+vidID+"-540x304.html"
-		return find_jw_source(url, vidID)
-	except Exception as e:
-		raise
+			hostUrl = "https://p2.tvlogy.me/hls/"+mediaId+"/"+mediaId+".m3u8"
+			soup = BeautifulSoup(requests.get(hostUrl).text)
+			# print soup.prettify()
+			if "Not ready" in soup:
+				pass
+			else:
+				result = hostUrl
+				streamingName = name + "[COLOR green]: Daily Motion[/COLOR]"
+				addDir('', '', result, streamingName, '', '')
+		finally:
+			hostUrl = "https://p3.tvlogy.me/hls/"+mediaId+"/"+mediaId+".m3u8"
+			soup = BeautifulSoup(requests.get(hostUrl).text)
+			# print soup.prettify()
+			if "Not ready" in soup:
+				pass
+			else:
+				result = hostUrl
+				streamingName = name + "[COLOR green]: Daily Motion[/COLOR]"
+				addDir('', '', result, streamingName, '', '')
+	elif "speed" in domain:
+		# pass
+		functionsArray = []
+		hostUrl = "http://vkspeed.com/embed-"+mediaId+"-600x380.html"
+		soup = BeautifulSoup(requests.get(hostUrl).text)
+		fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
+		for function in fullPackedFunction:
+			functionsArray.append(function)
+		for line in functionsArray:
+			if "eval(function(p,a,c,k,e,d)" in line.text:
+				encryptedFunction = str(line).replace('<script type="text/javascript">', '').replace("</script>","").strip()
+				mediaLink = tvUnpackerFunction(encryptedFunction)
+				result = mediaLink
+				streamingName = name + "[COLOR yellow]: Speed Watch[/COLOR]"
+				addDir('', '', result, streamingName, '', '')
+			elif "file:" in line.text:
+				lines = str(line).splitlines()
+				for item in lines:
+					if "/ads/" in item:
+						print "No Video Found"
+					elif "mp4" in item:
+						videoArray = item.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
+						for link in videoArray:
+							if "m3u8" not in link:
+								finalLink = link.split(",label:")[0]
+								mediaLink = finalLink
+								if finalLink is None:
+									print "Video Not Found"
+								else:
+									result = mediaLink
+									streamingName = name + "[COLOR yellow]: Speed Watch[/COLOR]"
+									addDir('', '', result, streamingName, '', '')
 	else:
 		pass
 
-def scrape_vidwatch(vidID):
-	try:
-		#VidWatch
-		url = "https://vidwatch.me/embed-"+vidID+".html"
-		return find_jw_source(url, vidID)
-	except Exception as e:
-		raise
-	else:
-		pass
+################################################
 
-#### END 8/12/2018
+################################################
 
-def scrape_watchvideo_movies(url):
-	vidID = url.split("?url=")[1]
-	vidID = vidID.split("===")[0]
-	print vidID
-	newUrl = "https://watchvideo.us/embed-"+vidID+"-540x304.html"
-	print newUrl
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(newUrl)
-	results = []
-	for line in r.text.splitlines():
-		if "sources:" in line:
-			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-			# line = rtrim(line, ',')
-			line = line[0].replace("{file:", "").replace("\"","")
-			results.append(line)
-			# print len(results)
-		else:
-			pass
-	if len(results) == 0:
-		#Vidwatch
-		pass
-	else:
-		print results[0]
-		return results[0]
-
-def resolveVidoza(linkUrl):
-	vidozaID = linkUrl.split("url=")[1]
-	vidozaLink = "http://www.vidoza.net/embed-" + vidozaID + ".html"
-
-	r = requests.get(vidozaLink, verify=False)
-	# data = r.text
-	# soup = BeautifulSoup(data)
-	# videoDirectLink = soup.findAll('source', {'type':'video/mp4'})
-	# print len(videoDirectLink)
-
-def parseWatchVideo(data):
-
-	text_to_find = 'm3u8|master'
+def getEpisodeSources(name, link, xbmcUrl):
+	r = requests.get(link)
+	data = r.text
 
 	soup = BeautifulSoup(data)
 
-	pageScripts = soup.findAll('script')
+	## Pass Episode Page Link to Aggregate Host Links
 
-	resultingScript = []
+	mainArea = soup.findAll("a", {"rel":"nofollow"}, href=True)
 
-	for script in pageScripts:
-		searchableString = str(script)
-		if "m3u8|master" in searchableString:
-			print "SUCCESS!! ####"
-			resultingScript.append(searchableString)
-		else:
-			print "--------------"
-
-	paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(resultingScript[0])
-
-	if len(paramSet) > 0:
-		video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-		# print video_info_link
-		img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-		value = img_data[0]
-		# print value
-		value = value.split(",")
-		finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-		# print "########### " + finalValue
-		return finalValue
-	else:
-		print "None Found Here Buddy"
+	for link in mainArea:
+		if "Watch Online" in link.text:
+			sourceName = link.text.split("-")[1].strip()
+			sourceLink = link["href"]
+			sourceMediaId = sourceLink.split("=")[1]
+			if "php?" in sourceLink:
+				sourceDomain = re.search(".[a-zA-Z]/(.*?)\.php", sourceLink)
+				if sourceDomain is None:
+					pass
+				else:
+					sourceDomain = sourceDomain.group(1)
+					domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+			elif "?sim" in sourceLink:
+				if len(sourceMediaId) == 32:
+					sourceDomain = "daily"
+					domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+				else:
+					sourceDomain = "vkprime"
+					domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+			else:
+				pass
 
 ##########################################################################################################################################################
 # NECESSARY KODI FUNCTIONS
@@ -211,78 +312,6 @@ def build_url(query):
 	return base_url + '?' + urllib.urlencode(query)
 
 ##########################################################################################################################################################
-# LATEST PARSING AS OF 10/24/2019
-# Shows Link Parsers
-##########################################################################################################################################################
-
-def vkPrimeShows(videoId):
-	functionsArray = []
-	url = "https://vkprime.com/embed-"+VideoId+".html"
-	soup = BeautifulSoup(requests.get(url).text)
-  	fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
-  	for function in fullPackedFunction:
-  		functionsArray.append(function)
-
-  	for item in functionsArray:
-  		if "sources: [{file:" in item.text:
-  			lines = str(item).splitlines()
-  			for line in lines:
-  				if "file:" in line:
-  					videoArray = line.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
-  					for link in videoArray:
-  						if "m3u8" not in link:
-  							finalLink = link.split(",label:")[0]
-  							return finalLink or "Video Not Found"
-
-def vkSpeedShows(videoId):
-	functionsArray = []
-	url = "http://vkspeed.com/embed-"+videoId+"-600x380.html"
-	soup = BeautifulSoup(requests.get(url).text)
-  	fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
-  	for function in fullPackedFunction:
-  		functionsArray.append(function)
-  	# #7 Is the Obfuscated Function
-  	for line in functionsArray:
-  		if "eval(function(p,a,c,k,e,d)" in line.text:
-  			encryptedFunction = str(line).replace('<script type="text/javascript">', '').replace("</script>","").strip()
-  			return unpackerFunctionVkSpeedShows(encryptedFunction)
-  		elif "file:" in line.text:
-  			lines = str(line).splitlines()
-  			for item in lines:
-  				if "/ads/" in item:
-  					return "No Video Found"
-  				elif "mp4" in item:
-  					videoArray = item.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
-  					for link in videoArray:
-  						if "m3u8" not in link:
-  							finalLink = link.split(",label:")[0]
-  							return finalLink
-
-def unpackerFunctionVkSpeedShows(encryptedObject):
-	paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(encryptedObject)
-	video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-	video_links = re.compile(r"(file:\'(.+?)\')").findall(video_info_link)
-	for item in video_links:
-		if "m3u8" not in str(item):
-			if ".vtt" not in str(item):
-				# print item
-				item = str(item).split('", ')[0].replace('("file:', '').replace("'", "")
-				return item or "Video Not Found"
-
-def watchShareShows(videoId):
-	functionsArray = []
-	url = "https://watchshare.net/embed/"+videoId
-	soup = BeautifulSoup(requests.get(url).text)
-  	fullPackedFunction = soup.findAll("source", {"type":"video/mp4"})
-  	for function in fullPackedFunction:
-  		functionsArray.append(function)
-  	for line in functionsArray:
-  		line = str(line)
-  		if "video/mp4" in line:
-  			line = line.replace('" type="video/mp4"></source>', '').replace('<source src="', '')
-  			return line or "Video Not Found"
-
-##########################################################################################################################################################
 # LATEST PARSING AS OF 08/19/2018
 # SIMPLIFIED PARSING
 ##########################################################################################################################################################
@@ -296,651 +325,14 @@ def load_episode_links():
 	episode_url = main_url.replace("plugin://plugin.video.DTVShows/?linkName=","").split("?s=")[0]
 	print "EPISODE URL -->" + episode_url
 
-	r = requests.get(episode_url)
-	linksArray = []
-	for line in r.text.splitlines():
-		if "<a rel=\"nofollow\"" in line and "style=\"" not in line and "<li" not in line and "twitter" not in line and "<p" not in line and "Powered" not in line and "dragonbyte" not in line:
-			line = line.strip()
-			line = line.replace("<a rel=\"nofollow\" href=\"", "")
-			line = line.replace("\" target=\"_blank\">", "- ")
-			line = line.replace("</a><br />", "")
-			line = line.split("- ")
+	episodeName = showName
+	episodeLink = episode_url
 
-			if len(line) == 2:
-				ep_sourceLink = line[0]
-				ep_sourcePart = "Full Episode"
-			else:
-				ep_sourceLink = line[0]
-				ep_sourcePart = line[2]
+	getEpisodeSources(episodeName, episodeLink, main_url)
 
-			arrayValue = ep_sourceLink + " -- " + ep_sourcePart
-
-			linksArray.append(arrayValue)
-		else:
-			pass
-
-	## Split out Each Array
-
-	for arrayValue in linksArray:
-		## PARSE WATCHVIDEO WITH 'WATCHVIDEO' IN LINK
-		# if "watchvideo.php" in arrayValue:
-		# 	fetch_obvious_watchvideo(arrayValue)
-		if "vkprime.php" in arrayValue:
-			epUrl = arrayValue.split(" -- ")[0]
-			thisVideoId = epUrl.split("=")[1]
-			partName = arrayValue.split(" -- ")[1]
-			result = vkPrimeShows(thisVideoId)
-			if (result != "No Video Found"):
-				streamingName = partName + "[COLOR yellow]: VK Prime[/COLOR]"
-				addDir('', '', result, streamingName, '', '')
-			else:
-				pass
-		elif "speed.php" in arrayValue:
-			epUrl = arrayValue.split(" -- ")[0]
-			thisVideoId = epUrl.split("=")[1]
-			partName = arrayValue.split(" -- ")[1]
-			result = vkSpeedShows(thisVideoId)
-			if (result != "No Video Found"):
-				streamingName = partName + "[COLOR green]: VK Speed[/COLOR]"
-				addDir('', '', result, streamingName, '', '')
-			else:
-				pass
-		elif "watchshare.php" in arrayValue:
-			epUrl = arrayValue.split(" -- ")[0]
-			thisVideoId = epUrl.split("=")[1]
-			partName = arrayValue.split(" -- ")[1]
-			result = watchShareShows(thisVideoId)
-			if (result != "No Video Found"):
-				streamingName = partName + "[COLOR orange]: Watch Share[/COLOR]"
-				addDir('', '', result, streamingName, '', '')
-			else:
-				pass
-		elif "vidwatch.php" in arrayValue:
-			#fetch_obvious_vidwatch(arrayValue)
-			pass
-		elif "vidoza" in arrayValue:
-			fetch_obvious_vidoza(arrayValue)
-		elif "sim" in arrayValue:
-			parseValue = arrayValue.split("?sim=")[1].split(" -- ")[0]
-			if len(parseValue) == 12:
-				# arrayValue = arrayValue.replace("?sim","?url")
-				# print arrayValue
-				epUrl = arrayValue.split(" -- ")[0]
-				thisVideoId = epUrl.split("=")[1]
-				partName = arrayValue.split(" -- ")[1]
-				result = vkPrimeShows(thisVideoId)
-				if (result != "No Video Found"):
-					streamingName = partName + "[COLOR yellow]: VK Prime[/COLOR]"
-					addDir('', '', result, streamingName, '', '')
-				else:
-					pass
-			else:
-				pass
-			#fetch_obvious_vkprime(arrayValue)
-		# elif "speed" in arrayValue:
-		# 	fetch_obvious_speedwatch(arrayValue)
-		elif "http://www.desirulez.net/register.php" in arrayValue:
-			print "Bypassing Registration Link"
-			pass
-		else:
-			## PARSING HIDDEN LINKS
-			## MUST DETERMINE ID & PARSE FURTHER
-
-			## STEPS TO GET ID VALUE
-			try:
-				arrayValueID = arrayValue.split("=")[1].split(" -- ")[0]
-			except:
-				pass
-
-			## WATCHVIDEO & VIDWATCH IDs ARE 12 IN COUNT
-			## SEPARATE 12 & NON-12 IDs
-
-			if len(arrayValueID) == 12:
-
-				# PARSE THE DIFFERENT IDs & DETERMINE WHICH IS WATCHVIDEO & VIDWATCH
-				## THERE ARE 3 DIFFERENT SPLITS --> '?sim=' | '?si=' | '?id='
-				
-				## NEED TO SPLIT ARRAYVALUE INTO URL & PART NUMBER
-				parseableLink = arrayValue.split(" -- ")[0]
-
-				## ITERATE THROUGH SPLITS
-				if "?si=" in parseableLink:
-					fetch_hidden_watchvideo(arrayValue)
-				elif "?sim=" in parseableLink:
-					fetch_hidden_speedwatch(arrayValue)
-				else:
-					pass
-
-				# print "ARRAY VALUE --> " + arrayValue
-				# print "ARRAY VALUE ID --> " + arrayValueID
-			else:
-				pass
-
-			# print "ARRAY VALUE --> " + arrayValue
-			# print "ARRAY VALUE ID --> " + arrayValueID
-			pass
-
-##########################################################################################################################################################
-# LATEST FUNCTIONS AS OF 08/19/2018
-# SOURCE PARSING BY INDIVIDUAL WEBSITE
-##########################################################################################################################################################
-### HIDDEN PARSERS BELOW
-##########################################################################################################################################################
-
-def fetch_hidden_watchvideo(value):
-	# NEED TO SPLIT INCOMING VALUE
-	value = value.split(" -- ")
-	sourceLink = value[0]
-	sourcePart = value[1]
-
-	videoID = sourceLink.split("=")[1]
-
-	print videoID
-
-	embeddedLink = "http://watchvideo.us/embed-"+videoID+"-540x304.html"
-
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(embeddedLink)
-	results = []
-	for line in r.text.splitlines():
-		if "sources:" in line:
-			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-			# line = rtrim(line, ',')
-			line = line[0].replace("{file:", "").replace("\"","")
-			print line
-			results.append(line)
-			# print len(results)
-		elif "File was deleted" in line:
-			print "SOURCE FILE DELETED"
-		else:
-			pass
-			
-	if len(results) == 0:
-
-		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
-		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
-		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
-		for line in r.text.splitlines():
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				print "########### " + finalValue
-				streamingName = sourcePart + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-				addDir('', '', finalValue, streamingName, '', '')
-				return finalValue
-			else:
-				pass
-				
-		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
-	else:
-		streamingLink = results[0]
-		streamingName = sourcePart + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-		addDir('', '', streamingLink, streamingName, '', '')
-
-
-def fetch_hidden_speedwatch(value):
-	# NEED TO SPLIT INCOMING VALUE
-	value = value.split(" -- ")
-	sourceLink = value[0]
-	sourcePart = value[1]
-
-	videoID = sourceLink.split("=")[1]
-
-	print videoID + " :SPEEDWATCH"
-
-	embeddedLink = "http://speedwatch.us/embed-"+videoID+"-595x430.html"
-
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(embeddedLink)
-	results = []
-	for line in r.text.splitlines():
-		if "sources:" in line:
-			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-			# line = rtrim(line, ',')
-			line = line[0].replace("{file:", "").replace("\"","")
-			print line
-			results.append(line)
-			# print len(results)
-		elif "File was deleted" in line:
-			print "SOURCE FILE DELETED"
-		else:
-			pass
-			
-	if len(results) == 0:
-
-		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
-		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
-		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
-		for line in r.text.splitlines():
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				print "########### " + finalValue
-				streamingName = sourcePart + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
-				addDir('', '', finalValue, streamingName, '', '')
-				return finalValue
-			else:
-				pass
-				
-		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
-	else:
-		streamingLink = results[0]
-		streamingName = sourcePart + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
-		addDir('', '', streamingLink, streamingName, '', '')
-
-##########################################################################################################################################################
-### OBVIOUS PARSERS BELOW
-##########################################################################################################################################################
-
-def fetch_obvious_vkprime(value):
-	print value
-	# NEED TO SPLIT INCOMING VALUE
-	value = value.split(" -- ")
-	sourceLink = value[0]
-	sourcePart = value[1]
-
-	# if "Part" not in value[1]:
-	#   sourcePart = "Full Episode"
-	# else:
-	#   sourcePart = value[1]
-
-	videoID = sourceLink.split("?url=")[1]
-
-	embeddedLink = "https://vkprime.com/embed-"+videoID+".html"
-
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(embeddedLink)
-	results = []
-	for line in r.text.splitlines():
-			if "sources:" in line:
-					line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-					# line = rtrim(line, ',')
-					line = line[0].replace("{file:", "").replace("\"","")
-					line = line.split("u8,http")
-					line = line[1].replace("s://","https://")
-					print line
-					results.append(line)
-					# print len(results)
-			elif "File was deleted" in line:
-					print "SOURCE FILE DELETED"
-			else:
-					pass
-
-	if len(results) == 0:
-
-		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
-		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
-		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
-		for line in r.text.splitlines():
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[-2] + "/index-v1-a1.m3u8"
-				print "########### " + finalValue
-				streamingName = sourcePart + "[COLOR yellow]: VKPRIME[/COLOR]"
-				addDir('', '', finalValue, streamingName, '', '')
-				return finalValue
-			else:
-				pass
-				
-		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
-	else:
-		streamingLink = results[0]
-		streamingName = sourcePart + "[COLOR yellow]: VKPRIME[/COLOR]"
-		addDir('', '', streamingLink, streamingName, '', '')
-
-def fetch_obvious_videobee(value):
-	print value
-	# NEED TO SPLIT INCOMING VALUE
-	value = value.split(" -- ")
-	sourceLink = value[0]
-	sourcePart = value[1]
-
-	# if "Part" not in value[1]:
-	#   sourcePart = "Full Episode"
-	# else:
-	#   sourcePart = value[1]
-
-	videoID = sourceLink.split("?id=")[1]
-
-	embeddedLink = "http://thevideobee.to/embed-"+videoID+".html"
-
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(embeddedLink)
-	results = []
-	for line in r.text.splitlines():
-			if "sources:" in line:
-					line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-					# line = rtrim(line, ',')
-					line = line[0].replace("{file:", "").replace("\"","")
-					line = line.split("u8,http")
-					line = line[1].replace("s://","https://")
-					print line
-					results.append(line)
-					# print len(results)
-			elif "File was deleted" in line:
-					print "SOURCE FILE DELETED"
-			else:
-					pass
-
-	if len(results) == 0:
-
-		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
-		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
-		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
-		for line in r.text.splitlines():
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				print "########### " + finalValue
-				streamingName = sourcePart + "[COLOR yellow]: VIDEOBEE[/COLOR]"
-				addDir('', '', finalValue, streamingName, '', '')
-				return finalValue
-			else:
-				pass
-				
-		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
-	else:
-		streamingLink = results[0]
-		streamingName = sourcePart + "[COLOR yellow]: VIDEOBEE[/COLOR]"
-		addDir('', '', streamingLink, streamingName, '', '')
-
-def fetch_obvious_watchvideo(value):
-	print value
-	# NEED TO SPLIT INCOMING VALUE
-	value = value.split(" -- ")
-	sourceLink = value[0]
-	sourcePart = value[1]
-	
-	# if "Part" not in value[1]:
-	#   sourcePart = "Full Episode"
-	# else:
-	#   sourcePart = value[1]
-
-	videoID = sourceLink.split("?id=")[1]
-
-	embeddedLink = "http://watchvideo.us/embed-"+videoID+"-540x304.html"
-
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(embeddedLink)
-	results = []
-	for line in r.text.splitlines():
-		if "sources:" in line:
-			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-			# line = rtrim(line, ',')
-			line = line[0].replace("{file:", "").replace("\"","")
-			# print line
-			results.append(line)
-			# print len(results)
-		elif "File was deleted" in line:
-			print "SOURCE FILE DELETED"
-		else:
-			pass
-			
-	if len(results) == 0:
-
-		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
-		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
-		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
-		for line in r.text.splitlines():
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				print "########### " + finalValue
-				streamingName = sourcePart + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-				addDir('', '', finalValue, streamingName, '', '')
-				return finalValue
-			else:
-				pass
-				
-		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
-	else:
-		streamingLink = results[0]
-		streamingName = sourcePart + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-		addDir('', '', streamingLink, streamingName, '', '')
-
-
-def fetch_obvious_vidwatch(value):
-	# NEED TO SPLIT INCOMING VALUE
-	value = value.split(" -- ")
-	sourceLink = value[0]
-	sourcePart = value[1]
-
-	# if "Part" not in value[1]:
-	#   sourcePart = "Full Episode"
-	# else:
-	#   sourcePart = value[1]
-
-	print sourceLink
-
-	videoID = sourceLink.split("?id=")[1]
-
-	embeddedLink = "http://vidwatch.me/embed-"+videoID+"-540x304.html"
-
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(embeddedLink)
-	results = []
-	for line in r.text.splitlines():
-		if "sources:" in line:
-			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-			# line = rtrim(line, ',')
-			line = line[0].replace("{file:", "").replace("\"","")
-			# print line
-			results.append(line)
-			# print len(results)
-		elif "File was deleted" in line:
-			print "SOURCE FILE DELETED"
-		else:
-			pass
-			
-	if len(results) == 0:
-
-		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT VIDWATCH
-		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
-		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
-		for line in r.text.splitlines():
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				print "########### " + finalValue
-				streamingName = sourcePart + "[COLOR yellow]: VIDWATCH[/COLOR]"
-				addDir('', '', finalValue, streamingName, '', '')
-				return finalValue
-			else:
-				pass
-
-		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
-	else:
-		streamingLink = results[0]
-		streamingName = sourcePart + "[COLOR yellow]: VIDWATCH[/COLOR]"
-		addDir('', '', streamingLink, streamingName, '', '')
-
-
-def fetch_obvious_vidoza(value):
-	# NEED TO SPLIT INCOMING VALUE
-	value = value.split(" -- ")
-	sourceLink = value[0]
-	sourcePart = value[1]
-
-	# if "Part" not in value[1]:
-	#   sourcePart = "Full Episode"
-	# else:
-	#   sourcePart = value[1]
-
-	print sourceLink
-
-	videoID = sourceLink.split("?id=")[1]
-
-	embeddedLink = "http://vidoza.net/embed-"+videoID+".html"
-
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(embeddedLink)
-	results = []
-	for line in r.text.splitlines():
-		if "sourcesCode:" in line:
-			line = line.strip().replace("sourcesCode: [{ src: ","").split(",")[0].replace("\"","")
-			results.append(line)
-		elif "File was deleted" in line:
-			print "SOURCE FILE DELETED"
-		else:
-			pass
-			
-	if len(results) == 0:
-
-		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT VIDWATCH
-		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
-		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
-		for line in r.text.splitlines():
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				print "########### " + finalValue
-				streamingName = sourcePart + "[COLOR green]: VIDOZA[/COLOR]"
-				addDir('', '', finalValue, streamingName, '', '')
-				return finalValue
-			else:
-				pass
-
-		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
-	else:
-		streamingLink = results[0]
-		streamingName = sourcePart + "[COLOR green]: VIDOZA[/COLOR]"
-		addDir('', '', streamingLink, streamingName, '', '')
-
-def fetch_obvious_speedwatch(value):
-	print value
-	# NEED TO SPLIT INCOMING VALUE
-	value = value.split(" -- ")
-	sourceLink = value[0]
-	sourcePart = value[1]
-	
-	#REMOVE MUMBLE SCRIPTS
-	sourceLink = sourceLink.replace("<font size=\"4\"><b>", "")
-	print sourceLink + "********"
-	# if "Part" not in value[1]:
-	#   sourcePart = "Full Episode"
-	# else:
-	#   sourcePart = value[1]
-
-	# videoID = sourceLink.split("?url=")[1]
-
-	try:
-			videoID = sourceLink.split("?url=")[1]
-	except:
-			videoID = sourceLink.split("?id=")[1]
-
-	embeddedLink = "http://speedwatch.us/embed-"+videoID+"-520x400.html"
-
-	regex = r"sources: \".*.mp4\""
-	r = requests.get(embeddedLink)
-	results = []
-	for line in r.text.splitlines():
-		if "sources:" in line:
-			line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-			# line = rtrim(line, ',')
-			line = line[0].replace("{file:", "").replace("\"","")
-			# print line
-			results.append(line)
-			# print len(results)
-		elif "File was deleted" in line:
-			print "SOURCE FILE DELETED"
-		else:
-			pass
-			
-	if len(results) == 0:
-
-		## NEED TO FETCH PACKED FUNCTION IF NO LINKS FOUND IN EXPLICIT WATCHVIDEO
-		## IF PACKED FUNCTION RETURNS FALSE, THEN OUTPUT NO LINKS FOUND
-		### STEP 1 = SEE IF THE URL CONTAINS A PACKED FUNCTION OR NOT
-		for line in r.text.splitlines():
-			if "eval(function(p,a,c,k,e,d)" in line:
-				print "Evaluating PACKED function ..."
-				line = line.replace("<script type='text/javascript'>", "")
-				paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(line)
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				#print value
-				value = value.split(",")
-				try:
-						finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				except:
-						pass
-				try:
-						higherQualityValue = value[0] + value[2] + "/index-v1-a1.m3u8"
-				except:
-						pass
-				print "########### " + finalValue
-				streamingName = sourcePart + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
-				HighStreamingName = sourcePart + "[COLOR red]: SPEEDWATCH HD[/COLOR]"
-				addDir('', '', finalValue, streamingName, '', '')
-				addDir('', '', higherQualityValue, HighStreamingName, '', '')
-				return finalValue
-			else:
-				pass
-				
-		addDir('', '', '', "[COLOR red]NO LINKS FOUND[/COLOR]", '', '')
-	else:
-		streamingLink = results[0]
-		streamingName = sourcePart + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
-		addDir('', '', streamingLink, streamingName, '', '')
-
-
-
-##########################################################################################################################################################
-# LATEST FUNCTIONS AS OF 08/19/2018
-# PULLS LINES OF HTML & PARSES EACH INSTEAD OF ITERATING OVER ENTIRE HTML CODE FOR EACH LINE
-##########################################################################################################################################################
 
 def fetch_show_names(url):
+	print url
 	r = requests.get(url)
 	showNames = []
 	linksArray = []
@@ -966,31 +358,25 @@ def fetch_show_episodes():
 	showName = base_url.split("=SNAME=")[1].replace("+", " ")
 	base_url = base_url.split("=SNAME=")[0]
 
-	r = requests.get(base_url)
-	episodeNames = []
-	linksArray = []
-	for line in r.text.splitlines():
-		if "<a class=\"title\"" in line:
-			line = line.strip()
-			line = line.replace("<a class=\"title\" href=\"", "")
-			dateLink = line.split("?s=")[0]
-			print "LINK:" + dateLink
-			linksArray.append(dateLink)
-			dateTitle = line.split("?s=")[1].split("\">")[1].replace("</a>", "")
-			#PARSE TITLES TO REMOVE EXCESS VERBAGE
-			dateTitle = dateTitle.replace("Watch Online", "").replace("Watch Onlin","").replace(",","").replace(showName + " ", "").encode('ascii', 'ignore').decode('ascii').replace("by Ary Digital -","")
-			dateTitle = dateTitle.replace("&amp;", "&")
-			#END PARSING & RETURN FINAL CLEANED UP TITLE
-			print "TITLE:" + dateTitle
-			episodeNames.append(dateTitle)
-		else:
-			pass
+	url = base_url
 
-	parentChannelShowArray = zip(episodeNames, linksArray)
-	zippedArray = parentChannelShowArray
-	for (episodeName, episodeLink) in zippedArray:
-		linksURL = build_url({'linkName': episodeLink + "===" + episodeName})
-		addDir('folder', 'load_ep_links', linksURL, episodeName, '', '')
+	r = requests.get(url)
+	data = r.text
+
+	soup = BeautifulSoup(data)
+
+	## Pass Episode Page Link to Aggregate Host Links
+
+	mainArea = soup.findAll("a", {"class":"title"}, href=True)
+
+	for link in mainArea:
+			if "Watch Online" in link.text:
+				episodeLink = link["href"]
+				episodeName = link.text
+				episodeName = re.search("([0-9]+[a-z]+ [A-Za-z]+)", episodeName).group(1)
+				linksURL = build_url({'linkName': episodeLink + "===" + episodeName})
+				addDir('folder', 'episode_to_links', linksURL, episodeName, '', '')
+
 
 ##########################################################################################################################################################
 # MAIN MENU & MOVIE MENU
@@ -1012,33 +398,26 @@ def Main_Menu():
 		dir_mode =          item[1]
 		channel_icon =      item[2]
 		channel_fanart =    item[3]
-		addDir('folder', 'load_channels', channel_name, channel_name, channel_icon, channel_fanart)
+		addDir('folder', 'channel_to_shows', channel_name, channel_name, channel_icon, channel_fanart)
 
 def movie_menu():
-	movieListURL = "http://www.desirulez.me/forums/20-Latest-Exclusive-Movie-HQ"
-	## Get Movie Links & Names
-	r = requests.get(movieListURL)
+	url = "http://www.desirulez.cc/exclusive-movie-hq-20/"
+	r = requests.get(url)
 	data = r.text
+
 	soup = BeautifulSoup(data)
-	videoTitle = soup.findAll('h3', {'class':'threadtitle'})
-	for row in videoTitle:
-		showLink = row.find('a', {'class':'title'})
-		movieLink = showLink.get('href')
-		# print movieLink
-		movieLink = movieLink.rsplit('?')[0]
 
-		movieName = showLink.text
-		movieName = movieName.encode('ascii', 'ignore').decode('ascii').replace("'","")
-		movieName = movieName.replace(" Watch Online / Download", "").replace(" Watch Online / Download (Lollywood Movie)","").replace(" Watch Online / Download - DVD RIP","").replace(" - DVD RIP", "").replace(" (Lollywood Movie)","")
-		linksURL = build_url({'linkName': movieLink + "===" + movieName})
-		addDir('folder', 'load_movie_links', linksURL, movieName, '', '')
+	mainArea = soup.findAll("a", {"class":"title"}, href=True)
 
-		# finalShowLink = finalShowLink.replace("forums/", "").replace("bfont-colorred", "").replace("fontb", "")
-		# show_name = finalShowLink.split("?s=", 1)[0].split("-", 1)[1].replace("-", " ").replace("bfont colorblue", "").replace("'","")
-		# showLink = showLink.get('href')
-		# showURL = "http://www.desirulez.me/" + showLink
-		# showURL = build_url({'linkName': showURL})
-		# addDir('folder', 'load_episodes', showURL, show_name, '', '')
+	for title in mainArea:
+	  movieTitle = title.text.replace("Watch Online / Download", "").replace(" Full Hindi Dubbed Movie Online Free", "").replace(" Full Hindi Dubbed Movie Online", "")
+	  if "(All EPISODE)" not in movieTitle:
+		if "(Season " not in movieTitle:
+		  if "(E01-" not in movieTitle:
+			movieTitle = movieTitle.split("| ")[0]
+			movieLink = title["href"].split("?s=")[0]
+			linksURL = build_url({'linkName': movieLink + "===" + movieTitle})
+			addDir('folder', 'load_movie_links', linksURL, movieTitle, '', '')
 
 ##########################################################################################################################################################
 # LOAD SHOWS ONCE CHANNEL IS SELECTED 
@@ -1046,10 +425,10 @@ def movie_menu():
 
 def load_shows():
 	base_url = sys.argv[2]
-	base_url = base_url.split('load_channels')[1].split('&', 2)
+	base_url = base_url.split('channel_to_shows')[1].split('&', 2)
 	base_url = base_url[1].replace('name=', '').replace('%20', '')
 	channelName = base_url
-	print base_url
+	# print base_url
 	if base_url == 'StarPlus': fetchUrl = 'http://www.desirulez.me/forums/42-Star-Plus'
 	elif base_url == 'AndTV': fetchUrl = 'http://www.desirulez.me/forums/3138-Tv'
 	elif base_url == 'ZeeTV': fetchUrl = 'http://www.desirulez.me/forums/73-Zee-Tv'
@@ -1083,116 +462,7 @@ def load_shows():
 	for (showName, showLink) in zippedArray:
 		showURL = showLink + "=SNAME=" + showName
 		showURL = build_url({'linkName': showURL})
-		addDir('folder', 'load_episodes', showURL, showName, '', '')
-
-############################################################################################################################################################
-# Movie Un Packer Functions
-############################################################################################################################################################
-
-def unpackerFunctionVkSpeedMovie(encryptedObject):
-	paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(encryptedObject)
-	video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-	video_links = re.compile(r"(file:\'(.+?)\')").findall(video_info_link)
-	for item in video_links:
-		if "m3u8" not in str(item):
-			if ".vtt" not in str(item):
-				# print item
-				item = str(item).split('", ')[0].replace('("file:', '').replace("'", "")
-				return item
-			else:
-				return "No Video Found"
-
-def unpackerFunctionVidWatch(encryptedObject):
-	paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(encryptedObject)
-	video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-	video_links = re.compile(r"(file:\'(.+?)\')").findall(video_info_link)
-	for item in video_links:
-		item = str(item)
-		if "m3u8" in item:
-			value = item.split('", ')[0].replace('("file:', '').replace("'", "")
-			value = value.split(",")
-			finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-			return finalValue
-
-def unpackerFunctionMovie(encryptedObject):
-	paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(encryptedObject)
-	video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-	video_links = re.compile(r"(file:\'(.+?)\')").findall(video_info_link)
-	video_links = video_links[1]
-	return video_links[1]
-
-############################################################################################################################################################
-# Movie Getter Functions
-############################################################################################################################################################
-
-def vkSpeedMovie(videoId):
-	functionsArray = []
-	url = "http://vkspeed.com/embed-"+videoId+".html"
-	soup = BeautifulSoup(requests.get(url).text)
-  	fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
-  	for function in fullPackedFunction:
-  		functionsArray.append(function)
-  	# #7 Is the Obfuscated Function
-  	for line in functionsArray:
-  		if "eval(function(p,a,c,k,e,d)" in line.text:
-  			encryptedFunction = str(line).replace('<script type="text/javascript">', '').replace("</script>","").strip()
-  			return unpackerFunctionVkSpeedMovie(encryptedFunction)
-  		elif "file:" in line.text:
-  			lines = str(line).splitlines()
-  			for item in lines:
-  				if "/ads/" in item:
-  					return "No Video Found"
-  				elif "mp4" in item:
-  					videoArray = item.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
-  					for link in videoArray:
-  						if "m3u8" not in link:
-  							finalLink = link.split(",label:")[0]
-  							return finalLink
-
-def vkPrimeMovie(videoId):
-	functionsArray = []
-	url = "https://vkprime.com/embed-"+videoId+".html"
-	soup = BeautifulSoup(requests.get(url).text)
-  	fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
-  	for function in fullPackedFunction:
-  		functionsArray.append(function)
-
-  	for line in functionsArray:
-  		for item in line.text.splitlines():
-  			if "file:" in item:
-  				if "/ads/" in item:
-  					return "No Video Found"
-  				elif "mp4" in item:
-  					videoArray = item.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
-  					for link in videoArray:
-  						if "m3u8" not in link:
-  							finalLink = link.split(",label:")[0]
-  							return finalLink
-
-
-def vidWatchMovie(videoId):
-	functionsArray = []
-	url = "http://vidwatch.me/embed-"+videoId+".html"
-	soup = BeautifulSoup(requests.get(url).text)
-  	fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
-  	for function in fullPackedFunction:
-  		functionsArray.append(function)
-  	# #7 Is the Obfuscated Function
-  	for line in functionsArray:
-  		if "eval(function(p,a,c,k,e,d)" in line.text:
-  			encryptedFunction = str(line).replace('<script type="text/javascript">', '').replace("</script>","").strip()
-  			return unpackerFunctionVidWatch(encryptedFunction)
-  		elif "file:" in line.text:
-  			lines = str(line).splitlines()
-  			for item in lines:
-  				if "/ads/" in item:
-  					return "No Video Found"
-  				elif "mp4" in item:
-  					videoArray = item.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
-  					for link in videoArray:
-  						if "m3u8" not in link:
-  							finalLink = link.split(",label:")[0]
-  							return finalLink
+		addDir('folder', 'show_to_episodes', showURL, showName, '', '')
 
 ############################################################################################################################################################
 # Movie Getter Functions
@@ -1200,558 +470,62 @@ def vidWatchMovie(videoId):
 
 def load_movie_links():
 	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
-	# print main_url
+
 	main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=").replace("%28", "(").replace("%29", ")")
 	split_url = main_url.split("===")
 	movieURL = split_url[0].replace("plugin://plugin.video.DTVShows/?linkName=","")
 	movieName = split_url[1].replace("+", " ")
-	# print "### " + movieName
-	# print "### " + movieURL
+
 	r = requests.get(movieURL)
 	data = r.text
+
 	soup = BeautifulSoup(data)
-	mainArea = soup.find('blockquote', {"class": "postcontent restore "})
-	rows = mainArea.findAll('a')
 
-	for link in rows:
-		#Reformat Link to Get Host Name
-		tempName = link.get('href')
-		# print tempName
-		partName = str(link)
-		partName = partName.split("Online ")[1].replace("</a>","")
-		fullLink = tempName
-		tempName = tempName.split('?')
-		#Isolate Hostname
-		hostName = tempName[0]
-		hostName = hostName.replace("http://", "").split('/')[-1]
-		#Isolate Video ID
-		videoID = tempName[-1].split("=")[-1]
+	## Pass Episode Page Link to Aggregate Host Links
 
-		#Perform Some Action w/ Data Variables
-		#Sort through by Host
-		if "vkspeed" in hostName:
-			streamLink = vkSpeedMovie(videoID)
-			if (streamLink != "No Video Found"):
-				streamingName = partName + "[COLOR yellow]: VK Speed[/COLOR]"
-				addDir('', '', streamLink, streamingName, '', '')
-			else:
-				pass
-			# pass
-			# print vkSpeedMovie(videoID)
-			# print "VK Speed -- " + fullLink
-			# print videoID
-			# streamLink = vkSpeedMovie(videoID)
-			# streamingName = partName + "[COLOR yellow]: VK Speed[/COLOR]"
-			# addDir('', '', streamLink, streamingName, '', '')
-		elif "watchvideo" in hostName:
-			# print "Watch Video -- " + fullLink
-			pass
-		elif "vidwatch" in hostName:
-			streamLink = vidWatchMovie(videoID)
-			if (streamLink != "No Video Found"):
-				streamingName = partName + "[COLOR orange]: Vid Watch[/COLOR]"
-				addDir('', '', streamLink, streamingName, '', '')
-			else:
-				pass
-			# print vidWatchMovie(videoID)
-			# print "Vid Watch -- " + fullLink
-			# pass
-		elif "vkprime" in hostName:
-			streamLink = vkPrimeMovie(videoID)
-			if (streamLink != "No Video Found"):
-				streamingName = partName + "[COLOR green]: VK Prime[/COLOR]"
-				addDir('', '', streamLink, streamingName, '', '')
-			else:
-				pass
-			# print "VK Prime -- " + fullLink
-			pass
-		elif "videobee" in hostName:
-			# print "Video Bee -- " + fullLink
-			pass
-		else:
-			pass
+	mainArea = soup.findAll("a", {"rel":"nofollow"}, href=True)
 
-## End MOVIE Definitions ##
+	for link in mainArea:
+	  if "Watch Online" in link.text:
+			if "=" in link["href"]:
+				sourceName = link.text.replace("Watch Online", "").strip()
+				sourceLink = link["href"]
+				sourceMediaId = sourceLink.split("=")[1]
+				sourceDomain = re.search(".[a-zA-Z]/(.*?)\.php", sourceLink)
+				if sourceDomain is None:
+					pass
+				else:
+					sourceDomain = sourceDomain.group(1)
+					movieDomainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName)
 
 def load_episodes():
 	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
 	base_url = main_url.replace("plugin://plugin.video.DTVShows/?linkName=","").replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=").split("?s=")[0]
 	showName = base_url.split("=SNAME=")[1].replace("+", " ")
 	base_url = base_url.split("=SNAME=")[0]
-	print base_url
-	# print showName + " ####"
 
-	r = requests.get(base_url)
-	data = r.text
-	soup = BeautifulSoup(data)
-	# for tr in soup.findAll('tr', {'class': ['odd', 'even']})
-	videoTitle = soup.findAll('h3', {'class':'threadtitle'})
-	for row in videoTitle:
-		episodeLink = row.find('a').get('href')
-		episodeName = row.find('a').text
-		episodeName = episodeName.replace("Watch Online", "").replace("Watch Onlin","").replace(",","").replace(showName + " ", "").encode('ascii', 'ignore').decode('ascii').replace("by Ary Digital -","")
-		linksURL = build_url({'linkName': episodeLink + "===" + showName})
-		addDir('folder', 'load_ep_links', linksURL, episodeName, '', '')
-
-## END EPISODE DEFINITIONS ##
-
-## START LINK DEFINITIONS ##
-
-def vkPrimeShows(videoId):
-	functionsArray = []
-	url = "https://vkprime.com/embed-"+videoId+".html"
-	soup = BeautifulSoup(requests.get(url).text)
-  	fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
-  	for function in fullPackedFunction:
-  		# print function
-  		functionsArray.append(function)
-
-  	for item in functionsArray:
-  		if "sources: [{file:" in item.text:
-  			lines = str(item).splitlines()
-  			for line in lines:
-  				if "file:" in line:
-  					videoArray = line.strip().replace("sources: [{", "").replace("}],", "").replace("},{", "...").replace("file:", "").replace('"','').split("...")
-  					for link in videoArray:
-  						if "m3u8" not in link:
-  							finalLink = link.split(",label:")[0]
-  							return finalLink
-
-def load_ep_links():
-	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
-	main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=")
-	split_url = main_url.split("===")
-	main_url = split_url[0]
-	showName = split_url[1].replace("+", " ")
-	episode_url = main_url.replace("plugin://plugin.video.DTVShows/?linkName=","").split("?s=")[0]
-	print episode_url
-	# episode_url = "http://www.desirulez.me/" + episode_url
-	# print "############# " + episode_url
-	r = requests.get(episode_url)
-	data = r.text
-	soup = BeautifulSoup(data)
-	videoTitle = soup.findAll('blockquote', {"class": "postcontent restore "})
-	for row in videoTitle:
-		youtubeLink = row.findAll({'iframe':'src'})
-		for link in youtubeLink:
-			print "############"
-			link_clean = re.compile('src="(.+?)"').findall(str(link))
-			for item in link_clean:
-				finalLink = item.replace("//www.youtube.com/embed/", "").replace("?wmode=opaque", "")
-				print finalLink
-				url = "plugin://plugin.video.youtube/play/?video_id=" + finalLink
-				li = xbmcgui.ListItem('YouTube Link', iconImage='http://i.ytimg.com/vi/'+finalLink+'/maxresdefault.jpg')
-				li.setProperty('IsPlayable', 'true')
-				xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
-		showLink = row.findAll('a')
-		for link in showLink:
-			print "############"
-			# print link
-			if "http://www.desirulez.us" in link.get('href'):
-				print "No LINK"
-			elif "http://www.desirulez.net/register.php" in link.get('href'):
-				print "No LINk"
-			elif "http://www.*************" in link.get('href'):
-				print "No LINk"
-			else:
-				linkName = link.text
-				linkName = linkName.replace(showName, "").replace(" Watch Online Video-", "").replace(" Watch Online Video -", "").replace(" ", "-")
-				linkName = linkName.rsplit("-", 2)
-				# print linkName
-				linkName = linkName[1] + "-" + linkName[2]
-				if linkName == "Watch-Online":
-					linkName = "Full-Episode"
-				else:
-					linkName = linkName
-				# print "############# " + linkName
-				linkUrl = link.get('href')
-				if "=" in linkUrl:
-					linkID = linkUrl.split("=")[1]
-				else:
-					linkID = linkUrl
-				if "vidwatch.php" in linkUrl:
-					pass
-
-				elif len(linkID) == 12 and "?si=" in linkUrl or "?sim=" in linkUrl:
-					print linkUrl
-					iframeLink = determine_iframe_source(linkUrl)
-					print iframeLink
-					if "watchvideo" in iframeLink:
-						print "** WATCHVIDEO **"
-						regex = r"sources: \".*.mp4\""
-						r = requests.get(iframeLink)
-						results = []
-						for line in r.text.splitlines():
-							if text_to_find_parsing in line:
-								print line
-								line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-								# line = rtrim(line, ',')
-								line = line[0].replace("{file:", "").replace("\"","")
-								results.append(line)
-								watchvideoLink = results[0]
-								linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-								addDir('', '', watchvideoLink, linkName, '', '')
-								# print len(results)
-							else:
-								pass
-
-					elif "speedwatch" in iframeLink:
-						print "** SPEEDWATCH **"
-						regex = r"sources: \".*.mp4\""
-						r = requests.get(iframeLink)
-						results = []
-						for line in r.text.splitlines():
-							if text_to_find_parsing in line:
-								# print line
-								line = line.strip().replace("sources: ", "").replace("[","").replace("],","").split("},{")
-								# line = rtrim(line, ',')
-								line = line[0].replace("{file:", "").replace("\"","")
-								results.append(line)
-								watchvideoLink = results[0]
-								print watchvideoLink
-								linkName = linkName + "[COLOR yellow]: SPEEDWATCH[/COLOR]"
-								addDir('', '', watchvideoLink, linkName, '', '')
-								# print len(results)
-							else:
-								print resolve_packed_function(iframeLink)
-					else:
-						pass
-					# print linkID
-					# resultingLink = scrape_watchvideo(linkID)
-					# linkName = linkName + "[COLOR yellow]: WV | VW[/COLOR]"
-					# print "RESULTING LINK -> "+ str(resultingLink)
-					# addDir('', '', resultingLink, linkName, '', '')
-
-
-				elif "vidoza.php" in linkUrl:
-					pass
-					# print "### VIDOZA ### " + linkUrl
-					# linkName = linkName + "[COLOR yellow]: VIDOZA[/COLOR]"
-					# linkUrl = linkUrl + "===VIDOZA"
-					# resultingLink = resolve_link(linkUrl)
-					# addDir('', 'resolve_link', resultingLink, linkName, '', '')
-
-				elif "openload.php" in linkUrl:
-					pass
-					# print "### OPENLOAD ### " + linkUrl
-					# linkName = linkName + "[COLOR yellow]: OPENLOAD[/COLOR]"
-					# linkUrl = build_url({'resolveLink': linkUrl + "===OPENLOAD"})
-					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-				elif "vkprime" in linkUrl:
-					vkPrimeShows(linkUrl)
-					# print "### EMBEDUPLOAD ### " + linkUrl
-					# linkName = linkName + "[COLOR yellow]: EMBEDUPLOAD[/COLOR]"
-					# linkUrl = build_url({'resolveLink': linkUrl + "===EMBEDUPLOAD"})
-					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-				elif len(linkID) == 7 and linkID.isdigit():
-					pass
-					# print "### TUNEPK ### " + linkUrl
-					# linkName = linkName + "[COLOR yellow]: TUNEPK[/COLOR]"
-					# linkUrl = build_url({'resolveLink': linkUrl + "===TUNEPK"})
-					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-				elif len(linkID) == 19:
-					pass
-					# print "### DAILYMOTION ### " + linkUrl
-					# linkName = linkName + "[COLOR yellow]: DAILYMOTION[/COLOR]"
-					# linkUrl = build_url({'resolveLink': linkUrl + "===DAILYMOTION"})
-					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-				elif len(linkID) == 7:
-					pass
-					# if "reviewtv.in" in linkUrl:
-					#   # print "### TVLOGY ### " + linkUrl
-					#   linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-					#   linkUrl = linkUrl + "===TVLOGY"
-					#   resultingLink = resolve_link(linkUrl)
-					#   addDir('', 'resolve_link', resultingLink, linkName, '', '')
-					# elif "tellysony.com" in linkUrl:
-					#   # print "### TVLOGY ### " + linkUrl
-					#   linkName = linkName + "[COLOR yellow]: TVLOGY[/COLOR]"
-					#   linkUrl = linkUrl + "===TVLOGY"
-					#   resultingLink = resolve_link(linkUrl)
-					#   addDir('', 'resolve_link', resultingLink, linkName, '', '')
-					# else:
-					#   print "No Links Found"
-
-				# elif len(linkID) == 12:
-				#   print "### UNFILTERED ### " + linkID
-				#   # resolve_unfiltered(linkID)
-				#   # + linkUrl
-				#   # resolve_unfiltered(linkID)
-				#   resultingLink = resolve_unfiltered(linkID)
-				#   playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-				#   # print resultingLink
-				#   if resultingLink == "#### NO FILE":
-				#       print "## NOTHING"
-				#   else:
-				#       print "#########" + linkName
-				#       linkName = linkName + "[COLOR yellow]: WATCHVIDEO[/COLOR]"
-				#       print resultingLink
-				#       addDir('', 'resolve_link', resultingLink, linkName, '', '')
-				#       if 'Part-1' in linkName:
-				#           video = resultingLink
-				#           listitem = xbmcgui.ListItem(linkName)
-				#           listitem.setInfo('video', {'Title': linkName})
-				#           playlist.add(url=video, listitem=listitem)
-				#           # addDir('', 'resolve_link', resultingLink, 'Part 1', '', '')
-				#       else:
-				#           video = resultingLink
-				#           listitem = xbmcgui.ListItem(linkName)
-				#           listitem.setInfo('video', {'Title': linkName})
-				#           playlist.add(url=video, listitem=listitem)
-				#           print playlist
-				#           # addDir('', 'resolve_link', '', 'Continuous Play[COLOR yellow]: WATCHVIDEO[/COLOR]', '', '')
-
-				else:
-					pass
-					# print linkUrl
-					# linkName = "[COLOR yellow]"+linkName+"[/COLOR]"
-					# addDir('folder', 'resolve_link', linkUrl, linkName, '', '')
-
-def resolve_unfiltered(linkID):
-	# link_host = link_url.split("===")[1]
-	url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
+	url = base_url
 	r = requests.get(url)
 	data = r.text
+
 	soup = BeautifulSoup(data)
 
-	text_to_find = 'File was deleted'
+	## Pass Episode Page Link to Aggregate Host Links
 
-	if text_to_find in soup:
-		return "#### NO FILE"
-		print "#### NO FILE"
-	else:
-		print "############ FILE FOUND"
-		return resolve_watchvideo(linkID)
+	mainArea = soup.findAll("a", {"class":"title"}, href=True)
 
+	print "------------------------"
 
-def resolve_packed_function(url):
-	# url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
-	print url
-	try:
-		# print "################ " + url
-		r = requests.get(url)
-		data = r.text
-		soup = BeautifulSoup(data)
-
-		# parseWatchVideo(data)
-
-		text_to_find = 'm3u8|master'
-
-		soup = BeautifulSoup(data)
-
-		pageScripts = soup.findAll('script')
-
-		resultingScript = []
-
-		for script in pageScripts:
-			searchableString = str(script)
-			if "m3u8|master" in searchableString:
-				print "SUCCESS!! ####"
-				resultingScript.append(searchableString)
-			else:
-				print "--------------"
-
-		paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(resultingScript[0])
-
-		if len(paramSet) > 0:
-			video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-			# print video_info_link
-			img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-			value = img_data[0]
-			# print value
-			value = value.split(",")
-			finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-			# print "########### " + finalValue
-			return finalValue
-		else:
-			print "None Found Here Buddy"
+	for link in mainArea:
+			if "Watch Online" in link.text:
+				episodeLink = link["href"]
+				episodeName = link.text
+				episodeName = re.search("([0-9]+[a-z]+ [A-Za-z]+)", episodeName).group(1)
+				linksURL = build_url({'linkName': episodeLink + "===" + episodeName})
+				getEpisodeSources(episodeName, episodeLink, linksURL)
 
 
-		# for script in pageScripts:
-		#   print script
-		#   print "---------"
-
-		# if (len(pageScripts) >= 1):
-		#   for script in [pageScripts][12]:
-		#       paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
-		#       if len(paramSet) > 0:
-		#           video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-		#           # print video_info_link
-		#           img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-		#           value = img_data[0]
-		#           # print value
-		#           value = value.split(",")
-		#           finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-		#           # print "########### " + finalValue
-		#           return finalValue
-		#       else:
-		#           print 'Nooone'
-		# else:
-		#   print "No Links Found"
-	except:
-		print "An Error Occurred"
-
-
-def resolve_watchvideo(linkID):
-	url = "http://watchvideo18.us/embed-" + linkID + "-540x304.html"
-	# print url
-	try:
-		# print "################ " + url
-		r = requests.get(url)
-		data = r.text
-		soup = BeautifulSoup(data)
-
-		# parseWatchVideo(data)
-
-		text_to_find = 'm3u8|master'
-
-		soup = BeautifulSoup(data)
-
-		pageScripts = soup.findAll('script')
-
-		resultingScript = []
-
-		for script in pageScripts:
-			searchableString = str(script)
-			if "m3u8|master" in searchableString:
-				print "SUCCESS!! ####"
-				resultingScript.append(searchableString)
-			else:
-				print "--------------"
-
-		paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(resultingScript[0])
-
-		if len(paramSet) > 0:
-			video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-			# print video_info_link
-			img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-			value = img_data[0]
-			# print value
-			value = value.split(",")
-			finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-			# print "########### " + finalValue
-			return finalValue
-		else:
-			print "None Found Here Buddy"
-
-
-		# for script in pageScripts:
-		#   print script
-		#   print "---------"
-
-		# if (len(pageScripts) >= 1):
-		#   for script in [pageScripts][12]:
-		#       paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(script)
-		#       if len(paramSet) > 0:
-		#           video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-		#           # print video_info_link
-		#           img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-		#           value = img_data[0]
-		#           # print value
-		#           value = value.split(",")
-		#           finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-		#           # print "########### " + finalValue
-		#           return finalValue
-		#       else:
-		#           print 'Nooone'
-		# else:
-		#   print "No Links Found"
-	except:
-		print "An Error Occurred"
-
-
-def resolve_link(link_url):
-	# main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
-	# main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=")
-	# link_url = main_url.split("=", 1)[1].split("===")[0]
-	link_host = link_url.split("===")[1]
-	# print "########### " + link_url
-	# print "########### " + link_host
-	if link_host == "TVLOGY":
-		try:
-			if link_host == "TVLOGY":
-				videoId = link_url.split("=")[1]
-				url = "http://tvlogy.to/watch.php?v=" + videoId
-			elif link_host == "VIDOZA":
-				videoId = link_url.split("=")[1]
-				url = "http://vidoza.net/embed-" + videoId + ".html"
-			
-			r = requests.get(url)
-			data = r.text
-			soup = BeautifulSoup(data)
-
-			# print soup.prettify()
-
-			text_to_find = '.m3u8'
-
-			soup = BeautifulSoup(data)
-
-			for script in soup.findAll('script'):
-				parser = Parser()
-				tree = parser.parse(script.text)
-				for node in nodevisitor.visit(tree):
-					if isinstance(node, ast.Assign):
-						value = getattr(node.right, 'value', '')
-						if text_to_find in value:
-							value = value[1:-1]
-							print "########### " + value
-							return value
-		except:
-			print "An Error Occurred"
-			
-	elif link_host == "WATCHVIDEO":
-		try:
-			videoId = link_url.split("=")[1]
-			url = "http://watchvideo18.us/embed-" + videoId + "-540x304.html"
-			print "################ " + url
-			r = requests.get(url)
-			data = r.text
-			soup = BeautifulSoup(data)
-
-			text_to_find = 'm3u8|master'
-
-			soup = BeautifulSoup(data)
-
-			pageScripts = soup.findAll('script')
-
-			resultingScript = []
-
-			for script in pageScripts:
-				searchableString = str(script)
-				if "m3u8|master" in searchableString:
-					print "SUCCESS!! ####"
-					resultingScript.append(searchableString)
-				else:
-					print "--------------"
-
-			paramSet = re.compile("return p\}\(\'(.+?)\',(\d+),(\d+),\'(.+?)\'").findall(resultingScript[0])
-
-			if len(paramSet) > 0:
-				video_info_link = encoders.parse_packed_value(paramSet[0][0], int(paramSet[0][1]), int(paramSet[0][2]), paramSet[0][3].split('|')).replace('\\', '').replace('"', '\'')
-				# print video_info_link
-				img_data = re.compile(r"file:\'(.+?)\'").findall(video_info_link)
-				value = img_data[0]
-				# print value
-				value = value.split(",")
-				finalValue = value[0] + value[1] + "/index-v1-a1.m3u8"
-				# print "########### " + finalValue
-				return finalValue
-			else:
-				print "None Found Here Buddy"
-			
-		except:
-			print "An Error Occurred"
-			return 'An Error Occurred'
-
-
-def filter_non_links():
-	print "############ NON LINKS ###"
-
-## END LINK DEFINITIONS ##
+## END EPISODE DEFINITIONS ##
 
 
 mode = None
@@ -1765,9 +539,9 @@ if len(args) > 0:
 
 
 if mode == None             :       Main_Menu()
-elif mode == 'load_channels':       load_shows()
-elif mode == 'load_episodes':       fetch_show_episodes()
-elif mode == 'load_ep_links':       load_episode_links()
+elif mode == 'channel_to_shows':	load_shows()
+elif mode == 'show_to_episodes':	fetch_show_episodes()
+elif mode == 'episode_to_links':    load_episode_links()
 elif mode == 'resolve_link':        resolve_link()
 elif mode == 'load_movies':         movie_menu()
 elif mode == 'load_movie_links':    load_movie_links()
