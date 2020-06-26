@@ -300,7 +300,12 @@ def getEpisodeSources(name, link, xbmcUrl):
 
 	for link in mainArea:
 		if "Watch Online" in link.text:
-			sourceName = link.text.split("-")[1].strip()
+			print link.text
+			if "- " in link.text:
+				sourceName = link.text.split("-")[1].strip()
+			else:
+				sourceName = "Full"
+			# sourceName = link.text.split("-")[1].strip()
 			sourceLink = link["href"]
 			sourceMediaId = sourceLink.split("=")[1]
 			if "php?" in sourceLink:
@@ -444,11 +449,16 @@ def fetch_show_episodes():
 				episodeLink = link["href"]
 				episodeName = link.text
 				## Added to remove double whitespaces
-				episodeName = " ".join(episodeName.split())
-				##
-				episodeName = re.search("([0-9]+[a-z]+ [A-Za-z]+)", episodeName).group(1)
-				linksURL = build_url({'linkName': episodeLink + "===" + episodeName})
-				addDir('folder', 'episode_to_links', linksURL, episodeName, '', '')
+				episodeName = " ".join(episodeName.split()).replace("!!", "")
+				if re.search("([0-9]+[a-z]+ [A-Za-z]+)", episodeName):
+					episodeName = re.search("([0-9]+[a-z]+ [A-Za-z]+)", episodeName).group(1)
+					linksURL = build_url({'linkName': episodeLink + "===" + episodeName})
+					addDir('folder', 'episode_to_links', linksURL, episodeName, '', '')
+				else:
+					print "No Match"
+				# episodeName = re.search("([0-9]+[a-z]+ [A-Za-z]+)", episodeName).group(1)
+				# linksURL = build_url({'linkName': episodeLink + "===" + episodeName})
+				# addDir('folder', 'episode_to_links', linksURL, episodeName, '', '')
 			else:
 				pass
 
