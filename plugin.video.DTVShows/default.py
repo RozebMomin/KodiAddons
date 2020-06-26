@@ -143,13 +143,30 @@ def tvUnpackerFunction(encryptedObject):
 	video_links = re.compile(r"(file:\'(.+?)\')").findall(video_info_link)
 	for item in video_links:
 		item = str(item)
+		# print "ITEM === " + item 
 		if "m3u8" not in item:
 			if ".vtt" not in item:
 				item = item.split('", ')[0].replace('("file:', '').replace("'", "")
 				if item is None:
 					return "Video Not Found"
 				else:
+					print "PACKER ITEM -- " + str(item)
 					return item
+		elif "m3u8" in item:
+			item = item = item.split('", ')[0].replace('("file:', '').replace("'", "")
+			itemArray = item.split(",")
+			host = itemArray[0]
+			suffix = ".urlset/master.m3u8"
+			itemArray.pop()
+			itemArray.pop(0)
+			if len(itemArray) == 3:
+				qualityID = itemArray[1]
+			elif len(itemArray) == 2:
+				qualityID = itemArray [0]
+			finalItem = host + qualityID + suffix
+			return finalItem
+		else:
+			pass
 				# return item or "Video Not Found"
 
 ################################################
@@ -199,10 +216,41 @@ def domainResolver(domain, mediaId, link, name, xbmcUrl):
 				result = hostUrl
 				streamingName = name + "[COLOR green]: Daily Motion[/COLOR]"
 				addDir('', '', result, streamingName, '', '')
+	elif "vkprime" in domain:
+		print domain
+		functionsArray = []
+		hostUrl = "https://vkprime.com/embed-"+mediaId+".html"
+		soup = BeautifulSoup(requests.get(hostUrl).text)
+		fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
+		for function in fullPackedFunction:
+			functionsArray.append(function)
+		for line in functionsArray:
+			if "eval(function(p,a,c,k,e,d)" in line.text:
+				encryptedFunction = str(line).replace('<script type="text/javascript">', '').replace("</script>","").strip()
+				mediaLink = tvUnpackerFunction(encryptedFunction)
+				result = mediaLink
+				streamingName = name + "[COLOR blue]: VKPrime[/COLOR]"
+				# print "--- RESULT -- " + str(result)
+				# print "--- STREAMING NAME -- " + str(streamingName)
+				addDir('', '', result, streamingName, '', '')
+			elif "file:" in line.text:
+				lines = str(line).splitlines()
+				for item in lines:
+					if "/ads/" in item:
+						print "No Video Found"
+					elif "m3u8" in item:
+						item = item.strip().split(",")[0].strip()
+						item = item.replace("sources: [{\"file\":\"", "").replace(".m3u8\"", "")
+						print item
+						result = item
+						streamingName = name + "[COLOR red]: NetFlx[/COLOR]"
+						addDir('', '', result, streamingName, '', '')
+				########################
 	elif "speed" in domain:
 		# pass
 		functionsArray = []
 		hostUrl = "http://vkspeed.com/embed-"+mediaId+"-600x380.html"
+		print "VKSPEED ----- " + mediaId
 		soup = BeautifulSoup(requests.get(hostUrl).text)
 		fullPackedFunction = soup.findAll("script", {"type":"text/javascript"})
 		for function in fullPackedFunction:
@@ -213,6 +261,8 @@ def domainResolver(domain, mediaId, link, name, xbmcUrl):
 				mediaLink = tvUnpackerFunction(encryptedFunction)
 				result = mediaLink
 				streamingName = name + "[COLOR yellow]: Speed Watch[/COLOR]"
+				# print "--- RESULT -- " + str(result)
+				# print "--- STREAMING NAME -- " + str(streamingName)
 				addDir('', '', result, streamingName, '', '')
 			elif "file:" in line.text:
 				lines = str(line).splitlines()
@@ -259,14 +309,32 @@ def getEpisodeSources(name, link, xbmcUrl):
 					pass
 				else:
 					sourceDomain = sourceDomain.group(1)
-					domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+					if "daily" not in sourceDomain:
+						domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+					else:
+						pass
 			elif "?sim" in sourceLink:
 				if len(sourceMediaId) == 32:
 					sourceDomain = "daily"
-					domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
-				else:
+					print sourceDomain
+					# domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+				elif len(sourceMediaId) == 12:
 					sourceDomain = "vkprime"
 					domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+				else:
+					pass
+			elif "?si=" in sourceLink:
+				if len(sourceMediaId) == 15:
+					sourceDomain = "netflix"
+					domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+				else:
+					pass
+			elif "?id=" in sourceLink:
+				if len(sourceMediaId) == 12:
+					sourceDomain = "vkprime"
+					domainResolver(sourceDomain, sourceMediaId, sourceLink, sourceName, xbmcUrl)
+				else:
+					pass
 			else:
 				pass
 
@@ -332,7 +400,7 @@ def load_episode_links():
 
 
 def fetch_show_names(url):
-	print url
+	print("DEBUGGER")
 	r = requests.get(url)
 	showNames = []
 	linksArray = []
@@ -360,6 +428,8 @@ def fetch_show_episodes():
 
 	url = base_url
 
+	print "--------------- " + url 
+
 	r = requests.get(url)
 	data = r.text
 
@@ -373,9 +443,14 @@ def fetch_show_episodes():
 			if "Watch Online" in link.text:
 				episodeLink = link["href"]
 				episodeName = link.text
+				## Added to remove double whitespaces
+				episodeName = " ".join(episodeName.split())
+				##
 				episodeName = re.search("([0-9]+[a-z]+ [A-Za-z]+)", episodeName).group(1)
 				linksURL = build_url({'linkName': episodeLink + "===" + episodeName})
 				addDir('folder', 'episode_to_links', linksURL, episodeName, '', '')
+			else:
+				pass
 
 
 ##########################################################################################################################################################
@@ -417,6 +492,7 @@ def movie_menu():
 			movieTitle = movieTitle.split("| ")[0]
 			movieLink = title["href"].split("?s=")[0]
 			linksURL = build_url({'linkName': movieLink + "===" + movieTitle})
+			print(linksURL)
 			addDir('folder', 'load_movie_links', linksURL, movieTitle, '', '')
 
 ##########################################################################################################################################################
@@ -424,6 +500,7 @@ def movie_menu():
 ##########################################################################################################################################################
 
 def load_shows():
+	print "DEBUGGER"
 	base_url = sys.argv[2]
 	base_url = base_url.split('channel_to_shows')[1].split('&', 2)
 	base_url = base_url[1].replace('name=', '').replace('%20', '')
@@ -470,7 +547,6 @@ def load_shows():
 
 def load_movie_links():
 	main_url = urlparse.parse_qs(sys.argv[2][1:]).get('url')[0]
-
 	main_url = main_url.replace("%3A", ":").replace("%2F", "/").replace("%3F", "?").replace("%3D", "=").replace("%28", "(").replace("%29", ")")
 	split_url = main_url.split("===")
 	movieURL = split_url[0].replace("plugin://plugin.video.DTVShows/?linkName=","")
